@@ -37,10 +37,10 @@ public class JobController {
 
 	@Autowired
 	private Environment env;
-	
+
 	@Autowired
 	private OneTimeJob oneTimeJob;
-	
+
 	@Autowired
 	private Scheduler scheduler;
 
@@ -48,19 +48,21 @@ public class JobController {
 
 	@RequestMapping("/")
 	public String home() {
-		
+
 		return "Hello World!";
 	}
-	
+
 	@PostMapping("/schedule")
 	public ResponseEntity<ScheculedResponse> schedule(@Valid @RequestBody ScheculedRequest scheculedRequest) {
 
-		try { 
-				System.out.println("Schedule başladı: ");
+		try {
+
+			
 			Calendar c = Calendar.getInstance();
 			TimeZone tz = c.getTimeZone();
-			ZonedDateTime dateTime = ZonedDateTime.of(scheculedRequest.getDateTime(), tz.toZoneId());			
+			ZonedDateTime dateTime = ZonedDateTime.of(scheculedRequest.getDateTime(), tz.toZoneId());
 
+			System.out.println("Schedule başladı: " + dateTime);
 			if (dateTime.isBefore(ZonedDateTime.now())) {
 				ScheculedResponse sheculedResponse = new ScheculedResponse(false,
 						"DateTime must be after current time");
@@ -71,34 +73,37 @@ public class JobController {
 			oneTimeJob.execute();
 			System.out.println("onetime bitti");
 			JobDetail jobDetail = buildJobDetail(scheculedRequest);
-			
+
 			Trigger trigger = buildJobTrigger(jobDetail, dateTime);
-			
+
 			scheduler.scheduleJob(jobDetail, trigger);
-			
-			ScheculedResponse scheculedResponse = new ScheculedResponse(true, jobDetail.getKey().getName(), jobDetail.getKey().getGroup(), "SolutionCube job started Successfully!");
-			
+
+			ScheculedResponse scheculedResponse = new ScheculedResponse(true, jobDetail.getKey().getName(),
+					jobDetail.getKey().getGroup(), "SolutionCube job started Successfully!");
+
 			return ResponseEntity.ok(scheculedResponse);
 		} catch (SchedulerException ex) {
-			
+
 			logger.error("Error scheduling SolutionCube job", ex);
-			ScheculedResponse scheculedResponse = new ScheculedResponse(false, "Error scheduling job. Please try later!");
+			ScheculedResponse scheculedResponse = new ScheculedResponse(false,
+					"Error scheduling job. Please try later!");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(scheculedResponse);
 		}
 	}
 
 	private JobDetail buildJobDetail(ScheculedRequest scheculedRequest) {
-		
+
 		return JobBuilder.newJob(DailyJob.class).withIdentity(UUID.randomUUID().toString(), "Solutioncube")
 				.withDescription("SolutionCube tablolarını besler").storeDurably().build();
 	}
 
 	private Trigger buildJobTrigger(JobDetail jobDetail, ZonedDateTime startAt) {
-		
-		return TriggerBuilder.newTrigger().forJob(jobDetail)
-				.withIdentity(jobDetail.getKey().getName(), "SolutionCube")
+
+		return TriggerBuilder.newTrigger().forJob(jobDetail).withIdentity(jobDetail.getKey().getName(), "SolutionCube")
 				.withDescription("SolutionCube tablolarını besler").startAt(Date.from(startAt.toInstant()))
-				.withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(Integer.parseInt(env.getProperty("custom.intervalAsMinutes")))).build();
+				.withSchedule(SimpleScheduleBuilder
+						.repeatMinutelyForever(Integer.parseInt(env.getProperty("custom.intervalAsMinutes"))))
+				.build();
 	}
 
 }
