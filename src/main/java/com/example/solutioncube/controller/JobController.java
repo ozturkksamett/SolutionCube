@@ -55,7 +55,7 @@ public class JobController {
 	@PostMapping("/schedule")
 	public ResponseEntity<ScheculedResponse> schedule(@Valid @RequestBody ScheculedRequest scheculedRequest) {
 
-		try {
+		try { 
 				System.out.println("Schedule başladı: ");
 			Calendar c = Calendar.getInstance();
 			TimeZone tz = c.getTimeZone();
