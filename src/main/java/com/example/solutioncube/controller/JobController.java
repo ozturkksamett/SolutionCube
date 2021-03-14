@@ -56,7 +56,7 @@ public class JobController {
 	public ResponseEntity<ScheculedResponse> schedule(@Valid @RequestBody ScheculedRequest scheculedRequest) {
 
 		try {
-
+				System.out.println("Schedule başladı: ");
 			Calendar c = Calendar.getInstance();
 			TimeZone tz = c.getTimeZone();
 			ZonedDateTime dateTime = ZonedDateTime.of(scheculedRequest.getDateTime(), tz.toZoneId());			
@@ -66,9 +66,10 @@ public class JobController {
 						"DateTime must be after current time");
 				return ResponseEntity.badRequest().body(sheculedResponse);
 			}
-			
+
+			System.out.println("onetime başladı");
 			oneTimeJob.execute();
-			
+			System.out.println("onetime bitti");
 			JobDetail jobDetail = buildJobDetail(scheculedRequest);
 			
 			Trigger trigger = buildJobTrigger(jobDetail, dateTime);

@@ -19,10 +19,12 @@ public class OneTimeJob {
 	AlarmRulesTask alarmRulesTask;
 
 	public void execute() {
-		
+		System.out.println("job parameter başladı");
 		jobParameter.generateJobParameter();
 		
+		System.out.println("Sensor task başladı");
 		sensorsTask.executeOneTime();
+		
 		alarmRulesTask.executeOneTime();
 	}
 }

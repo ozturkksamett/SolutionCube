@@ -27,13 +27,14 @@ public class Task {
 	private static final Logger logger = LoggerFactory.getLogger(Task.class);
 
 	public void execute(String uri, String collectionName) { 
-
+		System.out.println("ok http başladı");
 		OkHttpClient client = new OkHttpClient();
 		Request request = new Request.Builder().url(uri).get().addHeader("authorization", jobParameter.getToken()).build();
 
 		try {
-
+			System.out.println("task başladı");
 			Response response = client.newCall(request).execute();
+			System.out.println("task bitti");
 			String jsonData = response.body().string();
 			System.out.println("jsonData:"+jsonData);
 			JSONArray jsonArray = new JSONArray(jsonData);
