@@ -12,7 +12,7 @@ public class MongoConfig {
 
     public MongoClient mongoClient() {
     	System.out.println("MONGODB_URI:"+System.getenv("MONGODB_URI"));
-        return MongoClients.create((System.getenv("MONGODB_URI")));
+        return MongoClients.create(System.getenv("MONGODB_URI"));
     }
 
     public @Bean MongoTemplate mongoTemplate() {
