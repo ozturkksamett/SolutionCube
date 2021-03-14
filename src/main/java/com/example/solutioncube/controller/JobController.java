@@ -56,7 +56,7 @@ public class JobController {
 	public ResponseEntity<ScheculedResponse> schedule(@Valid @RequestBody ScheculedRequest scheculedRequest) {
 
 		try {
-
+ 
 			
 			Calendar c = Calendar.getInstance();
 			TimeZone tz = c.getTimeZone();
