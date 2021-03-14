@@ -1,4 +1,4 @@
-package com.example.demo.job;
+package com.example.solutioncube.job;
 
 import java.time.LocalDateTime;
 

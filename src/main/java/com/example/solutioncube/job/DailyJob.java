@@ -1,4 +1,4 @@
-package com.example.demo.job;
+package com.example.solutioncube.job;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.job.task.AlarmRulesTask;
-import com.example.demo.job.task.SensorsTask;
+import com.example.solutioncube.job.task.AlarmRulesTask;
+import com.example.solutioncube.job.task.SensorsTask;
 
 @Component
 public class DailyJob extends QuartzJobBean  {

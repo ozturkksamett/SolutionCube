@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.solutioncube.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

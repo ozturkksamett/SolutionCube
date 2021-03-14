@@ -1,4 +1,4 @@
-package com.example.demo.payload;
+package com.example.solutioncube.payload;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

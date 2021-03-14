@@ -1,10 +1,10 @@
-package com.example.demo.job.task;
+package com.example.solutioncube.job.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.job.JobParameter;
-import com.example.demo.job.Task;
+import com.example.solutioncube.job.JobParameter;
+import com.example.solutioncube.job.Task;
 
 
 @Component

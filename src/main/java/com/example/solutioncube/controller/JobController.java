@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.solutioncube.controller;
 
 import java.time.ZonedDateTime;
 import java.util.Calendar;
@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.job.DailyJob;
-import com.example.demo.job.OneTimeJob;
-import com.example.demo.payload.ScheculedRequest;
-import com.example.demo.payload.ScheculedResponse;
+import com.example.solutioncube.job.DailyJob;
+import com.example.solutioncube.job.OneTimeJob;
+import com.example.solutioncube.payload.ScheculedRequest;
+import com.example.solutioncube.payload.ScheculedResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
