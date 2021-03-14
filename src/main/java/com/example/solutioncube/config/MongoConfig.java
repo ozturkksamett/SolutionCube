@@ -16,7 +16,6 @@ public class MongoConfig {
     }
 
     public @Bean MongoTemplate mongoTemplate() {
-    	System.out.println("MONGODB_URI:"+System.getenv("MONGODB_URI"));
         return new MongoTemplate(mongoClient(), "test");
     }
 
