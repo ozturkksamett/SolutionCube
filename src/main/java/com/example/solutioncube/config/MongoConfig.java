@@ -11,7 +11,7 @@ import com.mongodb.client.MongoClients;
 public class MongoConfig {
 
     public MongoClient mongoClient() {
-    	System.out.println(System.getenv("MONGODB_URI"));
+    	System.out.println("MONGODB_URI:"+System.getenv("MONGODB_URI"));
         return MongoClients.create((System.getenv("MONGODB_URI")));
     }
 
