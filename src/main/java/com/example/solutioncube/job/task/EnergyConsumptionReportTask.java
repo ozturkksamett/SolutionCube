@@ -1,10 +1,12 @@
 package com.example.solutioncube.job.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.example.solutioncube.job.JobParameter;
 import com.example.solutioncube.job.Task;
 
+@Component
 public class EnergyConsumptionReportTask {
 
 	@Autowired
