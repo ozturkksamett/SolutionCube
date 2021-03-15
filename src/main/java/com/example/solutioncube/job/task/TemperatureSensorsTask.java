@@ -8,8 +8,9 @@ import com.example.solutioncube.job.Task;
 
 
 @Component
-public class Zones {
+public class TemperatureSensorsTask {
 	
+
 	@Autowired
 	JobParameter jobParameter;
 	
@@ -17,7 +18,7 @@ public class Zones {
 	private Task task;
 
 	private final String COLLECTION_NAME = this.getClass().getName().substring(34, this.getClass().getName().length() - 4);
-	private final String URI = "https://api.triomobil.com/facility/v1/zones?%s_sortOrder=ASC&_sortBy=label";
+	private final String URI = "https://api.triomobil.com/facility/v1/temperatureSensors?%s_sortOrder=ASC&_sortBy=label";
   
 	public void executeDaily() {
 		

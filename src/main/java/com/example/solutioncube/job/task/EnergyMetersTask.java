@@ -8,8 +8,8 @@ import com.example.solutioncube.job.Task;
 
 
 @Component
-public class AlarmRulesTask {
-	
+public class EnergyMetersTask {
+
 	@Autowired
 	JobParameter jobParameter;
 	
@@ -17,14 +17,14 @@ public class AlarmRulesTask {
 	private Task task;
 
 	private final String COLLECTION_NAME = this.getClass().getName().substring(34, this.getClass().getName().length() - 4);
-	private final String URI = "https://api.triomobil.com/facility/v1/alarmRules?%s_sortOrder=ASC&_sortBy=label";
-
+	private final String URI = "https://api.triomobil.com/facility/v1/energyMeters?%s_sortOrder=ASC&_sortBy=label";
 	public void executeDaily() {
-
+		
 		task.execute(String.format(URI, "audit.createdAt.since=" + jobParameter.getSinceDate() + "&"), COLLECTION_NAME);
 	}
 
 	public void executeOneTime() {
+		
 		
 		task.execute(String.format(URI, ""), COLLECTION_NAME);
 	}

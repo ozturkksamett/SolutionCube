@@ -25,7 +25,6 @@ public class SensorsTask {
 
 	public void executeOneTime() {
 		
-		
 		task.execute(String.format(URI, ""), COLLECTION_NAME);
 	}
 }

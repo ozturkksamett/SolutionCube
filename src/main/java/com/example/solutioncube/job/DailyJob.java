@@ -7,11 +7,13 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
 import com.example.solutioncube.job.task.AlarmRulesTask;
+import com.example.solutioncube.job.task.EnergyMetersTask;
 import com.example.solutioncube.job.task.FloorPlansTask;
 import com.example.solutioncube.job.task.SensorCountersTask;
 import com.example.solutioncube.job.task.SensorsTask;
+import com.example.solutioncube.job.task.TemperatureSensorsTask;
 import com.example.solutioncube.job.task.TrackersTask;
-import com.example.solutioncube.job.task.Zones;
+import com.example.solutioncube.job.task.ZonesTask;
 
 @Component
 public class DailyJob extends QuartzJobBean  {
@@ -35,7 +37,13 @@ public class DailyJob extends QuartzJobBean  {
 	FloorPlansTask floorPlansTask;
 	
 	@Autowired
-	Zones zones;
+	ZonesTask zonesTask;
+	
+	@Autowired
+	EnergyMetersTask energyMetersTask;
+	
+	@Autowired
+	TemperatureSensorsTask temperatureSensorsTask;
 	
 
 	@Override
@@ -48,6 +56,8 @@ public class DailyJob extends QuartzJobBean  {
 		sensorCountersTask.executeDaily();
 		trackersTask.executeDaily();
 		floorPlansTask.executeDaily();
-		zones.executeDaily();
+		zonesTask.executeDaily();
+		energyMetersTask.executeDaily();
+		temperatureSensorsTask.executeDaily();
 	}
 }
