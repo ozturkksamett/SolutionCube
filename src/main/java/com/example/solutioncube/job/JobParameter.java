@@ -42,7 +42,7 @@ public class JobParameter {
 				+String.format("%02d", date.getDayOfMonth())+"T"
 				+String.format("%02d", date.getHour())+"%3A"
 				+String.format("%02d", date.getMinute())+"%3A"
-				+String.format("%02d", date.getSecond())+".000%2B00%3A00";
+				+String.format("%02d", date.getSecond())+".000%2B03%3A00";
 	}
 	
 	private String generateToken() {
