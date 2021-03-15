@@ -19,4 +19,4 @@ public class MongoConfig {
         return new MongoTemplate(mongoClient(), "test");
     }
 
-}
+} 
