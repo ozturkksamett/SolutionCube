@@ -87,14 +87,15 @@ public class DailyJob extends QuartzJobBean  {
 
 		jobParameter.generateJobParameter();
 		
-		sensorsTask.executeDaily();
+		/*sensorsTask.executeDaily();
 		alarmRulesTask.executeDaily();
 		sensorCountersTask.executeDaily();
 		trackersTask.executeDaily();
 		floorPlansTask.executeDaily();
 		zonesTask.executeDaily();
 		energyMetersTask.executeDaily();
-		temperatureSensorsTask.executeDaily();
+		temperatureSensorsTask.executeDaily();*/
+		
 		latestEnergyMeasurementsReportTask.executeDaily();
 		energyMeasurementsHistoryReportTask.executeDaily();
 		energyConsumptionReportTask.executeDaily();
