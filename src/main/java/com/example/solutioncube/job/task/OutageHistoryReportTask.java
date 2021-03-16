@@ -34,7 +34,7 @@ public class OutageHistoryReportTask {
 			
 			JSONObject trackerJSONObject = new JSONObject(tracker);
 			String trackerId = trackerJSONObject.getString("_id");
-
+ 
 			task.execute(String.format(URI, trackerId, jobParameter.getSinceDate()), COLLECTION_NAME);
 		}		
 	}
