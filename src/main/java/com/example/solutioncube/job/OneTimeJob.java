@@ -48,14 +48,14 @@ public class OneTimeJob {
 		
 		System.out.println("Sensor task başladı");
 		
-		/*sensorsTask.executeOneTime();
+		sensorsTask.executeOneTime();
 		alarmRulesTask.executeOneTime();
 		sensorCountersTask.executeOneTime();
 		trackersTask.executeOneTime();
 		floorPlansTask.executeOneTime();
 		zonesTask.executeOneTime();
 		energyMetersTask.executeOneTime();
-		temperatureSensorsTask.executeOneTime();*/
+		temperatureSensorsTask.executeOneTime();
 		
 	}
 }

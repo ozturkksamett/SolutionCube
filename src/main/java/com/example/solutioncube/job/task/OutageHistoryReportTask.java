@@ -24,7 +24,7 @@ public class OutageHistoryReportTask {
 
 	private final String BASE_COLLECTION_NAME = "Trackers";
 	private final String COLLECTION_NAME = this.getClass().getName().substring(34, this.getClass().getName().length() - 4);
-	private final String URI = "https://api.triomobil.com/facility/v1/reports/indoor/outage/history?_sortOrder=ASC&_sortBy=addr&_sortBy=outage.startedAt&trackerId=%s&ts.since=%s";
+	private final String URI = "https://api.triomobil.com/facility/v1/reports/indoor/outage/history?trackerId=%s&ts.since=%s&ts.until=%s";
 
 	public void executeDaily() {
 		
@@ -36,7 +36,7 @@ public class OutageHistoryReportTask {
 			JSONObject trackerJSONObject = new JSONObject(tracker);
 			String trackerId = trackerJSONObject.getString("_id");
 			System.out.println("OutageHistoryReportTask trackerid :"+trackerId+" için çalışıyor");
-			task.execute(String.format(URI, trackerId, jobParameter.getSinceDate()), COLLECTION_NAME);
+			task.execute(String.format(URI, trackerId, jobParameter.getSinceDate(), jobParameter.getTillDate()), COLLECTION_NAME);
 			System.out.println("OutageHistoryReportTask trackerid :"+trackerId+" için çalıştı");
 		}		
 	}
