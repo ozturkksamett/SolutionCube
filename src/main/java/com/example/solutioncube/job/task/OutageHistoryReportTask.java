@@ -30,12 +30,14 @@ public class OutageHistoryReportTask {
 		
 		List<String> trackers = mongoTemplate.findAll(String.class, BASE_COLLECTION_NAME);
 		
+		System.out.println("OutageHistoryReportTask başladı");
 		for (String tracker : trackers) {
 			
 			JSONObject trackerJSONObject = new JSONObject(tracker);
 			String trackerId = trackerJSONObject.getString("_id");
- 
+			System.out.println("OutageHistoryReportTask trackerid :"+trackerId+" için çalışıyor");
 			task.execute(String.format(URI, trackerId, jobParameter.getSinceDate()), COLLECTION_NAME);
+			System.out.println("OutageHistoryReportTask trackerid :"+trackerId+" için çalıştı");
 		}		
 	}
 }
