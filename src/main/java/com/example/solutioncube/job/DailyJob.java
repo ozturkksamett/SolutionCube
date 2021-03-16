@@ -28,90 +28,87 @@ import com.example.solutioncube.job.task.ZonePresenceSummaryReportTask;
 import com.example.solutioncube.job.task.ZonesTask;
 
 @Component
-public class DailyJob extends QuartzJobBean  {
-	
+public class DailyJob extends QuartzJobBean {
+
 	@Autowired
 	JobParameter jobParameter;
 
 	@Autowired
 	SensorsTask sensorsTask;
-	
+
 	@Autowired
 	AlarmRulesTask alarmRulesTask;
-	
+
 	@Autowired
 	SensorCountersTask sensorCountersTask;
-	
+
 	@Autowired
 	TrackersTask trackersTask;
-	
+
 	@Autowired
 	FloorPlansTask floorPlansTask;
-	
+
 	@Autowired
 	ZonesTask zonesTask;
-	
+
 	@Autowired
 	EnergyMetersTask energyMetersTask;
-	
+
 	@Autowired
 	TemperatureSensorsTask temperatureSensorsTask;
-	
-	@Autowired 
+
+	@Autowired
 	LatestEnergyMeasurementsReportTask latestEnergyMeasurementsReportTask;
-	
+
 	@Autowired
 	EnergyMeasurementsHistoryReportTask energyMeasurementsHistoryReportTask;
-	
+
 	@Autowired
 	EnergyConsumptionReportTask energyConsumptionReportTask;
-	
+
 	@Autowired
 	LatestTemperatureMeasurementsReportTask latestTemperatureMeasurementsReportTask;
-	
+
 	@Autowired
 	TemperatureMeasurementsHistoryReportTask temperatureMeasurementsHistoryReportTask;
-	
+
 	@Autowired
 	TemperatureMeasurementsSummaryReportTask temperatureMeasurementsSummaryReportTask;
-	
+
 	@Autowired
 	ZonePresenceHistoryReportTask zonePresenceHistoryReportTask;
-	
-	@Autowired 
+
+	@Autowired
 	ZonePresenceSummaryReportTask zonePresenceSummaryReportTask;
-	
+
 	@Autowired
 	AlarmHistoryReportTask alarmHistoryReportTask;
-	
+
 	@Autowired
 	LatestPositionsReportTask latestPositionsReportTask;
-	
+
 	@Autowired
 	PositionHistoryReportTask positionHistoryReportTask;
-	
+
 	@Autowired
 	OutageHistoryReportTask outageHistoryReportTask;
-	
 
 	@Override
-	protected void executeInternal (JobExecutionContext jobExecutionContext) throws JobExecutionException {
-
+	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+		System.out.println("daily job başladı");
 		jobParameter.generateJobParameter();
-		
-		/*sensorsTask.executeDaily();
-		alarmRulesTask.executeDaily();
-		sensorCountersTask.executeDaily();
-		trackersTask.executeDaily();
-		floorPlansTask.executeDaily();
-		zonesTask.executeDaily();
-		energyMetersTask.executeDaily();
-		temperatureSensorsTask.executeDaily();*/
-		
+
+		/*
+		 * sensorsTask.executeDaily(); alarmRulesTask.executeDaily();
+		 * sensorCountersTask.executeDaily(); trackersTask.executeDaily();
+		 * floorPlansTask.executeDaily(); zonesTask.executeDaily();
+		 * energyMetersTask.executeDaily(); temperatureSensorsTask.executeDaily();
+		 */
+
 		positionHistoryReportTask.executeDaily();
 		latestPositionsReportTask.executeDaily();
 		outageHistoryReportTask.executeDaily();
-		
+
 		latestEnergyMeasurementsReportTask.executeDaily();
 		energyMeasurementsHistoryReportTask.executeDaily();
 		energyConsumptionReportTask.executeDaily();
@@ -121,6 +118,6 @@ public class DailyJob extends QuartzJobBean  {
 		zonePresenceHistoryReportTask.executeDaily();
 		zonePresenceSummaryReportTask.executeDaily();
 		alarmHistoryReportTask.executeDaily();
-		System.out.println("task çalışması bitti");
+		System.out.println("daily job çalışması bitti");
 	}
 }
