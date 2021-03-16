@@ -20,7 +20,7 @@ public class LatestPositionsReportTask {
 	JobParameter jobParameter;
 	
 	@Autowired
-	private Task task;
+	private Task task; 
 
 	private final String BASE_COLLECTION_NAME = "Trackers";
 	private final String COLLECTION_NAME = this.getClass().getName().substring(34, this.getClass().getName().length() - 4);
