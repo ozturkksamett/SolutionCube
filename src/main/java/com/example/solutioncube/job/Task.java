@@ -37,13 +37,14 @@ public class Task {
 			String jsonData = response.body().string();
 			System.out.println("jsonData:"+jsonData);
 			JSONArray jsonArray = new JSONArray(jsonData);
-			System.out.println("collectionName"+collectionName); 
+			System.out.println("collectionName:"+collectionName+" task çalışması yapılıyor..."); 
 			for (int i = 0; i < jsonArray.length(); i++) {
 
 				JSONObject jsonObject = jsonArray.getJSONObject(i);				
 				BasicDBObject basicDBObject = BasicDBObject.parse(jsonObject.toString());
 				mongoTemplate.insert(basicDBObject, collectionName);
 			}
+			System.out.println("collectionName:"+collectionName+" task çalışması başarılı bir şekilde bitti."); 
 		} catch (IOException e) {
 			logger.error("Error execute job " + collectionName, e);
 			e.printStackTrace();

@@ -118,6 +118,6 @@ public class DailyJob extends QuartzJobBean {
 		zonePresenceHistoryReportTask.executeDaily();
 		zonePresenceSummaryReportTask.executeDaily();
 		alarmHistoryReportTask.executeDaily();
-		System.out.println("daily job çalışması bitti");
+		System.out.println("daily job bitti");
 	}
 }

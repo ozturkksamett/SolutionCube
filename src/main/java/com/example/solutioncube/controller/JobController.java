@@ -56,22 +56,22 @@ public class JobController {
 	public ResponseEntity<ScheculedResponse> schedule(@Valid @RequestBody ScheculedRequest scheculedRequest) {
 
 		try {
- 
-			
 			Calendar c = Calendar.getInstance();
 			TimeZone tz = c.getTimeZone();
 			ZonedDateTime dateTime = ZonedDateTime.of(scheculedRequest.getDateTime(), tz.toZoneId());
 
 			System.out.println("Schedule başladı: " + dateTime);
+			
 			if (dateTime.isBefore(ZonedDateTime.now())) {
 				ScheculedResponse sheculedResponse = new ScheculedResponse(false,
 						"DateTime must be after current time");
 				return ResponseEntity.badRequest().body(sheculedResponse);
 			}
 
-			System.out.println("onetime başladı");
-			oneTimeJob.execute();
-			System.out.println("onetime bitti");
+			//System.out.println("onetime başladı");
+			//oneTimeJob.execute();
+			//System.out.println("onetime bitti");
+			
 			JobDetail jobDetail = buildJobDetail(scheculedRequest);
 
 			Trigger trigger = buildJobTrigger(jobDetail, dateTime);
@@ -81,6 +81,8 @@ public class JobController {
 			ScheculedResponse scheculedResponse = new ScheculedResponse(true, jobDetail.getKey().getName(),
 					jobDetail.getKey().getGroup(), "SolutionCube job started Successfully!");
 
+			System.out.println("Schedule bitti");
+			
 			return ResponseEntity.ok(scheculedResponse);
 		} catch (SchedulerException ex) {
 
