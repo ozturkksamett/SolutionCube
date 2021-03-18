@@ -1,5 +1,6 @@
 package com.example.solutioncube.controller;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,7 +50,7 @@ public class JobController {
 	@RequestMapping("/")
 	public String home() {
 
-		return "Hello World!";
+		return "Hello World! LocalDateTime is " + LocalDateTime.now();
 	}
 
 	@PostMapping("/schedule")
