@@ -14,10 +14,13 @@ import com.example.solutioncube.job.task.EnergyMetersTask;
 import com.example.solutioncube.job.task.FloorPlansTask;
 import com.example.solutioncube.job.task.LatestEnergyMeasurementsReportTask;
 import com.example.solutioncube.job.task.LatestPositionsReportTask;
+import com.example.solutioncube.job.task.LatestSensorMeasurementReportTask;
 import com.example.solutioncube.job.task.LatestTemperatureMeasurementsReportTask;
 import com.example.solutioncube.job.task.OutageHistoryReportTask;
 import com.example.solutioncube.job.task.PositionHistoryReportTask;
 import com.example.solutioncube.job.task.SensorCountersTask;
+import com.example.solutioncube.job.task.SensorMeasurementHistoryReportTask;
+import com.example.solutioncube.job.task.SensorMeasurementSummaryReportTask;
 import com.example.solutioncube.job.task.SensorsTask;
 import com.example.solutioncube.job.task.TemperatureMeasurementsHistoryReportTask;
 import com.example.solutioncube.job.task.TemperatureMeasurementsSummaryReportTask;
@@ -92,6 +95,15 @@ public class DailyJob extends QuartzJobBean {
 
 	@Autowired
 	OutageHistoryReportTask outageHistoryReportTask;
+	
+	@Autowired
+	LatestSensorMeasurementReportTask latestSensorMeasurementReportTask;
+	
+	@Autowired
+	SensorMeasurementHistoryReportTask sensorMeasurementHistoryReportTask;
+	
+	@Autowired
+	SensorMeasurementSummaryReportTask sensorMeasurementSummaryReportTask;
 
 	@Override
 	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -118,6 +130,11 @@ public class DailyJob extends QuartzJobBean {
 		zonePresenceHistoryReportTask.executeDaily();
 		zonePresenceSummaryReportTask.executeDaily();
 		alarmHistoryReportTask.executeDaily();
+		
+		latestSensorMeasurementReportTask.executeDaily();
+		sensorMeasurementHistoryReportTask.executeDaily();
+		sensorMeasurementSummaryReportTask.executeDaily();
+		
 		System.out.println("daily job bitti");
 	}
 }
