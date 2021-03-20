@@ -51,7 +51,7 @@ public class DailyJobScheduler {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Schedule başarılı bir şekilde sonlandı.");
+		System.out.println("Schedule başarılı bir şekilde sonlandı."); 
 	}
 
 
