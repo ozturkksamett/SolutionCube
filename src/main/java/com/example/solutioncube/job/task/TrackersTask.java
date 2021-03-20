@@ -20,14 +20,6 @@ public class TrackersTask {
 	private final String URI_UA = "https://api.triomobil.com/facility/v1/trackers?%s_sortOrder=ASC&_sortBy=label&type=ua";
 	private final String URI_BLE_LOGGER = "https://api.triomobil.com/facility/v1/trackers?%s_sortOrder=ASC&_sortBy=label&type=ble-logger";
 	private final String URI_UA_LOGGER = "https://api.triomobil.com/facility/v1/trackers?%s_sortOrder=ASC&_sortBy=label&type=ua-logger";
-  
-	public void executeDaily() {
-		
-		task.execute(String.format(URI_BLE, "audit.createdAt.since=" + jobParameter.getSinceDate() + "&"), COLLECTION_NAME);
-		task.execute(String.format(URI_UA, "audit.createdAt.since=" + jobParameter.getSinceDate() + "&"), COLLECTION_NAME);
-		task.execute(String.format(URI_BLE_LOGGER, "audit.createdAt.since=" + jobParameter.getSinceDate() + "&"), COLLECTION_NAME);
-		task.execute(String.format(URI_UA_LOGGER, "audit.createdAt.since=" + jobParameter.getSinceDate() + "&"), COLLECTION_NAME);
-	}
 
 	public void executeOneTime() {
 		

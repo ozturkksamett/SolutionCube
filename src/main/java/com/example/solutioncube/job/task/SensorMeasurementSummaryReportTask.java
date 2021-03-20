@@ -23,8 +23,7 @@ public class SensorMeasurementSummaryReportTask {
 	private Task task;
 
 	private final String BASE_COLLECTION_NAME = "Sensors";
-	private final String COLLECTION_NAME = this.getClass().getName().substring(34,
-			this.getClass().getName().length() - 4);
+	private final String COLLECTION_NAME = this.getClass().getName().substring(34, this.getClass().getName().length() - 4);
 	private final String URI = "https://api.triomobil.com/facility/v1/reports/sensor/measurements/summary?_groupBy=hour&_sortOrder=ASC&sensorId=%s&ts.since=%s&ts.until=%s";
 
 	public void executeDaily() {
@@ -36,7 +35,7 @@ public class SensorMeasurementSummaryReportTask {
 			JSONObject sensorJSONObject = new JSONObject(sensor);
 			String sensorId = sensorJSONObject.getString("_id");
 
-			task.execute(String.format(URI, sensorId + jobParameter.getSinceDate() + jobParameter.getTillDate()), COLLECTION_NAME);
+			task.execute(String.format(URI, sensorId, jobParameter.getSinceDate(), jobParameter.getTillDate()), COLLECTION_NAME);
 		}
 	}
 }

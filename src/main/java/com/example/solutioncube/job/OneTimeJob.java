@@ -43,11 +43,8 @@ public class OneTimeJob {
 	TemperatureSensorsTask temperatureSensorsTask;
 	
 	public void execute() {
-		System.out.println("job parameter başladı");
+		
 		jobParameter.generateJobParameter();
-		
-		System.out.println("Sensor task başladı");
-		
 		sensorsTask.executeOneTime();
 		alarmRulesTask.executeOneTime();
 		sensorCountersTask.executeOneTime();
@@ -55,7 +52,6 @@ public class OneTimeJob {
 		floorPlansTask.executeOneTime();
 		zonesTask.executeOneTime();
 		energyMetersTask.executeOneTime();
-		temperatureSensorsTask.executeOneTime();
-		
+		temperatureSensorsTask.executeOneTime();		
 	}
 }
