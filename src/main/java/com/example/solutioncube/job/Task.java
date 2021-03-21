@@ -1,6 +1,5 @@
 package com.example.solutioncube.job;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
@@ -47,7 +46,7 @@ public class Task {
 				mongoTemplate.insert(basicDBObject, collectionName);
 			}
 			System.out.println("collectionName:"+collectionName+" task çalışması başarılı bir şekilde sonlandı."); 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("Error execute job " + collectionName, e);
 			e.printStackTrace();
 		}
