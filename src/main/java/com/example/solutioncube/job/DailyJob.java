@@ -15,6 +15,9 @@ import com.example.solutioncube.job.task.LatestSensorMeasurementReportTask;
 import com.example.solutioncube.job.task.LatestTemperatureMeasurementsReportTask;
 import com.example.solutioncube.job.task.OutageHistoryReportTask;
 import com.example.solutioncube.job.task.PositionHistoryReportTask;
+import com.example.solutioncube.job.task.SensorCountHistoryReportTask;
+import com.example.solutioncube.job.task.SensorCountLatestReportTask;
+import com.example.solutioncube.job.task.SensorCountSummaryReportTask;
 import com.example.solutioncube.job.task.SensorMeasurementHistoryReportTask;
 import com.example.solutioncube.job.task.SensorMeasurementSummaryReportTask;
 import com.example.solutioncube.job.task.TemperatureMeasurementsHistoryReportTask;
@@ -73,6 +76,15 @@ public class DailyJob extends QuartzJobBean {
 	@Autowired
 	SensorMeasurementSummaryReportTask sensorMeasurementSummaryReportTask;
 
+	@Autowired
+	SensorCountHistoryReportTask sensorCountHistoryReportTask;
+	
+	@Autowired
+	SensorCountLatestReportTask sensorCountLatestReportTask;
+
+	@Autowired
+	SensorCountSummaryReportTask sensorCountSummaryReportTask;
+	
 	@Override
 	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		
@@ -97,6 +109,10 @@ public class DailyJob extends QuartzJobBean {
 		latestSensorMeasurementReportTask.executeDaily();
 		sensorMeasurementHistoryReportTask.executeDaily();
 		sensorMeasurementSummaryReportTask.executeDaily();
+
+		sensorCountHistoryReportTask.executeDaily();
+		sensorCountLatestReportTask.executeDaily();
+		sensorCountSummaryReportTask.executeDaily();
 		
 		System.out.println("daily job bitti");
 	}
