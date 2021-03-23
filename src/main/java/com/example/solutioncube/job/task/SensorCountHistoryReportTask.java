@@ -5,10 +5,12 @@ import java.util.List;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Component;
 
 import com.example.solutioncube.job.JobParameter;
 import com.example.solutioncube.job.Task;
 
+@Component
 public class SensorCountHistoryReportTask {
 
 	@Autowired
