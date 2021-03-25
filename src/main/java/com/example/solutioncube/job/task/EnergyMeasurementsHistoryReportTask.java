@@ -34,8 +34,9 @@ public class EnergyMeasurementsHistoryReportTask {
 			
 			JSONObject energyMetersJSONObject = new JSONObject(energyMeter);
 			String energyMeterId = energyMetersJSONObject.getString("_id");
-
+			jobParameter.setId(energyMeterId);
 			task.execute(String.format(URI, energyMeterId, jobParameter.getSinceDate()), COLLECTION_NAME);
+			jobParameter.setId(null);
 		}		
 	}
 }

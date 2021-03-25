@@ -11,7 +11,8 @@ import com.mongodb.client.MongoClients;
 public class MongoConfig {
 
     public MongoClient mongoClient() {
-    	
+
+        //return MongoClients.create("mongodb+srv://ethemduzgun:scfm2021@solutioncube.azjcz.mongodb.net/solutioncube"); 
         return MongoClients.create(System.getenv("MONGODB_URI")); 
     }
 

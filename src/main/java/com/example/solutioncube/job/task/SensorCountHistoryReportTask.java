@@ -34,8 +34,9 @@ public class SensorCountHistoryReportTask {
 			
 			JSONObject sensorCounterJSONObject = new JSONObject(sensorCounter);
 			String sensorCounterId = sensorCounterJSONObject.getString("_id");
-
+			jobParameter.setId(sensorCounterId);
 			task.execute(String.format(URI, sensorCounterId, jobParameter.getSinceDate()), COLLECTION_NAME);
+			jobParameter.setId(null);
 		}
 	}
 }

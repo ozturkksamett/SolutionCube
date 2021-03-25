@@ -21,7 +21,6 @@ public class EnergyMetersTask {
 
 	public void executeOneTime() {
 		
-		
 		task.execute(String.format(URI, ""), COLLECTION_NAME);
 	}
 

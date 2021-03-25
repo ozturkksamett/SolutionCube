@@ -95,7 +95,6 @@ public class DailyJob extends QuartzJobBean {
 		positionHistoryReportTask.executeDaily();
 		latestPositionsReportTask.executeDaily();
 		outageHistoryReportTask.executeDaily();
-
 		latestEnergyMeasurementsReportTask.executeDaily();
 		energyMeasurementsHistoryReportTask.executeDaily();
 		energyConsumptionReportTask.executeDaily();
@@ -104,12 +103,10 @@ public class DailyJob extends QuartzJobBean {
 		temperatureMeasurementsSummaryReportTask.executeDaily();
 		zonePresenceHistoryReportTask.executeDaily();
 		zonePresenceSummaryReportTask.executeDaily();
-		alarmHistoryReportTask.executeDaily();
-		
+		alarmHistoryReportTask.executeDaily();		
 		latestSensorMeasurementReportTask.executeDaily();
 		sensorMeasurementHistoryReportTask.executeDaily();
 		sensorMeasurementSummaryReportTask.executeDaily();
-
 		sensorCountHistoryReportTask.executeDaily();
 		sensorCountLatestReportTask.executeDaily();
 		sensorCountSummaryReportTask.executeDaily();

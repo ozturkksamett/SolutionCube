@@ -15,6 +15,15 @@ public class JobParameter {
 	private String token;
 	private String sinceDate;
 	private String tillDate;
+	private String id;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getToken() {
 		return token;
