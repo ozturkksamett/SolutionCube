@@ -34,9 +34,9 @@ public class PositionHistoryReportTask {
 			
 			JSONObject trackerJSONObject = new JSONObject(tracker);
 			String trackerId = trackerJSONObject.getString("_id");
-			jobParameter.setId(trackerId);
+			jobParameter.setId(trackerId, "trackerId");
 			task.execute(String.format(URI, trackerId, jobParameter.getSinceDate()), COLLECTION_NAME);
-			jobParameter.setId(null);
+			jobParameter.setId(null, null);
 		}		
 	}
 }

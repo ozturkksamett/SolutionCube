@@ -34,9 +34,9 @@ public class SensorMeasurementHistoryReportTask {
 
 			JSONObject sensorJSONObject = new JSONObject(sensor);
 			String sensorId = sensorJSONObject.getString("_id");
-			jobParameter.setId(sensorId);
+			jobParameter.setId(sensorId, "sensorId");
 			task.execute(String.format(URI, sensorId, jobParameter.getSinceDate(), jobParameter.getTillDate()), COLLECTION_NAME);
-			jobParameter.setId(null);
+			jobParameter.setId(null, null);
 		}
 	}
 

@@ -34,9 +34,9 @@ public class TemperatureMeasurementsHistoryReportTask {
 			
 			JSONObject temperatureSensorJSONObject = new JSONObject(temperatureSensor);
 			String temperatureSensorId = temperatureSensorJSONObject.getString("_id");
-			jobParameter.setId(temperatureSensorId);
+			jobParameter.setId(temperatureSensorId, "temperatureSensorId");
 			task.execute(String.format(URI, temperatureSensorId, jobParameter.getSinceDate()), COLLECTION_NAME);
-			jobParameter.setId(null);
+			jobParameter.setId(null, null);
 		}		
 	}
 }

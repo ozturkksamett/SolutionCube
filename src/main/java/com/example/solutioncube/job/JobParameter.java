@@ -16,13 +16,19 @@ public class JobParameter {
 	private String sinceDate;
 	private String tillDate;
 	private String id;
+	private String idColumnName;
+
+	public String getIdColumnName() {
+		return idColumnName;
+	}
 
 	public String getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(String id, String idColumnName) {
 		this.id = id;
+		this.idColumnName = idColumnName;
 	}
 
 	public String getToken() {

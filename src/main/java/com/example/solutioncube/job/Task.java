@@ -53,7 +53,7 @@ public class Task {
 				
 				if(jobParameter.getId() != null) {
 
-				    jsonObject.put("_id", jobParameter.getId());
+				    jsonObject.put(jobParameter.getIdColumnName(), jobParameter.getId());
 				}
 
 				save(jsonObject.toString(), collectionName);
