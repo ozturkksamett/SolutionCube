@@ -33,9 +33,9 @@ public class DailyJobScheduler {
 	@PostConstruct
 	public void scheduleDailyJob() {
 
-		TimeZone timeZone = Calendar.getInstance().getTimeZone(); 
+		TimeZone timeZone = Calendar.getInstance().getTimeZone();
 		LocalDateTime localDateTime = LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT);
-		//LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(1);
+		//LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(10);
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
 
 		System.out.println("Schedule başladı: Şu zamanda başlayacak: " + zonedDateTime);

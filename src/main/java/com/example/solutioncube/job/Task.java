@@ -1,5 +1,6 @@
 package com.example.solutioncube.job;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
@@ -28,25 +29,23 @@ public class Task {
 
 	public void execute(String uri, String collectionName) { 
 
-		logger.info("collectionName:"+collectionName+" task çalışması yapılıyor..."); 
+		logger.info("collectionName:"+collectionName+" çalışması yapılıyor..."); 
 		
-		OkHttpClient client = new OkHttpClient();
+		OkHttpClient client = new OkHttpClient();		
+		client.setConnectTimeout(30, TimeUnit.MINUTES);
+		client.setReadTimeout(30, TimeUnit.MINUTES);
 		
 		Request request = new Request.Builder().url(uri).get().addHeader("authorization", jobParameter.getToken()).build();
 		
-		System.out.println("URI:"+uri);
+		String jsonResponse = "";
 		
 		try {
 			
-			client.setConnectTimeout(30, TimeUnit.MINUTES);
-			client.setReadTimeout(30, TimeUnit.MINUTES);
 			Response response = client.newCall(request).execute();
 			
-			String jsonData = response.body().string();
+			jsonResponse = response.body().string();
 			
-			System.out.println("jsonData:"+jsonData);
-			
-			JSONArray jsonArray = new JSONArray(jsonData);
+			JSONArray jsonArray = new JSONArray(jsonResponse);
 			
 			for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -57,17 +56,29 @@ public class Task {
 				    jsonObject.put("_id", jobParameter.getId());
 				}
 
-				//System.out.println("jsonObject:"+jsonObject);
-				BasicDBObject basicDBObject = BasicDBObject.parse(jsonObject.toString());
-				mongoTemplate.insert(basicDBObject, collectionName);
+				save(jsonObject.toString(), collectionName);
 			}
 			
-			logger.info("collectionName:"+collectionName+" task çalışması başarılı bir şekilde sonlandı."); 
-		
+			logger.info("collectionName:"+collectionName+" çalışması başarılı bir şekilde sonlandı."); 		
 		} catch (Exception e) {
-		
+
 			logger.error("Error execute job " + collectionName, e);
 			e.printStackTrace();
+			
+			JSONObject logJsonObject = new JSONObject();
+			logJsonObject.put("Collection Name", collectionName);
+			logJsonObject.put("URI", uri);
+			//logJsonObject.put("Response", jsonResponse);
+			logJsonObject.put("Exception Message", e.getMessage());
+			//logJsonObject.put("Exception Stack Trace", e.getStackTrace());
+			logJsonObject.put("Exception Time", LocalDateTime.now());
+			save(logJsonObject.toString(), "logs");
 		}
+	}
+	
+	private void save(String data, String collectionName) {
+
+		BasicDBObject basicDBObject = BasicDBObject.parse(data);
+		mongoTemplate.insert(basicDBObject, collectionName);
 	}
 }
