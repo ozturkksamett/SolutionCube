@@ -36,7 +36,7 @@ public class DailyJobScheduler {
 		TimeZone timeZone = Calendar.getInstance().getTimeZone();
 		
 		LocalDateTime localDateTime = LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT);
-		//LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(1);
+		//LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(10);
 		
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
 
