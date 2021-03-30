@@ -18,7 +18,7 @@ public class MongoConfig {
 
     public @Bean MongoTemplate mongoTemplate() {
     	
-        return new MongoTemplate(mongoClient(), "test"); 
+        return new MongoTemplate(mongoClient(), "erisyem"); 
     }
 
 } 

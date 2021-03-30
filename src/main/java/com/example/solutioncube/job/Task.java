@@ -57,9 +57,7 @@ public class Task {
 				}
 
 				save(jsonObject.toString(), collectionName);
-			}
-			
-			logger.info("collectionName:"+collectionName+" çalışması başarılı bir şekilde sonlandı."); 		
+			}	
 		} catch (Exception e) {
 
 			logger.error("Error execute job " + collectionName, e);
@@ -68,10 +66,10 @@ public class Task {
 			JSONObject logJsonObject = new JSONObject();
 			logJsonObject.put("Collection Name", collectionName);
 			logJsonObject.put("URI", uri);
-			//logJsonObject.put("Response", jsonResponse);
-			logJsonObject.put("Exception Message", e.getMessage());
-			//logJsonObject.put("Exception Stack Trace", e.getStackTrace());
+			logJsonObject.put("Response", jsonResponse.substring(0, 255));
 			logJsonObject.put("Exception Time", LocalDateTime.now());
+			logJsonObject.put("Exception Message", e.getMessage());
+			logJsonObject.put("Exception Stack Trace", e.getStackTrace());
 			save(logJsonObject.toString(), "logs");
 		}
 	}
