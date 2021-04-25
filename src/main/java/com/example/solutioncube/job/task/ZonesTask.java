@@ -17,11 +17,10 @@ public class ZonesTask {
 	private Task task;
 
 	private final String COLLECTION_NAME = this.getClass().getName().substring(34, this.getClass().getName().length() - 4);
-	private final String URI = "https://api.triomobil.com/facility/v1/zones?%s_sortOrder=ASC&_sortBy=label";
+	private final String URI = "https://api.triomobil.com/facility/v1/zones?%s_sortOrder=ASC&_sortBy=label&_perPage=50";
 	
 	public void executeOneTime() {
-		
-		
+				
 		task.execute(String.format(URI, ""), COLLECTION_NAME);
 	}
 

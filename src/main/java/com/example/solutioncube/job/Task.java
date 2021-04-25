@@ -38,7 +38,7 @@ public class Task {
 		Request request = new Request.Builder().url(uri).get().addHeader("authorization", jobParameter.getToken()).build();
 		
 		String jsonResponse = "";
-		
+		int errorIndex = 0;
 		try {
 			
 			Response response = client.newCall(request).execute();
@@ -47,8 +47,11 @@ public class Task {
 			
 			JSONArray jsonArray = new JSONArray(jsonResponse);
 			
+			logger.info("Collection Name : " + collectionName + " - Colllection Size : " + jsonArray.length());
+			
 			for (int i = 0; i < jsonArray.length(); i++) {
-
+				
+				errorIndex = i;
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 				
 				if(jobParameter.getId() != null) {
@@ -56,12 +59,18 @@ public class Task {
 				    jsonObject.put(jobParameter.getIdColumnName(), jobParameter.getId());
 				}
 
-				save(jsonObject.toString(), collectionName);
+				try {
+
+					save(jsonObject.toString(), collectionName);
+					logger.info("Task: " + collectionName + " JsonArray["+i+"] saved successfully.");	
+				} catch (Exception e) {
+
+					logger.error("Error while executing task: " + collectionName + " JsonArray["+errorIndex+"]." + " Exception is " + e.getMessage());
+				}
 			}	
 		} catch (Exception e) {
 
-			logger.error("Error execute job " + collectionName, e);
-			e.printStackTrace();
+			logger.error("Error while executing task: " + collectionName + " at JsonArray["+errorIndex+"]" + ". Exception is " + e.getMessage());		
 			
 			JSONObject logJsonObject = new JSONObject();
 			logJsonObject.put("Collection Name", collectionName);

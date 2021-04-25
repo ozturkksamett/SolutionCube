@@ -10,14 +10,22 @@ import com.mongodb.client.MongoClients;
 @Configuration
 public class MongoConfig {
 
+	
     public MongoClient mongoClient() {
-
+    	
+    	//Test
         //return MongoClients.create("mongodb+srv://ethemduzgun:scfm2021@solutioncube.azjcz.mongodb.net/solutioncube");
+        
+        //Prod
         return MongoClients.create(System.getenv("MONGODB_URI")); 
     }
 
     public @Bean MongoTemplate mongoTemplate() {
     	
+    	//Test
+        //return new MongoTemplate(mongoClient(), "test");
+    	
+        //Prod
         return new MongoTemplate(mongoClient(), "erisyem"); 
     }
 

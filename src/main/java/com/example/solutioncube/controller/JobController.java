@@ -22,11 +22,9 @@ public class JobController {
 	}
 
 	@PostMapping("/executeOneTime")
-	public void executeOneTime() {
+	public String executeOneTime() {
 
-		System.out.println("onetime başladı");
 		oneTimeJob.execute();
-		System.out.println("onetime bitti");
-
+		return "One Time Job executed successfully";
 	}
 }

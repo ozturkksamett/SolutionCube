@@ -16,16 +16,10 @@ public class TrackersTask {
 	private Task task;
 
 	private final String COLLECTION_NAME = this.getClass().getName().substring(34, this.getClass().getName().length() - 4);
-	private final String URI_BLE = "https://api.triomobil.com/facility/v1/trackers?%s_sortOrder=ASC&_sortBy=label&type=ble";
-	private final String URI_UA = "https://api.triomobil.com/facility/v1/trackers?%s_sortOrder=ASC&_sortBy=label&type=ua";
-	private final String URI_BLE_LOGGER = "https://api.triomobil.com/facility/v1/trackers?%s_sortOrder=ASC&_sortBy=label&type=ble-logger";
-	private final String URI_UA_LOGGER = "https://api.triomobil.com/facility/v1/trackers?%s_sortOrder=ASC&_sortBy=label&type=ua-logger";
+	private final String URI = "https://api.triomobil.com/facility/v1/trackers?_perPage=100";
 
 	public void executeOneTime() {
 		
-		task.execute(String.format(URI_BLE, ""), COLLECTION_NAME);
-		task.execute(String.format(URI_UA, ""), COLLECTION_NAME);
-		task.execute(String.format(URI_BLE_LOGGER, ""), COLLECTION_NAME);
-		task.execute(String.format(URI_UA_LOGGER, ""), COLLECTION_NAME);
+		task.execute(String.format(URI, ""), COLLECTION_NAME);
 	}
 }
