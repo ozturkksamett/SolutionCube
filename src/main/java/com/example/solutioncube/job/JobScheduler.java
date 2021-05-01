@@ -18,14 +18,15 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import com.example.solutioncube.config.Config;
+
 @Component
-public class DailyJobScheduler {
+public class JobScheduler {
 
 	@Autowired
-	private Environment env;
+	private Config config;
 
 	@Autowired
 	private Scheduler scheduler;
@@ -34,16 +35,12 @@ public class DailyJobScheduler {
 	public void scheduleDailyJob() {
 
 		TimeZone timeZone = Calendar.getInstance().getTimeZone();
-		
+				
+		//LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(10); //Test
 		LocalDateTime localDateTime = LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT); //Prod
-		//LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(1); //Test
 		
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, timeZone.toZoneId());
-
-		System.out.println("Schedule başladı: Şu zamanda başlayacak: " + zonedDateTime);
-
 		JobDetail jobDetail = buildJobDetail();
-
 		Trigger trigger = buildJobTrigger(jobDetail, zonedDateTime);
 
 		try {
@@ -60,7 +57,7 @@ public class DailyJobScheduler {
 
 	private JobDetail buildJobDetail() {
 
-		return JobBuilder.newJob(DailyJob.class)
+		return JobBuilder.newJob(Job.class)
 				.withIdentity(UUID.randomUUID().toString(), "Solutioncube")
 				.withDescription("SolutionCube tablolarını besler").storeDurably().build();
 	}
@@ -69,7 +66,7 @@ public class DailyJobScheduler {
 
 		return TriggerBuilder.newTrigger().forJob(jobDetail).withIdentity(jobDetail.getKey().getName(), "SolutionCube")
 				.withDescription("SolutionCube tablolarını besler").startAt(Date.from(startAt.toInstant()))
-				.withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(Integer.parseInt(env.getProperty("custom.intervalAsMinutes"))))
+				.withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(config.getInterval()))
 				.build();
 	}
 }

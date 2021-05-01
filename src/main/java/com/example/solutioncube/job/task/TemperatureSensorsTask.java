@@ -3,27 +3,23 @@ package com.example.solutioncube.job.task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.example.solutioncube.job.JobParameter;
-import com.example.solutioncube.job.Task;
-
+import com.example.solutioncube.common.Task;
+import com.example.solutioncube.common.TaskParameter;
 
 @Component
 public class TemperatureSensorsTask {
 	
-
 	@Autowired
-	JobParameter jobParameter;
-	
-	@Autowired
-	private Task task;
+	Task task;
 
 	private final String COLLECTION_NAME = this.getClass().getName().substring(34, this.getClass().getName().length() - 4);
-	private final String URI = "https://api.triomobil.com/facility/v1/temperatureSensors?%s_sortOrder=ASC&_sortBy=label";
+	private final String URI = "https://api.triomobil.com/facility/v1/temperatureSensors";
 
-	public void executeOneTime() {
+	public void executeOneTime(TaskParameter taskParameter) {
 		
-		
-		task.execute(String.format(URI, ""), COLLECTION_NAME);
+		taskParameter.setUri(URI);
+		taskParameter.setCollectionName(COLLECTION_NAME);		
+		task.execute(taskParameter);
 	}
 
 }

@@ -1,11 +1,10 @@
-package com.example.solutioncube.job;
+package com.example.solutioncube.common;
 
 import java.io.IOException;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -13,7 +12,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
-@Component
 public class TokenGenerator {
 
 	private static final Logger logger = LoggerFactory.getLogger(TokenGenerator.class);
@@ -42,8 +40,7 @@ public class TokenGenerator {
 			token = jsonObject.getString("token");
 		} catch (IOException e) {
 			
-			logger.error("Error generate token", e);
-			e.printStackTrace();
+			logger.error("Error while generating token. Exception is ", e.getMessage());			
 		}
 		
 		return token;

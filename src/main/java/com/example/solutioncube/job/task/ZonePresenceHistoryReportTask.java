@@ -5,32 +5,25 @@ import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
-import com.example.solutioncube.job.JobParameter;
-import com.example.solutioncube.job.Task;
+import com.example.solutioncube.common.Task;
+import com.example.solutioncube.common.TaskParameter;
 import com.google.common.collect.Lists;
 
 @Component
 public class ZonePresenceHistoryReportTask {
 
 	@Autowired
-	MongoTemplate mongoTemplate;
-
-	@Autowired
-	JobParameter jobParameter;
-
-	@Autowired
-	private Task task;
+	Task task;
 
 	private final String BASE_COLLECTION_NAME = "Trackers";
 	private final String COLLECTION_NAME = this.getClass().getName().substring(34, this.getClass().getName().length() - 4);
-	private final String URI = "https://api.triomobil.com/facility/v1/reports/zone/presence/history?_sortOrder=ASC&trackerId=%s&ts.since=%s&ts.until=%s";
+	private final String URI = "https://api.triomobil.com/facility/v1/reports/zone/presence/history?trackerId=%s&ts.since=%s&ts.until=%s";
 
-	public void executeDaily() {
+	public void executeDaily(TaskParameter taskParameter) {
 
-		List<String> trackers = mongoTemplate.findAll(String.class, BASE_COLLECTION_NAME);
+		List<String> trackers = taskParameter.getMongoTemplate().findAll(String.class, BASE_COLLECTION_NAME);
 		List<String> trackerIds = new ArrayList<String>();
 
 		for (String tracker : trackers) {
@@ -44,7 +37,9 @@ public class ZonePresenceHistoryReportTask {
 
 			String trackerIdsParam = String.join(",", trackerIdsPartition);
 
-			task.execute(String.format(URI, trackerIdsParam, jobParameter.getSinceDate(), jobParameter.getTillDate()), COLLECTION_NAME);
+			taskParameter.setUri(String.format(URI, trackerIdsParam, taskParameter.getSinceDateAsString(), taskParameter.getNowAsString()));
+			taskParameter.setCollectionName(COLLECTION_NAME);
+			task.execute(taskParameter);
 		}
 	}
 }
