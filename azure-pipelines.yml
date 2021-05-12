@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'Agent Pool'
+  vmImage: 'Hosted Agent'
   
 steps:
 - task: PowerShell@2
