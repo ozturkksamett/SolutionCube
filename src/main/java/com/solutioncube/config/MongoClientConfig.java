@@ -15,7 +15,7 @@ public class MongoClientConfig {
 	
     public @Bean MongoClient mongoClient() {
      	
-    	//connString = System.getenv("MONGODB_URI"); // Production
+    	connString = System.getenv("MONGODB_URI"); // Production
     	return MongoClients.create(connString); 
     }
 }
