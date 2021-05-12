@@ -1,0 +1,15 @@
+logging:
+file:
+path: ./logs
+
+mongoDbUri: mongodb+srv://ethemduzgun:scfm2021@solutioncube.azjcz.mongodb.net/solutioncube
+
+interval: 1440
+
+firms: 
+- name: erisyemtest
+  username: solutioncube
+  password: ng254146
+- name: vanuccitest
+  username: solutioncube
+  password: ng254146

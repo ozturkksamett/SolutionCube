@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.solutioncube.pojo.Firm;
 
-@ConfigurationProperties(prefix = "config")
+@ConfigurationProperties
 @Configuration
 public class Config {
 	

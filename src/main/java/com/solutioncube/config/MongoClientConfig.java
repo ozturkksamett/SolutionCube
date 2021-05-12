@@ -1,6 +1,6 @@
 package com.solutioncube.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,12 +10,14 @@ import com.mongodb.client.MongoClients;
 @Configuration
 public class MongoClientConfig {
 
-	@Value("${config.mongoDbUri}")	 
-	private String connString;
+	@Autowired
+	private Config config;
 	
     public @Bean MongoClient mongoClient() {
-     	
-    	connString = System.getenv("MONGODB_URI"); // Production
-    	return MongoClients.create(connString); 
+    	
+    	String connString;
+    	//connString = System.getenv("MONGODB_URI"); // Production
+    	connString = config.getMongoDbUri(); // Test
+    	return MongoClients.create(connString); // Test 
     }
 }
