@@ -11,12 +11,19 @@ import com.solutioncube.common.IService;
 import com.solutioncube.common.TaskParameterGenerator;
 import com.solutioncube.config.Config;
 import com.solutioncube.helper.AsyncHelper;
+import com.solutioncube.job.JobScheduler;
 import com.solutioncube.service.ErisyemBulkDataService;
 
 @RestController
 public class JobController {
 
 	private static final Logger logger = LoggerFactory.getLogger(JobController.class);
+	
+	private static final int ERISYEM_CONFIG_INDEX = 0;
+	private static final int VANUCCI_CONFIG_INDEX = 1;
+	
+	@Autowired
+	private JobScheduler jobScheduler;
 	
 	@Autowired
 	private AsyncHelper asyncHelper;
@@ -39,12 +46,20 @@ public class JobController {
 		logger.info("home");
 		return "SolutionCube Running!";
 	}
+	
+	@RequestMapping("/schedule")
+	public String schedule() {
 
+		logger.info("schedule");
+		jobScheduler.scheduleDailyJob();
+		return "SolutionCubeJob scheduled successfully!";
+	}
+	
 	@PostMapping("/erisyemRunBulkData")
 	public String erisyemRunBulkData() {
 
 		logger.info("erisyemRunBulkData");
-		taskParameterGenerator.generateTaskParameter(0).getMongoTemplate().getDb().drop();
+		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		asyncHelper.waitTillEndOfSynchronizedFunc(erisyemService.runStaticTasksAsync());
 		erisyemBulkDataService.runBulkData();
 		return "Erisyem Bulk Data Service run successfully";
@@ -54,7 +69,7 @@ public class JobController {
 	public String erisyemRunStaticTasksAsync() {
 
 		logger.info("erisyemRunStaticTasksAsync");
-		taskParameterGenerator.generateTaskParameter(0).getMongoTemplate().getDb().drop();
+		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		erisyemService.runStaticTasksAsync();
 		return "Erisyem service started running for static tasks asynchronously successfully";
 	}
@@ -63,7 +78,7 @@ public class JobController {
 	public String vanucciRunStaticTasksAsync() {
 
 		logger.info("vanucciRunStaticTasksAsync");
-		taskParameterGenerator.generateTaskParameter(1).getMongoTemplate().getDb().drop();
+		taskParameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		vanucciService.runStaticTasksAsync();
 		return "Vanucci service started running for static tasks asynchronously successfully";
 	}
