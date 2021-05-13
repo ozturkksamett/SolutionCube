@@ -86,7 +86,7 @@ public class JobController {
 	@PostMapping("/debug")
 	public String debug() {
 
-		logger.error("debug");		
+		logger.error("App Crashed");		
 		return config.getFirms()[1].getName();
 	}
 	@Autowired
