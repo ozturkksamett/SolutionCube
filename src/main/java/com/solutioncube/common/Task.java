@@ -94,12 +94,14 @@ public class Task {
 
 					String remainingRequestCount = apiResponse.getHeaders().get("X-RateLimit-Remaining");
 					String remainingTimeToResetRequestCount = apiResponse.getHeaders().get("X-RateLimit-Reset");
-					logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);
-					logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
-					if(Integer.parseInt(remainingRequestCount) < 10) {
+					if(Integer.parseInt(remainingRequestCount) < 100) {
+
 						int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount));
-						logger.info("Sleeping.. " + sleepTime + " seconds");
 						wait(sleepTime*1000);						
+						
+						logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);					
+						logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
+						logger.info("Sleeping.. " + sleepTime + " seconds");						
 					}
 				} catch (Exception e) {
 					
