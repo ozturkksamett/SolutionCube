@@ -25,5 +25,7 @@ jobs:
       run: mvn -B package --file pom.xml      
     - name: Add remote
       run: git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+    - name: Fetch
+      run: git fetch --all --unshallow
     - name: Push heroku
       run: git push heroku master
