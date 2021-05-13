@@ -36,9 +36,9 @@ public class Task {
 			executeTask(taskParameter);
 		} catch (Exception e) {
 	
-			logger.error("\nError while executing task"
-					+ "\nTask Parameter: " + taskParameter.toString() 
-					+ "\nException: " + e.getMessage());			
+			logger.error("Error while executing task."
+					+ " Task Parameter: " + taskParameter.toString() 
+					+ " Exception: " + e.getMessage());			
 		}
 	}
 
@@ -66,11 +66,11 @@ public class Task {
 					saveJsonArray(taskParameter, jsonArray);
 					isResultHasNextPage = determineIfIsResultHasNextPage(params, apiResponse);
 				} catch (Exception e) {
-			
-					logger.error("\nError while reexecuting task(pagination)"
-							+ "\nTask Parameter: " + taskParameter.toString() 
-							+ "\nException: " + e.getMessage());
+
 					isResultHasNextPage = false;
+					logger.error("Error while reexecuting task(pagination)."
+							+ " Task Parameter: " + taskParameter.toString() 
+							+ " Exception: " + e.getMessage());
 				}
 			}
 		} else if (params.containsKey("_limit")) {
@@ -104,9 +104,9 @@ public class Task {
 				} catch (Exception e) {
 					
 					isResultTooLarge = false;
-					logger.error("\nError while reexecuting task(limit)"
-							+ "\nTask Parameter: " + taskParameter.toString() 
-							+ "\nException: " + e.getMessage());					
+					logger.error("Error while reexecuting task(limit)."
+							+ " Task Parameter: " + taskParameter.toString() 
+							+ " Exception: " + e.getMessage());					
 				}
 			}
 		}
@@ -131,10 +131,10 @@ public class Task {
 			return apiResponse;
 		} catch (Exception e) {
 			
-			logger.error("\nError while calling api"
-					+ "\nTask Parameter: " + taskParameter.toString()
-					+ "\nApi Response:" + apiResponse.toString()
-					+ "\nException: " + e.getMessage());
+			logger.error("Error while calling api."
+					+ " Task Parameter: " + taskParameter.toString()
+					+ " Api Response:" + apiResponse.toString()
+					+ " Exception: " + e.getMessage());
 		}
 
 		return apiResponse;
@@ -203,9 +203,9 @@ public class Task {
 			logger.info(taskParameter.getCollectionName() + " saved successfully.");
 		} catch (Exception e) {
 
-			logger.error("\nError while saving"
-					+ "\nTaskParameter: " + taskParameter.toString() 
-					+ "\nException: " + e.getMessage());
+			logger.error("Error while saving."
+					+ " TaskParameter: " + taskParameter.toString() 
+					+ " Exception: " + e.getMessage());
 		}		
 	}	
 }
