@@ -87,7 +87,7 @@ public class JobController {
 	public String debug() {
 
 		logger.error("debug");		
-		return config.getMongoDbUri();
+		return config.getFirms()[1].getName();
 	}
 	@Autowired
 	private Config config;
