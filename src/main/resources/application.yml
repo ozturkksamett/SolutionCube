@@ -1,4 +1,4 @@
-#mongoDbUri: mongodb+srv://ethemduzgun:scfm2021@solutioncube.azjcz.mongodb.net/solutioncube
+mongoDbUri: mongodb+srv://ethemduzgun:scfm2021@solutioncube.azjcz.mongodb.net/solutioncube
 
 interval: 1440
 

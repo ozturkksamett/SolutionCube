@@ -62,7 +62,7 @@ public class JobController {
 		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		asyncHelper.waitTillEndOfSynchronizedFunc(erisyemService.runStaticTasksAsync());
 		erisyemBulkDataService.runBulkData();
-		return "Erisyem Bulk Data Service run successfully";
+		return "Erisyem Bulk Data Service started running successfully";
 	}
 	
 	@PostMapping("/erisyemRunStaticTasksAsync")

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.solutioncube.common.IService;
@@ -24,6 +25,7 @@ public class ErisyemBulkDataService {
 	@Autowired
 	private AsyncHelper asyncHelper;
 	
+	@Async
     public void runBulkData() {
     	
     	logger.info("Erisyem Bulk Data Service started running..");
