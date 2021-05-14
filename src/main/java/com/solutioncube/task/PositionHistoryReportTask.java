@@ -24,7 +24,7 @@ public class PositionHistoryReportTask implements ITask {
 		List<String> trackers = taskParameter.getMongoTemplate().findAll(String.class, BASE_COLLECTION_NAME);
 		logger.info("Trackers Size: "+trackers.size());
 		for (String tracker : trackers) {
-			
+			taskParameter.setToken(taskParameter.generateToken());
 			JSONObject trackerJSONObject = new JSONObject(tracker);
 			String trackerId = trackerJSONObject.getString("_id");
 			taskParameter.setId(trackerId);

@@ -123,7 +123,7 @@ public class TaskParameter {
 				+ ".000%2B03%3A00";
 	}
 
-	private String generateToken() {
+	public String generateToken() {
 		if (firm == null)
 			return null;
 		String username = firm.getUsername();

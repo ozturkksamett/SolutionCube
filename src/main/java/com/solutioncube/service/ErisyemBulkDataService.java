@@ -77,7 +77,7 @@ public class ErisyemBulkDataService {
     	logger.info("Erisyem Bulk Data Service started running..");
     	Instant start = Instant.now();
     	TaskParameterGenerator.isBulkData = true;
-    	asyncHelper.waitTillEndOfSynchronizedFunc(runTasksAsync(TASKS_WHICH_ONLY_WITH_SINCE_PARAM));
+    	runTasksAsync(TASKS_WHICH_ONLY_WITH_SINCE_PARAM);
     	while (TaskParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {
     		
     		logger.info("Initial Date: " + TaskParameterGenerator.getInitialDate());    		
