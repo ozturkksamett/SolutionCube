@@ -59,14 +59,14 @@ public class ErisyemBulkDataService {
 			,new SensorMeasurementSummaryReportTask()
 			,new SensorCountSummaryReportTask()
 	});
-	
-	@Autowired
-	private TaskExecutor taskExecutor;
-	
+
 	@Autowired
 	private AsyncHelper asyncHelper;
 	
-	public Collection<Future<Boolean>> runTasksAsync(List<ITask> tasks) {
+	@Autowired
+	private TaskExecutor taskExecutor;	
+	
+	private Collection<Future<Boolean>> runTasksAsync(List<ITask> tasks) {
 
 		return taskExecutor.execTasksAsync(tasks, CONFIG_INDEX);
 	}

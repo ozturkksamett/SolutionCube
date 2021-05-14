@@ -36,7 +36,7 @@ public class Firm {
 	public String toString(){
 
 		return new StringBuilder()
-		        .append("\nName: " + this.name.toString())
+		        .append(" Name: " + this.name.toString())
 		        .toString();
 	}
 }

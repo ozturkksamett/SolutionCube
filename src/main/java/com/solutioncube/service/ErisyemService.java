@@ -81,16 +81,21 @@ public class ErisyemService implements IService {
 	
 	@Autowired
 	private TaskExecutor taskExecutor;
+	
+	private Collection<Future<Boolean>> runTasksAsync(List<ITask> tasks) {
 
+		return taskExecutor.execTasksAsync(tasks, CONFIG_INDEX);
+	}
+	
 	@Override
 	public Collection<Future<Boolean>> runStaticTasksAsync() {
 
-		return taskExecutor.execTasksAsync(STATIC_TASKS, CONFIG_INDEX);
+		return runTasksAsync(STATIC_TASKS);
 	}
 
 	@Override
 	public Collection<Future<Boolean>> runDailyTasksAsync() {
 
-		return taskExecutor.execTasksAsync(DAILY_TASKS, CONFIG_INDEX);		
+		return runTasksAsync(DAILY_TASKS);		
 	}
 }

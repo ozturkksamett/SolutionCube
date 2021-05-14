@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.solutioncube.common.IService;
 import com.solutioncube.common.TaskParameterGenerator;
-import com.solutioncube.config.Config;
 import com.solutioncube.helper.AsyncHelper;
 import com.solutioncube.job.JobScheduler;
 import com.solutioncube.service.ErisyemBulkDataService;
@@ -58,10 +57,10 @@ public class JobController {
 	@PostMapping("/erisyemRunBulkData")
 	public String erisyemRunBulkData() {
 
-//		logger.info("erisyemRunBulkData");
-//		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-//		asyncHelper.waitTillEndOfSynchronizedFunc(erisyemService.runStaticTasksAsync());
-//		erisyemBulkDataService.runBulkData();
+		logger.info("erisyemRunBulkData");
+		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
+		asyncHelper.waitTillEndOfSynchronizedFunc(erisyemService.runStaticTasksAsync());
+		erisyemBulkDataService.runBulkData();
 		return "Erisyem Bulk Data Service started running successfully";
 	}
 	
@@ -82,13 +81,4 @@ public class JobController {
 		vanucciService.runStaticTasksAsync();
 		return "Vanucci service started running for static tasks asynchronously successfully";
 	}
-	
-	@PostMapping("/debug")
-	public String debug() {
-
-		logger.error("App Crashed");		
-		return config.getFirms()[1].getName();
-	}
-	@Autowired
-	private Config config;
 }

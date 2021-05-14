@@ -24,8 +24,6 @@ public class Task {
 	private static final Logger logger = LoggerFactory.getLogger(Task.class);
 
 	private MongoTemplate mongoTemplate;
-	
-	public static int requestCount = 0;
 
 	public synchronized void execute(TaskParameter taskParameter) {
 		
@@ -65,6 +63,7 @@ public class Task {
 					jsonArray = new JSONArray(apiResponse.getResponseBody());
 					saveJsonArray(taskParameter, jsonArray);
 					isResultHasNextPage = determineIfIsResultHasNextPage(params, apiResponse);
+					checkIfTaskShouldWait(taskParameter, apiResponse);
 				} catch (Exception e) {
 
 					isResultHasNextPage = false;
@@ -85,24 +84,12 @@ public class Task {
 					params.put("ts.since", lastTimestamp);
 					uri = setParams(uri, params);
 					taskParameter.setUri(uri);
-					apiResponse = callApi(taskParameter);
-					logger.info(taskParameter.getCollectionName() + " Request Count: "+(++requestCount));					
+					apiResponse = callApi(taskParameter);					
 					jsonArray = new JSONArray(apiResponse.getResponseBody());
 					jsonArray.remove(0);
 					saveJsonArray(taskParameter, jsonArray);
 					isResultTooLarge = Boolean.parseBoolean(apiResponse.getHeaders().get("x-trio-result-set-too-large"));
-
-					String remainingRequestCount = apiResponse.getHeaders().get("X-RateLimit-Remaining");
-					String remainingTimeToResetRequestCount = apiResponse.getHeaders().get("X-RateLimit-Reset");
-					if(Integer.parseInt(remainingRequestCount) < 100) {
-
-						int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount));
-						wait(sleepTime*1000);						
-						
-						logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);					
-						logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
-						logger.info("Sleeping.. " + sleepTime + " seconds");						
-					}
+					checkIfTaskShouldWait(taskParameter, apiResponse);
 				} catch (Exception e) {
 					
 					isResultTooLarge = false;
@@ -114,10 +101,23 @@ public class Task {
 		}
 	}
 
+	private void checkIfTaskShouldWait(TaskParameter taskParameter, ApiResponse apiResponse) throws InterruptedException {
+
+		String remainingRequestCount = apiResponse.getHeaders().get("X-RateLimit-Remaining");
+		String remainingTimeToResetRequestCount = apiResponse.getHeaders().get("X-RateLimit-Reset");
+		if(remainingRequestCount != null && Integer.parseInt(remainingRequestCount) < 100) {
+
+			int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount));
+			wait(sleepTime*1000);						
+			
+			logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);					
+			logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
+			logger.info("Sleeping.. " + sleepTime + " seconds");						
+		}
+	}
+
 	private ApiResponse callApi(TaskParameter taskParameter) {
 
-		logger.info(taskParameter.getCollectionName() + " Calling Api..");
-		
 		Request request = new Request.Builder().url(taskParameter.getUri()).get().addHeader("authorization", taskParameter.getToken()).build();
 		
 		OkHttpClient client = new OkHttpClient();
