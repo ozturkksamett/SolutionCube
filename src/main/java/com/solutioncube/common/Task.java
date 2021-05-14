@@ -105,13 +105,12 @@ public class Task {
 
 		String remainingRequestCount = apiResponse.getHeaders().get("X-RateLimit-Remaining");
 		String remainingTimeToResetRequestCount = apiResponse.getHeaders().get("X-RateLimit-Reset");
+		logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);					
+		logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
 		if(remainingRequestCount != null && Integer.parseInt(remainingRequestCount) < 100) {
 
 			int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount));
-			wait(sleepTime*1000);						
-			
-			logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);					
-			logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
+			wait(sleepTime*1000);									
 			logger.info("Sleeping.. " + sleepTime + " seconds");						
 		}
 	}
@@ -181,8 +180,6 @@ public class Task {
 	}
 
 	private void saveJsonArray(TaskParameter taskParameter, JSONArray jsonArray) {
-
-		logger.info(taskParameter.getCollectionName() + " Saving Json Array Length: "+jsonArray.length());
 		
 		List<BasicDBObject> basicDBObjectList = new ArrayList<BasicDBObject>();
 		
@@ -202,7 +199,7 @@ public class Task {
 		try {
 
 			mongoTemplate.insert(basicDBObjectList, taskParameter.getCollectionName());
-			logger.info(taskParameter.getCollectionName() + " saved successfully.");
+			logger.info(taskParameter.getCollectionName() + " - " + jsonArray.length() + " saved successfully.");
 		} catch (Exception e) {
 
 			logger.error("Error while saving."
