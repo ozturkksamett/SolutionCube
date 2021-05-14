@@ -31,8 +31,7 @@ public class TaskParameter {
 		setFirm(firm);
 		setMongoTemplate(mongoTemplate);
 		setNow(LocalDateTime.now());
-		setSinceDate(now.minusMinutes(interval));
-		setToken(generateToken());
+		setSinceDate(now.minusMinutes(interval));		
 	}
 
 	public LocalDateTime getNow() {
@@ -123,12 +122,10 @@ public class TaskParameter {
 				+ ".000%2B03%3A00";
 	}
 
-	public String generateToken() {
+	public void generateToken() {
 		if (firm == null)
-			return null;
-		String username = firm.getUsername();
-		String password = firm.getPassword();
-		return TokenGenerator.generateToken(username, password);
+			return;
+		setToken(TokenGenerator.generateToken(firm.getUsername(), firm.getPassword()));
 	}
 	
 	@Override
