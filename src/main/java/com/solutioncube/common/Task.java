@@ -109,9 +109,9 @@ public class Task {
 		logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
 		if(remainingRequestCount != null && Integer.parseInt(remainingRequestCount) < 100) {
 
-			int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount));
-			wait(sleepTime*1000);									
-			logger.info("Sleeping.. " + sleepTime + " seconds");						
+			int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount));	
+			logger.info("Sleeping.. " + sleepTime + " seconds");
+			wait(sleepTime*1000);														
 		}
 	}
 

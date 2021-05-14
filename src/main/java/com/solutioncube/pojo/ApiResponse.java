@@ -34,8 +34,8 @@ public class ApiResponse {
 	public String toString(){
 
 		return new StringBuilder()
-		        .append(" ResponseBody: " + this.responseBody.toString())
-		        .append(" Headers: " + this.headers.toString())
+		        .append("\nResponseBody: " + this.responseBody.toString())
+		        .append("\nHeaders: " + this.headers.toString())
 		        .toString();
 	}
 }
