@@ -58,10 +58,10 @@ public class JobController {
 	@PostMapping("/erisyemRunBulkData")
 	public String erisyemRunBulkData() {
 
-		logger.info("erisyemRunBulkData");
-		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		asyncHelper.waitTillEndOfSynchronizedFunc(erisyemService.runStaticTasksAsync());
-		erisyemBulkDataService.runBulkData();
+//		logger.info("erisyemRunBulkData");
+//		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
+//		asyncHelper.waitTillEndOfSynchronizedFunc(erisyemService.runStaticTasksAsync());
+//		erisyemBulkDataService.runBulkData();
 		return "Erisyem Bulk Data Service started running successfully";
 	}
 	
