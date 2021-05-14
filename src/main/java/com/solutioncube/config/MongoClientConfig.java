@@ -13,7 +13,7 @@ public class MongoClientConfig {
 	@Value("${mongoDbUri}")
 	private String connString;
     public @Bean MongoClient mongoClient() {
-    	//connString = System.getenv("MONGODB_URI");//Uncomment for Production
+    	connString = System.getenv("MONGODB_URI");//Uncomment for Production
     	return MongoClients.create(connString); 
     }
 }
