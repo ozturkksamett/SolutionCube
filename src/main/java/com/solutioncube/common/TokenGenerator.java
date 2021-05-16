@@ -1,11 +1,10 @@
 package com.solutioncube.common;
 
-import java.io.IOException;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.solutioncube.pojo.ApiResponse;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -32,15 +31,16 @@ public class TokenGenerator {
 		  .addHeader("content-type", "application/json")
 		  .build();
 
+		ApiResponse apiResponse = null;
 		try {
 			
 			Response response = client.newCall(request).execute();
-			String jsonData = response.body().string();			
-			JSONObject jsonObject = new JSONObject(jsonData);
+			apiResponse = new ApiResponse(response.body().string(), response.headers());
+			JSONObject jsonObject = new JSONObject(apiResponse.getResponseBody());
 			token = jsonObject.getString("token");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			
-			logger.error("Error while generating token. Exception: ", e.getMessage());			
+			logger.error("Error while generating token. ApiResponse: " + apiResponse.getResponseBody() + " Exception: " + e.getMessage());			
 		}
 		
 		return token;

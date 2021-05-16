@@ -1,7 +1,6 @@
 package com.solutioncube.helper;
 
 import java.util.Collection;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.slf4j.Logger;
@@ -32,7 +31,7 @@ public class AsyncHelper {
 			try {
 				
 				future.get();
-			} catch (InterruptedException | ExecutionException e) {
+			} catch (Exception e) {
 				
 				logger.error("Error while running async threads. Exception: " + e.getMessage());
 			}

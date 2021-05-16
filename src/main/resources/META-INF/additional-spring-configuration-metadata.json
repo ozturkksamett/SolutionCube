@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "mongoDbUri",
+    "type": "java.lang.String",
+    "description": "MongoDb connection string"
+  },
+  {
+    "name": "interval",
+    "type": "java.lang.String",
+    "description": "Interval time as minutes that job runs"
+  },
+  {
+    "name": "firms",
+    "type": "com.solutioncube.pojo.Firm[]",
+    "description": "Firms details"
+  }
+]}
