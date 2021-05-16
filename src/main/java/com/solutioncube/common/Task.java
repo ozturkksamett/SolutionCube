@@ -42,6 +42,7 @@ public class Task {
 
 	private void executeTask(TaskParameter taskParameter) {
 
+		taskParameter.generateToken();
 		ApiResponse apiResponse = callApi(taskParameter);
 		JSONArray jsonArray = new JSONArray(apiResponse.getResponseBody());
 		saveJsonArray(taskParameter, jsonArray);
@@ -116,8 +117,6 @@ public class Task {
 	}
 
 	private ApiResponse callApi(TaskParameter taskParameter) {
-		
-		taskParameter.generateToken();
 		
 		Request request = new Request.Builder().url(taskParameter.getUri()).get().addHeader("authorization", taskParameter.getToken()).build();
 		
