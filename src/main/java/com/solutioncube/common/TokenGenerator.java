@@ -3,10 +3,7 @@ package com.solutioncube.common;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import com.solutioncube.config.Config;
 import com.solutioncube.pojo.ApiResponse;
 import com.solutioncube.pojo.Firm;
 import com.squareup.okhttp.MediaType;
@@ -15,19 +12,13 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
-@Component
 public class TokenGenerator {
-
-	@Autowired
-	private Config config;	
 
 	private static final Logger logger = LoggerFactory.getLogger(TokenGenerator.class);
 	
-	public String generateToken(int configIndex) {
+	public static String generateToken(Firm firm) {
 
 		String token = "";
-		
-		Firm firm = config.getFirms()[configIndex];
 		
 		OkHttpClient client = new OkHttpClient();
 

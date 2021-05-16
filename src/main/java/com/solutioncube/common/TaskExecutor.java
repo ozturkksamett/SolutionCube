@@ -16,9 +16,6 @@ public class TaskExecutor {
 
 	@Autowired
 	private TaskParameterGenerator taskParameterGenerator;
-
-	@Autowired
-	private TokenGenerator tokenGenerator;
 	
 	@Autowired
 	private AsyncHelper asyncHelper;
@@ -31,7 +28,6 @@ public class TaskExecutor {
 
 			IAsyncExecutableTaskFunc taskFunc = (taskParameter) -> { task.execute(taskParameter); };
 			TaskParameter taskParameter = taskParameterGenerator.generateTaskParameter(configIndex);
-			taskParameter.setToken(tokenGenerator.generateToken(configIndex));
 			futures.add(asyncHelper.execAsync(taskFunc, taskParameter));
 		});
 		

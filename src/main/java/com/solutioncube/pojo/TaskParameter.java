@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import com.solutioncube.common.TokenGenerator;
+
 public class TaskParameter {
 	
 	private Firm firm;
@@ -114,6 +116,10 @@ public class TaskParameter {
 				+ String.format("%02d", date.getDayOfMonth()) + "T" + String.format("%02d", date.getHour()) + "%3A"
 				+ String.format("%02d", date.getMinute()) + "%3A" + String.format("%02d", date.getSecond())
 				+ ".000%2B03%3A00";
+	}
+	
+	public void generateToken() {
+		setToken(TokenGenerator.generateToken(this.firm));
 	}
 	
 	@Override
