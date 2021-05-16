@@ -27,18 +27,16 @@ public class Task {
 
 	public synchronized void execute(TaskParameter taskParameter) {
 		
-		this.mongoTemplate = taskParameter.getMongoTemplate();		
-
-		taskParameter.generateToken();
+		this.mongoTemplate = taskParameter.getMongoTemplate();	
 		
 		try {
 
 			executeTask(taskParameter);
 		} catch (Exception e) {
 	
-			logger.error("Error while executing task."
-					+ " Task Parameter: " + taskParameter.toString() 
-					+ " Exception: " + e.getMessage());			
+			logger.error("\nError while executing task."
+					+ "\nTask Parameter: " + taskParameter.toString() 
+					+ "\nException: " + e.getMessage());			
 		}
 	}
 
@@ -69,9 +67,9 @@ public class Task {
 				} catch (Exception e) {
 
 					isResultHasNextPage = false;
-					logger.error("Error while reexecuting task(pagination)."
-							+ " Task Parameter: " + taskParameter.toString() 
-							+ " Exception: " + e.getMessage());
+					logger.error("\nError while reexecuting task(pagination)."
+							+ "\nTask Parameter: " + taskParameter.toString() 
+							+ "\nException: " + e.getMessage());
 				}
 			}
 		} else if (params.containsKey("_limit")) {
@@ -95,9 +93,9 @@ public class Task {
 				} catch (Exception e) {
 					
 					isResultTooLarge = false;
-					logger.error("Error while reexecuting task(limit)."
-							+ " Task Parameter: " + taskParameter.toString() 
-							+ " Exception: " + e.getMessage());					
+					logger.error("\nError while reexecuting task(limit)."
+							+ "\nTask Parameter: " + taskParameter.toString() 
+							+ "\nException: " + e.getMessage());					
 				}
 			}
 		}
@@ -107,10 +105,10 @@ public class Task {
 
 		String remainingRequestCount = apiResponse.getHeaders().get("X-RateLimit-Remaining");
 		String remainingTimeToResetRequestCount = apiResponse.getHeaders().get("X-RateLimit-Reset");
-		logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);					
-		logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
 		if(remainingRequestCount != null && Integer.parseInt(remainingRequestCount) < 100) {
 
+			logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);					
+			logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
 			int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount));	
 			logger.info("Sleeping.. " + sleepTime + " seconds");
 			wait(sleepTime*1000);														
@@ -134,10 +132,10 @@ public class Task {
 			return apiResponse;
 		} catch (Exception e) {
 			
-			logger.error("Error while calling api."
-					+ " Task Parameter: " + taskParameter.toString()
-					+ " Api Response:" + apiResponse.toString()
-					+ " Exception: " + e.getMessage());
+			logger.error("\nError while calling api."
+					+ "\nTask Parameter: " + taskParameter.toString()
+					+ "\nApi Response:" + apiResponse.toString()
+					+ "\nException: " + e.getMessage());
 		}
 
 		return apiResponse;
@@ -204,9 +202,9 @@ public class Task {
 			logger.info(taskParameter.getCollectionName() + " - " + jsonArray.length() + " saved successfully.");
 		} catch (Exception e) {
 
-			logger.error("Error while saving."
-					+ " TaskParameter: " + taskParameter.toString() 
-					+ " Exception: " + e.getMessage());
+			logger.error("\nError while saving."
+					+ "\nTaskParameter: " + taskParameter.toString() 
+					+ "\nException: " + e.getMessage());
 		}		
 	}	
 }

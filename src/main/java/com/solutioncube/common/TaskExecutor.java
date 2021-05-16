@@ -18,16 +18,22 @@ public class TaskExecutor {
 	private TaskParameterGenerator taskParameterGenerator;
 
 	@Autowired
+	private TokenGenerator tokenGenerator;
+	
+	@Autowired
 	private AsyncHelper asyncHelper;
 
 	public Collection<Future<Boolean>> execTasksAsync(List<ITask> tasks, int configIndex) {
 		
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
-
+		
+		String token = tokenGenerator.generateToken(configIndex);
+		
 		tasks.forEach(task -> {
 
 			IAsyncExecutableTaskFunc taskFunc = (taskParameter) -> { task.execute(taskParameter); };
 			TaskParameter taskParameter = taskParameterGenerator.generateTaskParameter(configIndex);
+			taskParameter.setToken(token);
 			futures.add(asyncHelper.execAsync(taskFunc, taskParameter));
 		});
 		

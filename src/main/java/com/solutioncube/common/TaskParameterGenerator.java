@@ -28,12 +28,25 @@ public class TaskParameterGenerator {
 	
 	public TaskParameter generateTaskParameter(int configIndex) {
 		
+		return isBulkData 
+				? generateTaskParameterForBulkDataOfErisyem(generateTaskParameterForDailyTasks(configIndex))
+				: generateTaskParameterForDailyTasks(configIndex); 
+	}
+
+	private TaskParameter generateTaskParameterForDailyTasks(int configIndex) {
+		
 		Firm firm = config.getFirms()[configIndex];
 		MongoTemplate mongoTemplate = new MongoTemplate(mongoClient, firm.getName());
 		int interval = config.getInterval(); 
+
+		TaskParameter taskParameter = new TaskParameter();
 		
-		return isBulkData ? generateTaskParameterForBulkDataOfErisyem(new TaskParameter(firm, mongoTemplate, interval))
-				: new TaskParameter(firm, mongoTemplate, interval);
+		taskParameter.setFirm(firm);
+		taskParameter.setMongoTemplate(mongoTemplate);
+		taskParameter.setNow(LocalDateTime.now());
+		taskParameter.setSinceDate(taskParameter.getNow().minusMinutes(interval));
+		
+		return taskParameter;
 	}
 
 	private TaskParameter generateTaskParameterForBulkDataOfErisyem(TaskParameter taskParameter) {

@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import com.solutioncube.common.TokenGenerator;
-
 public class TaskParameter {
 	
 	private Firm firm;
@@ -26,12 +24,8 @@ public class TaskParameter {
 
 	private String collectionName;
 
-	public TaskParameter(Firm firm, MongoTemplate mongoTemplate, int interval) {
+	public TaskParameter() {
 
-		setFirm(firm);
-		setMongoTemplate(mongoTemplate);
-		setNow(LocalDateTime.now());
-		setSinceDate(now.minusMinutes(interval));		
 	}
 
 	public LocalDateTime getNow() {
@@ -120,12 +114,6 @@ public class TaskParameter {
 				+ String.format("%02d", date.getDayOfMonth()) + "T" + String.format("%02d", date.getHour()) + "%3A"
 				+ String.format("%02d", date.getMinute()) + "%3A" + String.format("%02d", date.getSecond())
 				+ ".000%2B03%3A00";
-	}
-
-	public void generateToken() {
-		if (firm == null)
-			return;
-		setToken(TokenGenerator.generateToken(firm.getUsername(), firm.getPassword()));
 	}
 	
 	@Override
