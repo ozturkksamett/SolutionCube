@@ -27,13 +27,11 @@ public class TaskExecutor {
 		
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
 		
-		String token = tokenGenerator.generateToken(configIndex);
-		
 		tasks.forEach(task -> {
 
 			IAsyncExecutableTaskFunc taskFunc = (taskParameter) -> { task.execute(taskParameter); };
 			TaskParameter taskParameter = taskParameterGenerator.generateTaskParameter(configIndex);
-			taskParameter.setToken(token);
+			taskParameter.setToken(tokenGenerator.generateToken(configIndex));
 			futures.add(asyncHelper.execAsync(taskFunc, taskParameter));
 		});
 		
