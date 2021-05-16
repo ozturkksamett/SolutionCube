@@ -28,6 +28,8 @@ public class Task {
 	public synchronized void execute(TaskParameter taskParameter) {
 		
 		this.mongoTemplate = taskParameter.getMongoTemplate();		
+
+		taskParameter.generateToken();
 		
 		try {
 
@@ -116,8 +118,6 @@ public class Task {
 	}
 
 	private ApiResponse callApi(TaskParameter taskParameter) {
-
-		taskParameter.generateToken();
 		
 		Request request = new Request.Builder().url(taskParameter.getUri()).get().addHeader("authorization", taskParameter.getToken()).build();
 		

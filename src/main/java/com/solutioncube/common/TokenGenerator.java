@@ -40,9 +40,9 @@ public class TokenGenerator {
 			token = jsonObject.getString("token");
 		} catch (Exception e) {
 			
-			logger.error("Error while generating token. ApiResponse: " + apiResponse.getResponseBody() + " Exception: " + e.getMessage());			
+			logger.error("Error while generating token. ApiResponse: " + apiResponse.toString() + " Exception: " + e.getMessage());			
 		}
-		
+
 		return token;
 	}
 }
