@@ -24,7 +24,7 @@ public class EnergyMeasurementsHistoryReportTask implements ITask {
 		List<String> energyMeters = taskParameter.getMongoTemplate().findAll(String.class, BASE_COLLECTION_NAME);
 		logger.info("EnergyMeters Size: "+energyMeters.size());
 		for (String energyMeter : energyMeters) {
-			
+			taskParameter.generateToken();
 			JSONObject energyMetersJSONObject = new JSONObject(energyMeter);
 			String energyMeterId = energyMetersJSONObject.getString("_id");
 			taskParameter.setId(energyMeterId);

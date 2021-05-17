@@ -24,7 +24,7 @@ public class TemperatureMeasurementsHistoryReportTask implements ITask{
 		List<String> temperatureSensors = taskParameter.getMongoTemplate().findAll(String.class, BASE_COLLECTION_NAME);
 		logger.info("TemperatureSensors Size: "+temperatureSensors.size());
 		for (String temperatureSensor : temperatureSensors) {
-			
+			taskParameter.generateToken();
 			JSONObject temperatureSensorJSONObject = new JSONObject(temperatureSensor);
 			String temperatureSensorId = temperatureSensorJSONObject.getString("_id");
 			taskParameter.setId(temperatureSensorId);
