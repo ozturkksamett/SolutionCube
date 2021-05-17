@@ -45,7 +45,7 @@ public class TaskParameterGenerator {
 		taskParameter.setMongoTemplate(mongoTemplate);
 		taskParameter.setNow(LocalDateTime.now());
 		taskParameter.setSinceDate(taskParameter.getNow().minusMinutes(interval));
-		//taskParameter.generateToken();
+		taskParameter.generateToken();
 		
 		return taskParameter;
 	}

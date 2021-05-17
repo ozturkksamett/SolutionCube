@@ -130,7 +130,6 @@ public class Task {
 		ApiResponse apiResponse = null;
 		try {
 
-			taskParameter.generateToken();
 			request = new Request.Builder().url(taskParameter.getUri()).get().addHeader("authorization", taskParameter.getToken()).build();
 			response = client.newCall(request).execute();
 			apiResponse = new ApiResponse(response.body().string(), response.headers());
