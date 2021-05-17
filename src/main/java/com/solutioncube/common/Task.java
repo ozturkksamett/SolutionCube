@@ -121,26 +121,28 @@ public class Task {
 	}
 
 	private ApiResponse callApi(TaskParameter taskParameter) {
-		
-		Request request = new Request.Builder().url(taskParameter.getUri()).get().addHeader("authorization", taskParameter.getToken()).build();
-		
+				
 		OkHttpClient client = new OkHttpClient();
 		client.setConnectTimeout(60, TimeUnit.MINUTES);
 		client.setReadTimeout(60, TimeUnit.MINUTES);
-
+		
+		Request request;
+		Response response;
 		ApiResponse apiResponse = null;
 		try {
-						
-			Response response = client.newCall(request).execute();			
+			
+			request = new Request.Builder().url(taskParameter.getUri()).get().addHeader("authorization", taskParameter.getToken()).build();				
+			response = client.newCall(request).execute();			
 			apiResponse = new ApiResponse(response.body().string(), response.headers());							
 			new JSONArray(apiResponse.getResponseBody());		
 		} catch (Exception e) {
 			
-			logger.info("Retrying in 100 seconds");
+			logger.info("Token regenerated.");
 			try {
-				
-				wait(100*1000);
-				Response response = client.newCall(request).execute();			
+
+				taskParameter.generateToken();
+				request = new Request.Builder().url(taskParameter.getUri()).get().addHeader("authorization", taskParameter.getToken()).build();
+				response = client.newCall(request).execute();			
 				apiResponse = new ApiResponse(response.body().string(), response.headers());							
 				new JSONArray(apiResponse.getResponseBody());		
 			} catch (Exception e1) {
@@ -148,8 +150,7 @@ public class Task {
 				logger.error("\nError while calling api."
 						+ "\nTask Parameter: " + taskParameter.toString()
 						+ "\nApi Response:" + apiResponse.toString()
-						+ "\nException: " + e.getMessage());
-							
+						+ "\nException: " + e1.getMessage());							
 			}		
 		}
 		
