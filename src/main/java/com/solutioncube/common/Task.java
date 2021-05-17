@@ -144,7 +144,7 @@ public class Task {
 			logger.info("Retrying in 10 seconds");
 			try {
 				
-				Thread.sleep(10*1000);
+				Thread.currentThread().sleep(10*1000);
 			} catch (Exception e1) {
 				
 				logger.error("\nError while waiting api."
