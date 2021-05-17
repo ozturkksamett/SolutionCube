@@ -109,7 +109,7 @@ public class Task {
 
 				logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);					
 				logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
-				int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount)) + 10; // Plus 10 seconds..
+				int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount)) + 100; 
 				logger.info("Sleeping " + sleepTime + " seconds..");
 				wait(sleepTime*1000);	
 			}
@@ -136,10 +136,10 @@ public class Task {
 			new JSONArray(apiResponse.getResponseBody());		
 		} catch (Exception e) {
 			
-			logger.info("Retrying in 10 seconds");
+			logger.info("Retrying in 100 seconds");
 			try {
 				
-				wait(10*1000);
+				wait(100*1000);
 				Response response = client.newCall(request).execute();			
 				apiResponse = new ApiResponse(response.body().string(), response.headers());							
 				new JSONArray(apiResponse.getResponseBody());		
