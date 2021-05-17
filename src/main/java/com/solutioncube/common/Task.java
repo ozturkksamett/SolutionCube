@@ -62,8 +62,7 @@ public class Task {
 					apiResponse = callApi(taskParameter);					
 					jsonArray = new JSONArray(apiResponse.getResponseBody());
 					saveJsonArray(taskParameter, jsonArray);
-					isResultHasNextPage = determineIfIsResultHasNextPage(params, apiResponse);
-					checkIfTaskShouldWait(taskParameter, apiResponse);
+					isResultHasNextPage = determineIfIsResultHasNextPage(params, apiResponse);					
 				} catch (Exception e) {
 
 					isResultHasNextPage = false;
@@ -88,8 +87,7 @@ public class Task {
 					jsonArray = new JSONArray(apiResponse.getResponseBody());
 					jsonArray.remove(0);
 					saveJsonArray(taskParameter, jsonArray);
-					isResultTooLarge = Boolean.parseBoolean(apiResponse.getHeaders().get("x-trio-result-set-too-large"));
-					checkIfTaskShouldWait(taskParameter, apiResponse);
+					isResultTooLarge = Boolean.parseBoolean(apiResponse.getHeaders().get("x-trio-result-set-too-large"));					
 				} catch (Exception e) {
 					
 					isResultTooLarge = false;
@@ -109,9 +107,10 @@ public class Task {
 
 			logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);					
 			logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
-			int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount)) + 10;	
-			logger.info("Sleeping.. " + sleepTime + " seconds");
-			wait(sleepTime*1000);														
+			int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount)) + 10; // Plus 10 seconds..
+			logger.info("Sleeping " + sleepTime + " seconds..");
+			wait(sleepTime*1000);	
+			callApi(taskParameter);
 		}
 	}
 
@@ -127,7 +126,8 @@ public class Task {
 		try {
 						
 			Response response = client.newCall(request).execute();			
-			apiResponse = new ApiResponse(response.body().string(), response.headers());
+			apiResponse = new ApiResponse(response.body().string(), response.headers());			
+			checkIfTaskShouldWait(taskParameter, apiResponse);			
 			new JSONArray(apiResponse.getResponseBody());
 			return apiResponse;
 		} catch (Exception e) {
@@ -137,7 +137,6 @@ public class Task {
 					+ "\nApi Response:" + apiResponse.toString()
 					+ "\nException: " + e.getMessage());
 		}
-
 		return apiResponse;
 	}
 

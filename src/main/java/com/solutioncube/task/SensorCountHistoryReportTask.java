@@ -24,7 +24,7 @@ public class SensorCountHistoryReportTask implements ITask {
 		List<String> sensorCounters = taskParameter.getMongoTemplate().findAll(String.class, BASE_COLLECTION_NAME);
 		logger.info("SensorCounters Size: "+sensorCounters.size());
 		for (String sensorCounter : sensorCounters) {
-			taskParameter.generateToken();
+			
 			JSONObject sensorCounterJSONObject = new JSONObject(sensorCounter);
 			String sensorCounterId = sensorCounterJSONObject.getString("_id");
 			taskParameter.setId(sensorCounterId);
