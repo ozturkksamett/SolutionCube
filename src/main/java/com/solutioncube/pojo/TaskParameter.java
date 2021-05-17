@@ -27,7 +27,7 @@ public class TaskParameter {
 	private String collectionName;
 
 	public TaskParameter() {
-
+		
 	}
 
 	public LocalDateTime getNow() {
@@ -126,10 +126,10 @@ public class TaskParameter {
 	public String toString(){
 		
 		return new StringBuilder()
-		        .append(" Firm: " + this.firm.toString())
-		        .append(" CollectionName: " + this.collectionName.toString())
-		        .append(" Uri: " + this.uri.toString())
-		        .append(" Token: " + this.token.toString())
+		        .append("\nFirm: " + this.firm.toString())
+		        .append("\nCollectionName: " + this.collectionName.toString())
+		        .append("\nUri: " + this.uri.toString())
+		        .append("\nToken: " + this.token.toString())
 		        .toString();
 	}
 }

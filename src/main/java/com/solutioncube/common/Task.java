@@ -42,7 +42,6 @@ public class Task {
 
 	private void executeTask(TaskParameter taskParameter) {
 
-		taskParameter.generateToken();
 		ApiResponse apiResponse = callApi(taskParameter);
 		JSONArray jsonArray = new JSONArray(apiResponse.getResponseBody());
 		saveJsonArray(taskParameter, jsonArray);
@@ -106,11 +105,11 @@ public class Task {
 
 		String remainingRequestCount = apiResponse.getHeaders().get("X-RateLimit-Remaining");
 		String remainingTimeToResetRequestCount = apiResponse.getHeaders().get("X-RateLimit-Reset");
-		if(remainingRequestCount != null && Integer.parseInt(remainingRequestCount) < 100) {
+		if(remainingRequestCount != null && Integer.parseInt(remainingRequestCount) < 10) {
 
 			logger.info(taskParameter.getCollectionName() + " Remaining Request Count: "+remainingRequestCount);					
 			logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "+remainingTimeToResetRequestCount);
-			int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount));	
+			int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount)) + 10;	
 			logger.info("Sleeping.. " + sleepTime + " seconds");
 			wait(sleepTime*1000);														
 		}
