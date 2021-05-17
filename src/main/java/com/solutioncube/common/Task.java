@@ -136,19 +136,20 @@ public class Task {
 			new JSONArray(apiResponse.getResponseBody());		
 		} catch (Exception e) {
 			
-			logger.error("\nError while calling api."
-					+ "\nTask Parameter: " + taskParameter.toString()
-					+ "\nApi Response:" + apiResponse.toString()
-					+ "\nException: " + e.getMessage());
-			
 			logger.info("Retrying in 10 seconds");
 			try {
 				
-				Thread.currentThread().sleep(10*1000);
+				wait(10*1000);
+				Response response = client.newCall(request).execute();			
+				apiResponse = new ApiResponse(response.body().string(), response.headers());							
+				new JSONArray(apiResponse.getResponseBody());		
 			} catch (Exception e1) {
-				
-				logger.error("\nError while waiting api."
-						+ "\nException: " + e1.getMessage());				
+
+				logger.error("\nError while calling api."
+						+ "\nTask Parameter: " + taskParameter.toString()
+						+ "\nApi Response:" + apiResponse.toString()
+						+ "\nException: " + e.getMessage());
+							
 			}		
 		}
 		
