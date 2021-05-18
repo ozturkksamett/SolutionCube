@@ -1,5 +1,10 @@
 package com.solutioncube.common;
 
+import java.net.Authenticator;
+import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +20,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import com.mongodb.BasicDBObject;
 import com.solutioncube.pojo.ApiResponse;
 import com.solutioncube.pojo.TaskParameter;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class Task {
 
@@ -121,25 +127,39 @@ public class Task {
 
 	private ApiResponse callApi(TaskParameter taskParameter) {
 
-		OkHttpClient client = new OkHttpClient();
-		client.setConnectTimeout(60, TimeUnit.MINUTES);
-		client.setReadTimeout(60, TimeUnit.MINUTES);
-
 		Request request;
 		Response response;
 		ApiResponse apiResponse = null;
 		try {
 
+			URL proxyUrl = new URL(System.getenv("QUOTAGUARDSTATIC_URL"));
+			String userInfo = proxyUrl.getUserInfo();
+			String username = userInfo.substring(0, userInfo.indexOf(':'));
+			String password = userInfo.substring(userInfo.indexOf(':') + 1);
+
+			Authenticator.setDefault(new Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(username, password.toCharArray());
+				}
+			});
+			
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort()));
+			
+			OkHttpClient client = new OkHttpClient.Builder()
+					.proxy(proxy)
+					.connectTimeout(60, TimeUnit.MINUTES)
+					.readTimeout(60, TimeUnit.MINUTES)
+					.build();		
+			
 			request = new Request.Builder().url(taskParameter.getUri()).get().addHeader("authorization", taskParameter.getToken()).build();
+			
 			response = client.newCall(request).execute();
 			apiResponse = new ApiResponse(response.body().string(), response.headers());
 			new JSONArray(apiResponse.getResponseBody());
 		} catch (Exception e) {
 
-			logger.error("\nError while calling api." 
-					+ "\nTask Parameter: " + taskParameter.toString()
-					+ "\nApi Response:" + apiResponse.toString() 
-					+ "\nException: " + e.getMessage());
+			logger.error("\nError while calling api." + "\nTask Parameter: " + taskParameter.toString()
+					+ "\nApi Response:" + apiResponse.toString() + "\nException: " + e.getMessage());
 		}
 
 		checkIfTaskShouldWait(taskParameter, apiResponse);
@@ -209,9 +229,8 @@ public class Task {
 			logger.info(taskParameter.getCollectionName() + " - " + jsonArray.length() + " saved successfully.");
 		} catch (Exception e) {
 
-			logger.error("\nError while saving." 
-					+ "\nTaskParameter: " + taskParameter.toString() 
-					+ "\nException: " + e.getMessage());
+			logger.error("\nError while saving." + "\nTaskParameter: " + taskParameter.toString() + "\nException: "
+					+ e.getMessage());
 		}
 	}
 }

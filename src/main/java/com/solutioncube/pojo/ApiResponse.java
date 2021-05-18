@@ -1,6 +1,6 @@
 package com.solutioncube.pojo;
 
-import com.squareup.okhttp.Headers;
+import okhttp3.Headers;
 
 public class ApiResponse {
 
