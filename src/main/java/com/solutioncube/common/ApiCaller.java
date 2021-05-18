@@ -23,44 +23,48 @@ public class ApiCaller {
 	
 	private static OkHttpClient client;
 	
-	private static void createClient() {
+	private static OkHttpClient createClient() {
 		
-		try {
-			
-			URL proxyUrl = new URL(System.getenv("PROXIMO_URL"));
-			
-			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), 80));
-			
-			String userInfo = proxyUrl.getUserInfo();
-			String username = userInfo.substring(0, userInfo.indexOf(':'));
-			String password = userInfo.substring(userInfo.indexOf(':') + 1);
-			Authenticator proxyAuthenticator = new Authenticator() {
-				  @Override 
-				  public Request authenticate(Route route, Response response) {
-				       String credential = Credentials.basic(username, password);
-				       return response.request().newBuilder()
-				           .header("Proxy-Authorization", credential)
-				           .build();
-				  }				
-			};
-			
-			client = new OkHttpClient.Builder()
-					.connectTimeout(60, TimeUnit.MINUTES)
-					.writeTimeout(60, TimeUnit.MINUTES)
-					.readTimeout(60, TimeUnit.MINUTES)
-					.proxy(proxy)
-					.proxyAuthenticator(proxyAuthenticator)
-					.build();	
-		} catch (Exception e) {
-			
-			logger.error("\nError while creating client." + "\nException: " + e.getMessage());
+		if(client == null) {
+				
+			try {
+				
+				URL proxyUrl = new URL(System.getenv("QUOTAGUARDSTATIC_URL"));
+
+				Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort()));
+				
+				String userInfo = proxyUrl.getUserInfo();
+				String username = userInfo.substring(0, userInfo.indexOf(':'));
+				String password = userInfo.substring(userInfo.indexOf(':') + 1);
+				Authenticator proxyAuthenticator = new Authenticator() {
+					  @Override 
+					  public Request authenticate(Route route, Response response) {
+					       String credential = Credentials.basic(username, password);
+					       return response.request().newBuilder()
+					           .header("Proxy-Authorization", credential)
+					           .build();
+					  }				
+				};
+				
+				client = new OkHttpClient.Builder()
+						.connectTimeout(60, TimeUnit.MINUTES)
+						.writeTimeout(60, TimeUnit.MINUTES)
+						.readTimeout(60, TimeUnit.MINUTES)
+						.proxy(proxy)
+						.proxyAuthenticator(proxyAuthenticator)
+						.build();	
+			} catch (Exception e) {
+				
+				logger.error("\nError while creating client." + "\nException: " + e.getMessage());
+			}
 		}
+		
+		return client;
 	}
 	
 	public static ApiResponse call(Request request) {
 		
-		if(client == null)
-			createClient();
+		createClient();
 		
 		try {	
 
