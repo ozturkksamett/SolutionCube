@@ -25,13 +25,13 @@ public class ApiCaller {
 		
 		try {
 
-			//URL proxyUrl = new URL(System.getenv("QUOTAGUARDSTATIC_URL"));
-			URL proxyUrl = new URL("http://e6ria6bci3vvi5:367pa8o6vk96bndihhb7c5ffk479cg@eu-west-static-01.quotaguard.com:9293");
+			URL proxyUrl = new URL(System.getenv("PROXIMO_URL"));
+		
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort()));
 			
 			String userInfo = proxyUrl.getUserInfo();
 			String username = userInfo.substring(0, userInfo.indexOf(':'));
 			String password = userInfo.substring(userInfo.indexOf(':') + 1);
-	
 			Authenticator proxyAuthenticator = new Authenticator() {
 				  @Override 
 				  public Request authenticate(Route route, Response response) {
@@ -41,15 +41,13 @@ public class ApiCaller {
 				           .build();
 				  }				
 			};
-		
-			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort()));
-		
+			
 			OkHttpClient client = new OkHttpClient.Builder()
 					.connectTimeout(60, TimeUnit.MINUTES)
 					.writeTimeout(60, TimeUnit.MINUTES)
 					.readTimeout(60, TimeUnit.MINUTES)
-					//.proxy(proxy)
-					//.proxyAuthenticator(proxyAuthenticator)
+					.proxy(proxy)
+					.proxyAuthenticator(proxyAuthenticator)
 					.build();		
 
 			Response response = client.newCall(request).execute();
