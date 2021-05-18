@@ -133,6 +133,7 @@ public class Task {
 		try {
 
 			URL proxyUrl = new URL(System.getenv("QUOTAGUARDSTATIC_URL"));
+			logger.info("proxyUrl:"+proxyUrl);
 			String userInfo = proxyUrl.getUserInfo();
 			String username = userInfo.substring(0, userInfo.indexOf(':'));
 			String password = userInfo.substring(userInfo.indexOf(':') + 1);
@@ -155,6 +156,7 @@ public class Task {
 			
 			response = client.newCall(request).execute();
 			apiResponse = new ApiResponse(response.body().string(), response.headers());
+			logger.info("apiResponse:"+apiResponse);
 			new JSONArray(apiResponse.getResponseBody());
 		} catch (Exception e) {
 
