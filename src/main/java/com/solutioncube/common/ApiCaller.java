@@ -21,9 +21,9 @@ public class ApiCaller {
 
 	private static final Logger logger = LoggerFactory.getLogger(ApiCaller.class);
 	
-	private static final OkHttpClient client = createClient();
+	private static OkHttpClient client;
 	
-	private static OkHttpClient createClient() {
+	private static void createClient() {
 		
 		try {
 			
@@ -44,7 +44,7 @@ public class ApiCaller {
 				  }				
 			};
 			
-			return new OkHttpClient.Builder()
+			client = new OkHttpClient.Builder()
 					.connectTimeout(60, TimeUnit.MINUTES)
 					.writeTimeout(60, TimeUnit.MINUTES)
 					.readTimeout(60, TimeUnit.MINUTES)
@@ -55,11 +55,12 @@ public class ApiCaller {
 			
 			logger.error("\nError while creating client." + "\nException: " + e.getMessage());
 		}
-		
-		return null;
 	}
 	
 	public static ApiResponse call(Request request) {
+		
+		if(client == null)
+			createClient();
 		
 		try {	
 
