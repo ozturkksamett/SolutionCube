@@ -27,7 +27,7 @@ public class ApiCaller {
 
 			URL proxyUrl = new URL(System.getenv("PROXIMO_URL"));
 		
-			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort()));
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), 80));
 			
 			String userInfo = proxyUrl.getUserInfo();
 			String username = userInfo.substring(0, userInfo.indexOf(':'));
