@@ -21,12 +21,14 @@ public class ApiCaller {
 
 	private static final Logger logger = LoggerFactory.getLogger(ApiCaller.class);
 	
-	public static ApiResponse call(Request request) {
+	private static final OkHttpClient client = createClient();
+	
+	private static OkHttpClient createClient() {
 		
 		try {
-
+			
 			URL proxyUrl = new URL(System.getenv("PROXIMO_URL"));
-		
+			
 			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), 80));
 			
 			String userInfo = proxyUrl.getUserInfo();
@@ -42,16 +44,26 @@ public class ApiCaller {
 				  }				
 			};
 			
-			OkHttpClient client = new OkHttpClient.Builder()
+			return new OkHttpClient.Builder()
 					.connectTimeout(60, TimeUnit.MINUTES)
 					.writeTimeout(60, TimeUnit.MINUTES)
 					.readTimeout(60, TimeUnit.MINUTES)
 					.proxy(proxy)
 					.proxyAuthenticator(proxyAuthenticator)
-					.build();		
-
-			Response response = client.newCall(request).execute();
+					.build();	
+		} catch (Exception e) {
 			
+			logger.error("\nError while creating client." + "\nException: " + e.getMessage());
+		}
+		
+		return null;
+	}
+	
+	public static ApiResponse call(Request request) {
+		
+		try {	
+
+			Response response = client.newCall(request).execute();			
 			return new ApiResponse(response.body().string(), response.headers());
 		} catch (Exception e) {
 
