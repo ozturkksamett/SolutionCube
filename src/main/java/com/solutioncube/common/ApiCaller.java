@@ -48,8 +48,8 @@ public class ApiCaller {
 					.connectTimeout(60, TimeUnit.MINUTES)
 					.writeTimeout(60, TimeUnit.MINUTES)
 					.readTimeout(60, TimeUnit.MINUTES)
-					.proxy(proxy)
-					.proxyAuthenticator(proxyAuthenticator)
+					//.proxy(proxy)
+					//.proxyAuthenticator(proxyAuthenticator)
 					.build();		
 
 			Response response = client.newCall(request).execute();

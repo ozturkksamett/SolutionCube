@@ -78,14 +78,14 @@ public class ErisyemBulkDataService {
     	Instant start = Instant.now();
     	TaskParameterGenerator.isBulkData = true;
     	runTasksAsync(TASKS_WHICH_ONLY_WITH_SINCE_PARAM);
-    	while (TaskParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {
+    	//while (TaskParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {
     		
     		logger.info("Initial Date: " + TaskParameterGenerator.getInitialDate());    		
     		asyncHelper.waitTillEndOfSynchronizedFunc(runTasksAsync(TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM));    		
     		TaskParameterGenerator.setInitialDate(TaskParameterGenerator.getInitialDate().plusDays(TaskParameterGenerator.getIntervalDay()));    		
-    	}
+    	//}
     	TaskParameterGenerator.isBulkData = false;
     	Instant finish = Instant.now();
-    	logger.info("Erisyem Bulk Data Service finished running. Duration: " + Duration.between(start, finish).toHours() + " hours.");    	
+    	logger.info("Erisyem Bulk Data Service finished running. Duration: " + Duration.between(start, finish).toMinutes() + " minutes.");    	
 	}        
 }
