@@ -3,9 +3,9 @@ mongoDbUri: mongodb+srv://ethemduzgun:scfm2021@solutioncube.azjcz.mongodb.net/so
 interval: 1440
 
 firms: 
-- name: erisyemtest
+- name: erisyem_mart
   username: solutioncube
   password: ng254146
-- name: vanuccitest
+- name: vanucci
   username: solutioncube
   password: ng254146
