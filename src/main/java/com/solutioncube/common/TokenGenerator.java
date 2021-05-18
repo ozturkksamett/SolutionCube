@@ -8,23 +8,18 @@ import com.solutioncube.pojo.ApiResponse;
 import com.solutioncube.pojo.Firm;
 
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class TokenGenerator {
 
 	private static final Logger logger = LoggerFactory.getLogger(TokenGenerator.class);
-	
+
 	public static String generateToken(Firm firm) {
-
-		String token = "";
 		
-		OkHttpClient client = new OkHttpClient();
+		String token = "";
 
-		MediaType mediaType = MediaType.parse("application/json");
-		RequestBody body = RequestBody.create("{\"username\":\""+firm.getUsername()+"\","+"\"password\":\""+firm.getPassword()+"\"}", mediaType);
+		RequestBody body = RequestBody.create("{\"username\":\""+firm.getUsername()+"\","+"\"password\":\""+firm.getPassword()+"\"}", MediaType.parse("application/json"));
 		Request request = new Request.Builder()
 		  .url("https://api.triomobil.com/facility/v1/auth")
 		  .post(body)
@@ -36,15 +31,12 @@ public class TokenGenerator {
 		ApiResponse apiResponse = null;
 		try {
 			
-			Response response = client.newCall(request).execute();
-			apiResponse = new ApiResponse(response.body().string(), response.headers());
+			apiResponse = ApiCaller.call(request);
 			JSONObject jsonObject = new JSONObject(apiResponse.getResponseBody());
 			token = jsonObject.getString("token");
 		} catch (Exception e) {
 			
-			logger.error("\nError while generating token."
-					+ "\nApiResponse: " + apiResponse.toString() 
-					+ "\nException: " + e.getMessage());			
+			logger.error("\nError while generating token." + "\nApiResponse: " + apiResponse.toString() + "\nException: " + e.getMessage());			
 		}
 
 		return token;
