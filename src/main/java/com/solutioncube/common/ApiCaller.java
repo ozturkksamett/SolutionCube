@@ -63,7 +63,7 @@ public class ApiCaller {
 		
 		try {	
 
-			Response response = client.newCall(request).execute();			
+			Response response = createClient().newCall(request).execute();			
 			return new ApiResponse(response.body().string(), response.headers());
 		} catch (Exception e) {
 
