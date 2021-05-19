@@ -30,7 +30,7 @@ public class ApiCaller {
 			try {
 				
 				URL proxyUrl = new URL(System.getenv("QUOTAGUARDSTATIC_URL"));
-
+				
 				Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort()));
 				
 				String userInfo = proxyUrl.getUserInfo();

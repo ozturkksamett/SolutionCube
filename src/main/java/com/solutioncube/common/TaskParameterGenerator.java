@@ -18,7 +18,7 @@ public class TaskParameterGenerator {
 	
 	public static boolean isBulkData = false;
 	private static final int INTERVAL_DAY = 30;
-	private static LocalDate initialDate = LocalDate.of(2021, 03, 01);
+	private static LocalDate initialDate = LocalDate.of(2020, 12, 01);
 	
 	@Autowired
 	private Config config;	

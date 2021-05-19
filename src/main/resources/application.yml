@@ -3,7 +3,7 @@ mongoDbUri: mongodb+srv://ethemduzgun:scfm2021@solutioncube.azjcz.mongodb.net/so
 interval: 1440
 
 firms: 
-- name: erisyem_mart
+- name: erisyem
   username: solutioncube
   password: ng254146
 - name: vanucci
