@@ -23,7 +23,7 @@ public class ApiCaller {
 	
 	private static OkHttpClient client;
 	
-	private static OkHttpClient createClient() {
+	public static OkHttpClient getClient() {
 		
 		if(client == null) {
 				
@@ -64,11 +64,9 @@ public class ApiCaller {
 	
 	public static ApiResponse call(Request request) {
 		
-		createClient();
-		
 		try {	
 
-			Response response = client.newCall(request).execute();			
+			Response response = getClient().newCall(request).execute();			
 			return new ApiResponse(response.body().string(), response.headers());
 		} catch (Exception e) {
 
