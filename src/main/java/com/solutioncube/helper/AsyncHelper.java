@@ -9,13 +9,21 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
+import com.solutioncube.common.IAsyncExecutableServiceFunc;
 import com.solutioncube.common.IAsyncExecutableTaskFunc;
+import com.solutioncube.common.ServiceRunType;
 import com.solutioncube.pojo.TaskParameter;
 
 @Component
 public class AsyncHelper {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AsyncHelper.class);
+	
+	@Async
+	public Collection<Future<Boolean>> runAsync(IAsyncExecutableServiceFunc asynExecutableServiceFunc, ServiceRunType serviceRunType) {
+
+		return asynExecutableServiceFunc.runAsync(serviceRunType);
+	}
 	
 	@Async
 	public Future<Boolean> execAsync(IAsyncExecutableTaskFunc asynExecutableTaskFunc, TaskParameter taskParameter) {

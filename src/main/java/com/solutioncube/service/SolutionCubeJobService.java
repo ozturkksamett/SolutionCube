@@ -1,10 +1,7 @@
 package com.solutioncube.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Future;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.solutioncube.common.IService;
+import com.solutioncube.common.ServiceRunType;
+import com.solutioncube.common.ServiceRunner;
 import com.solutioncube.helper.AsyncHelper;
 
 @Service
@@ -20,8 +19,11 @@ public class SolutionCubeJobService {
 	private static final Logger logger = LoggerFactory.getLogger(SolutionCubeJobService.class);
 
 	@Autowired
+	private ServiceRunner serviceRunner;
+
+	@Autowired
 	private AsyncHelper asyncHelper;
-		
+	
 	@Autowired
 	private IService erisyemService;
 	
@@ -37,15 +39,17 @@ public class SolutionCubeJobService {
 		});
 	}
 
-	public void runSolutionCubeJob() {
+	public void runDailySolutionCubeJobAsync() {
 
-		logger.info("SolutionCubeJobService started running..");		
-		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();		
-		registerServices().forEach(service -> {
-			
-			futures.addAll(service.runDailyTasksAsync()); 
-		});		
-		asyncHelper.waitTillEndOfSynchronizedFunc(futures);		
+		logger.info("SolutionCubeJobService started running asynchronusly..");				
+		asyncHelper.waitTillEndOfSynchronizedFunc(serviceRunner.runServicesAsync(registerServices(), ServiceRunType.DAILY));		
+		logger.info("SolutionCubeJobService finished running.");
+	}
+	
+	public void runDailySolutionCubeJob() {
+
+		logger.info("SolutionCubeJobService started running..");			
+		serviceRunner.runServices(registerServices(), ServiceRunType.DAILY);	
 		logger.info("SolutionCubeJobService finished running.");
 	}
 }

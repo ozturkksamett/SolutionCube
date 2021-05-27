@@ -23,6 +23,7 @@ public class TaskExecutor {
 	public Collection<Future<Boolean>> execTasksAsync(List<ITask> tasks, int configIndex) {
 		
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
+		
 		TaskParameter taskParameter = taskParameterGenerator.generateTaskParameter(configIndex);
 		
 		tasks.forEach(task -> {
@@ -37,7 +38,9 @@ public class TaskExecutor {
 	public void execTasks(List<ITask> tasks, int configIndex) {
 
 		TaskParameter taskParameter = taskParameterGenerator.generateTaskParameter(configIndex);
+		
 		tasks.forEach(task -> {
+			
 			task.execute(taskParameter); 
 		});		
 	}	

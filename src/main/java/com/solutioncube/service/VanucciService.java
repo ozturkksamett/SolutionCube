@@ -1,5 +1,6 @@
 package com.solutioncube.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ITask;
+import com.solutioncube.common.ServiceRunType;
 import com.solutioncube.common.TaskExecutor;
 import com.solutioncube.task.AlarmHistoryReportTask;
 import com.solutioncube.task.AlarmRulesTask;
@@ -40,22 +42,35 @@ public class VanucciService implements IService {
 	});
 	
 	@Autowired
-	private TaskExecutor taskExecutor;
+	private TaskExecutor taskExecutor;	
 	
-	private Collection<Future<Boolean>> runTasksAsync(List<ITask> tasks) {
+	@Override
+	public void run(ServiceRunType serviceRunType) {
 
-		return taskExecutor.execTasksAsync(tasks, CONFIG_INDEX);
+		switch (serviceRunType) {
+		case STATIC :			
+			taskExecutor.execTasks(STATIC_TASKS, CONFIG_INDEX);
+			break;
+		case DAILY :			
+			taskExecutor.execTasks(DAILY_TASKS, CONFIG_INDEX);
+			break;
+		}
 	}
 	
 	@Override
-	public Collection<Future<Boolean>> runStaticTasksAsync() {
+	public Collection<Future<Boolean>> runAsync(ServiceRunType serviceRunType) {
 
-		return runTasksAsync(STATIC_TASKS);
-	}
-
-	@Override
-	public Collection<Future<Boolean>> runDailyTasksAsync() {
-
-		return runTasksAsync(DAILY_TASKS);		
+		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
+		
+		switch (serviceRunType) {
+		case STATIC :			
+			futures = taskExecutor.execTasksAsync(STATIC_TASKS, CONFIG_INDEX);
+			break;
+		case DAILY :			
+			futures = taskExecutor.execTasksAsync(DAILY_TASKS, CONFIG_INDEX);
+			break;
+		}
+		
+		return futures;
 	}
 }

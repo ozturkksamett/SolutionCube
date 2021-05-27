@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.solutioncube.common.IService;
+import com.solutioncube.common.ServiceRunType;
 import com.solutioncube.common.TaskParameterGenerator;
 import com.solutioncube.helper.AsyncHelper;
 import com.solutioncube.job.JobScheduler;
@@ -59,7 +60,7 @@ public class JobController {
 
 		logger.info("erisyemRunBulkData");
 		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		asyncHelper.waitTillEndOfSynchronizedFunc(erisyemService.runStaticTasksAsync());
+		asyncHelper.waitTillEndOfSynchronizedFunc(erisyemService.runAsync(ServiceRunType.STATIC));
 		erisyemBulkDataService.runBulkData();
 		return "Erisyem Bulk Data Service started running successfully";
 	}
@@ -69,7 +70,7 @@ public class JobController {
 
 		logger.info("erisyemRunStaticTasksAsync");
 		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		erisyemService.runStaticTasksAsync();
+		erisyemService.runAsync(ServiceRunType.STATIC);
 		return "Erisyem service started running for static tasks asynchronously successfully";
 	}
 
@@ -78,7 +79,7 @@ public class JobController {
 
 		logger.info("vanucciRunStaticTasksAsync");
 		taskParameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		vanucciService.runStaticTasksAsync();
+		vanucciService.runAsync(ServiceRunType.STATIC);
 		return "Vanucci service started running for static tasks asynchronously successfully";
 	}
 }
