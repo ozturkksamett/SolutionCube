@@ -4,9 +4,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Future;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.solutioncube.common.ITask;
 import com.solutioncube.common.TaskExecutor;
 import com.solutioncube.common.TaskParameterGenerator;
-import com.solutioncube.helper.AsyncHelper;
 import com.solutioncube.task.AlarmHistoryReportTask;
 import com.solutioncube.task.EnergyConsumptionReportTask;
 import com.solutioncube.task.EnergyMeasurementsHistoryReportTask;
@@ -61,14 +58,11 @@ public class ErisyemBulkDataService {
 	});
 
 	@Autowired
-	private AsyncHelper asyncHelper;
-	
-	@Autowired
 	private TaskExecutor taskExecutor;	
 	
-	private Collection<Future<Boolean>> runTasksAsync(List<ITask> tasks) {
+	private void runTasks(List<ITask> tasks) {
 
-		return taskExecutor.execTasksAsync(tasks, CONFIG_INDEX);
+		taskExecutor.execTasks(tasks, CONFIG_INDEX);
 	}
 	
 	@Async
@@ -77,14 +71,13 @@ public class ErisyemBulkDataService {
     	logger.info("Erisyem Bulk Data Service started running..");
     	Instant start = Instant.now();
     	TaskParameterGenerator.isBulkData = true;
-    	Collection<Future<Boolean>> futures = runTasksAsync(TASKS_WHICH_ONLY_WITH_SINCE_PARAM);
+    	runTasks(TASKS_WHICH_ONLY_WITH_SINCE_PARAM);
     	while (TaskParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {
     		
     		logger.info("Initial Date: " + TaskParameterGenerator.getInitialDate());    		
-    		asyncHelper.waitTillEndOfSynchronizedFunc(runTasksAsync(TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM));    		
+    		runTasks(TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM);    		
     		TaskParameterGenerator.setInitialDate(TaskParameterGenerator.getInitialDate().plusDays(TaskParameterGenerator.getIntervalDay()));    		
     	}
-    	asyncHelper.waitTillEndOfSynchronizedFunc(futures);    	
     	TaskParameterGenerator.isBulkData = false;
     	Instant finish = Instant.now();
     	logger.info("Erisyem Bulk Data Service finished running. Duration: " + Duration.between(start, finish).toMinutes() + " minutes.");    	

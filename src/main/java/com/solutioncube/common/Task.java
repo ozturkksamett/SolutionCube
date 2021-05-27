@@ -32,8 +32,7 @@ public class Task {
 			executeTask(taskParameter);
 		} catch (Exception e) {
 
-			logger.error("\nError while executing task." + "\nTask Parameter: " + taskParameter.toString()
-					+ "\nException: " + e.getMessage());
+			logger.error("\nError while executing task." + "\nTask Parameter: " + taskParameter.toString() + "\nException: " + e.getMessage());
 		}
 	}
 
@@ -63,14 +62,12 @@ public class Task {
 				} catch (Exception e) {
 
 					isResultHasNextPage = false;
-					logger.error("\nError while reexecuting task(pagination)." + "\nTask Parameter: "
-							+ taskParameter.toString() + "\nException: " + e.getMessage());
+					logger.error("\nError while reexecuting task(pagination)." + "\nTask Parameter: " + taskParameter.toString() + "\nException: " + e.getMessage());
 				}
 			}
 		} else if (params.containsKey("_limit")) {
 
-			boolean isResultTooLarge = Boolean
-					.parseBoolean(apiResponse.getHeaders().get("x-trio-result-set-too-large"));
+			boolean isResultTooLarge = Boolean.parseBoolean(apiResponse.getHeaders().get("x-trio-result-set-too-large"));
 			while (isResultTooLarge) {
 
 				try {
@@ -84,13 +81,11 @@ public class Task {
 					jsonArray = new JSONArray(apiResponse.getResponseBody());
 					jsonArray.remove(0);
 					saveJsonArray(taskParameter, jsonArray);
-					isResultTooLarge = Boolean
-							.parseBoolean(apiResponse.getHeaders().get("x-trio-result-set-too-large"));
+					isResultTooLarge = Boolean.parseBoolean(apiResponse.getHeaders().get("x-trio-result-set-too-large"));
 				} catch (Exception e) {
 
 					isResultTooLarge = false;
-					logger.error("\nError while reexecuting task(limit)." + "\nTask Parameter: "
-							+ taskParameter.toString() + "\nException: " + e.getMessage());
+					logger.error("\nError while reexecuting task(limit)." + "\nTask Parameter: " + taskParameter.toString() + "\nException: " + e.getMessage());
 				}
 			}
 		}
@@ -105,8 +100,7 @@ public class Task {
 			if (remainingRequestCount != null && Integer.parseInt(remainingRequestCount) < 10) {
 
 				logger.info(taskParameter.getCollectionName() + " Remaining Request Count: " + remainingRequestCount);
-				logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: "
-						+ remainingTimeToResetRequestCount);
+				logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: " + remainingTimeToResetRequestCount);
 				int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount)) + 100;
 				logger.info("Sleeping " + sleepTime + " seconds..");
 				wait(sleepTime * 1000);
@@ -138,8 +132,7 @@ public class Task {
 	private boolean determineIfIsResultHasNextPage(Map<String, String> params, ApiResponse apiResponse) {
 
 		String isResultHasNextPageHeader = apiResponse.getHeaders().get("X-TRIO-Result-Set-Has-Next-Page");
-		boolean isResultHasNextPage = isResultHasNextPageHeader == null ? false
-				: Boolean.parseBoolean(isResultHasNextPageHeader);
+		boolean isResultHasNextPage = isResultHasNextPageHeader == null ? false : Boolean.parseBoolean(isResultHasNextPageHeader);
 
 		String totalCountHeader = apiResponse.getHeaders().get("x-trio-total-count");
 		int totalCount = totalCountHeader == null ? 0 : Integer.parseInt(totalCountHeader);
@@ -197,8 +190,7 @@ public class Task {
 			logger.info(taskParameter.getCollectionName() + " - " + jsonArray.length() + " saved successfully.");
 		} catch (Exception e) {
 
-			logger.error("\nError while saving." + "\nTaskParameter: " + taskParameter.toString() + "\nException: "
-					+ e.getMessage());
+			logger.error("\nError while saving." + "\nTaskParameter: " + taskParameter.toString() + "\nException: " + e.getMessage());
 		}
 	}
 }

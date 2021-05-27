@@ -23,14 +23,22 @@ public class TaskExecutor {
 	public Collection<Future<Boolean>> execTasksAsync(List<ITask> tasks, int configIndex) {
 		
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
+		TaskParameter taskParameter = taskParameterGenerator.generateTaskParameter(configIndex);
 		
 		tasks.forEach(task -> {
 
-			IAsyncExecutableTaskFunc taskFunc = (taskParameter) -> { task.execute(taskParameter); };
-			TaskParameter taskParameter = taskParameterGenerator.generateTaskParameter(configIndex);
+			IAsyncExecutableTaskFunc taskFunc = (taskParam) -> { task.execute(taskParam); };
 			futures.add(asyncHelper.execAsync(taskFunc, taskParameter));
 		});
 		
 		return futures;
+	}	
+	
+	public void execTasks(List<ITask> tasks, int configIndex) {
+
+		TaskParameter taskParameter = taskParameterGenerator.generateTaskParameter(configIndex);
+		tasks.forEach(task -> {
+			task.execute(taskParameter); 
+		});		
 	}	
 }
