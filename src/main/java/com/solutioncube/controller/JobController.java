@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ServiceRunType;
 import com.solutioncube.common.TaskParameterGenerator;
-import com.solutioncube.helper.AsyncHelper;
 import com.solutioncube.job.JobScheduler;
 import com.solutioncube.service.ErisyemBulkDataService;
 
@@ -24,9 +23,6 @@ public class JobController {
 	
 	@Autowired
 	private JobScheduler jobScheduler;
-	
-	@Autowired
-	private AsyncHelper asyncHelper;
 	
 	@Autowired
 	private ErisyemBulkDataService erisyemBulkDataService;
@@ -60,7 +56,7 @@ public class JobController {
 
 		logger.info("erisyemRunBulkData");
 		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		asyncHelper.waitTillEndOfSynchronizedFunc(erisyemService.runAsync(ServiceRunType.STATIC));
+		erisyemService.run(ServiceRunType.STATIC);
 		erisyemBulkDataService.runBulkData();
 		return "Erisyem Bulk Data Service started running successfully";
 	}

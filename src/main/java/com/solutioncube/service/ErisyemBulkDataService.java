@@ -60,22 +60,17 @@ public class ErisyemBulkDataService {
 	@Autowired
 	private TaskExecutor taskExecutor;	
 	
-	private void runTasks(List<ITask> tasks) {
-
-		taskExecutor.execTasks(tasks, CONFIG_INDEX);
-	}
-	
 	@Async
     public void runBulkData() {
     	
     	logger.info("Erisyem Bulk Data Service started running..");
     	Instant start = Instant.now();
     	TaskParameterGenerator.isBulkData = true;
-    	runTasks(TASKS_WHICH_ONLY_WITH_SINCE_PARAM);
+    	taskExecutor.execTasks(TASKS_WHICH_ONLY_WITH_SINCE_PARAM, CONFIG_INDEX);
     	while (TaskParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {
     		
     		logger.info("Initial Date: " + TaskParameterGenerator.getInitialDate());    		
-    		runTasks(TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM);    		
+    		taskExecutor.execTasks(TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX); 		
     		TaskParameterGenerator.setInitialDate(TaskParameterGenerator.getInitialDate().plusDays(TaskParameterGenerator.getIntervalDay()));    		
     	}
     	TaskParameterGenerator.isBulkData = false;
