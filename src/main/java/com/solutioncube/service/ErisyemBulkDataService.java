@@ -13,8 +13,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.solutioncube.common.ITask;
-import com.solutioncube.common.TaskExecutor;
-import com.solutioncube.common.TaskParameterGenerator;
+import com.solutioncube.helper.TaskExecutor;
+import com.solutioncube.helper.TaskParameterGenerator;
 import com.solutioncube.task.AlarmHistoryReportTask;
 import com.solutioncube.task.EnergyConsumptionReportTask;
 import com.solutioncube.task.EnergyMeasurementsHistoryReportTask;

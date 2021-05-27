@@ -17,7 +17,7 @@ public class AlarmHistoryReportTask implements ITask {
 	public void execute(TaskParameter taskParameter) {
 
 		logger.info("Execution Started");
-		taskParameter.setUri(String.format(URI, taskParameter.getSinceDateAsString(), taskParameter.getNowAsString(), taskParameter.getSinceDateAsString(), taskParameter.getNowAsString(), taskParameter.getSinceDateAsString(), taskParameter.getNowAsString()));
+		taskParameter.setUri(String.format(URI, taskParameter.getSinceDateAsString(), taskParameter.getTillDateAsString(), taskParameter.getSinceDateAsString(), taskParameter.getTillDateAsString(), taskParameter.getSinceDateAsString(), taskParameter.getTillDateAsString()));
 		taskParameter.setCollectionName(COLLECTION_NAME);
 		new Task().execute(taskParameter);
 		logger.info("Execution Done");

@@ -1,4 +1,4 @@
-package com.solutioncube.common;
+package com.solutioncube.helper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,9 +16,11 @@ import com.solutioncube.pojo.TaskParameter;
 @Component
 public class TaskParameterGenerator {
 	
-	public static boolean isBulkData = false;
 	private static final int INTERVAL_DAY = 30;
 	private static LocalDate initialDate = LocalDate.of(2020, 12, 01);
+	public static boolean isBulkData = false;
+	
+	public static LocalDateTime tilDate;
 	
 	@Autowired
 	private Config config;	
@@ -43,8 +45,8 @@ public class TaskParameterGenerator {
 		
 		taskParameter.setFirm(firm);
 		taskParameter.setMongoTemplate(mongoTemplate);
-		taskParameter.setNow(LocalDateTime.now());
-		taskParameter.setSinceDate(taskParameter.getNow().minusMinutes(interval));
+		taskParameter.setTillDate(tilDate);
+		taskParameter.setSinceDate(taskParameter.getTillDate().minusMinutes(interval));
 		taskParameter.generateToken();
 		
 		return taskParameter;
@@ -53,7 +55,7 @@ public class TaskParameterGenerator {
 	private TaskParameter generateTaskParameterForBulkDataOfErisyem(TaskParameter taskParameter) {
 		
 		taskParameter.setSinceDate(LocalDateTime.of(initialDate, LocalTime.MIDNIGHT));
-		taskParameter.setNow(LocalDateTime.of(initialDate.plusDays(INTERVAL_DAY), LocalTime.MIDNIGHT));
+		taskParameter.setTillDate(LocalDateTime.of(initialDate.plusDays(INTERVAL_DAY), LocalTime.MIDNIGHT));
 		
 		return taskParameter;
 	}

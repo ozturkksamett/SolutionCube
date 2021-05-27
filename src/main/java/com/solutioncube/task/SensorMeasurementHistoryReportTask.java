@@ -29,7 +29,7 @@ public class SensorMeasurementHistoryReportTask implements ITask {
 			String sensorId = sensorJSONObject.getString("_id");
 			taskParameter.setId(sensorId);
 			taskParameter.setIdColumnName("sensorId");
-			taskParameter.setUri(String.format(URI, sensorId, taskParameter.getSinceDateAsString(), taskParameter.getNowAsString()));
+			taskParameter.setUri(String.format(URI, sensorId, taskParameter.getSinceDateAsString(), taskParameter.getTillDateAsString()));
 			taskParameter.setCollectionName(COLLECTION_NAME);
 			new Task().execute(taskParameter);
 			taskParameter.setId(null);

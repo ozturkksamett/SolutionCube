@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import com.solutioncube.common.TokenGenerator;
+import com.solutioncube.helper.TokenGenerator;
 
 public class TaskParameter {
 	
@@ -12,7 +12,7 @@ public class TaskParameter {
 
 	private MongoTemplate mongoTemplate;
 
-	private LocalDateTime now;
+	private LocalDateTime tillDate;
 
 	private String token;
 
@@ -30,12 +30,12 @@ public class TaskParameter {
 		
 	}
 
-	public LocalDateTime getNow() {
-		return now;
+	public LocalDateTime getTillDate() {
+		return tillDate;
 	}
 
-	public void setNow(LocalDateTime now) {
-		this.now = now;
+	public void setTillDate(LocalDateTime now) {
+		this.tillDate = now;
 	}
 
 	public Firm getFirm() {
@@ -106,8 +106,8 @@ public class TaskParameter {
 		return formattedDateAsString(sinceDate);
 	}
 
-	public String getNowAsString() {
-		return formattedDateAsString(now);
+	public String getTillDateAsString() {
+		return formattedDateAsString(tillDate);
 	}
 
 	private String formattedDateAsString(LocalDateTime date) {

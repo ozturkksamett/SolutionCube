@@ -1,4 +1,4 @@
-package com.solutioncube.common;
+package com.solutioncube.helper;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;

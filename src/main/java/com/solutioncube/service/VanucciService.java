@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ITask;
 import com.solutioncube.common.ServiceRunType;
-import com.solutioncube.common.TaskExecutor;
+import com.solutioncube.helper.TaskExecutor;
 import com.solutioncube.task.AlarmHistoryReportTask;
 import com.solutioncube.task.AlarmRulesTask;
 import com.solutioncube.task.EnergyMeasurementsHistoryReportTask;

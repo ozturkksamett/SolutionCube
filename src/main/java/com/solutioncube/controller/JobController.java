@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ServiceRunType;
-import com.solutioncube.common.TaskParameterGenerator;
+import com.solutioncube.helper.TaskParameterGenerator;
 import com.solutioncube.job.JobScheduler;
 import com.solutioncube.service.ErisyemBulkDataService;
 

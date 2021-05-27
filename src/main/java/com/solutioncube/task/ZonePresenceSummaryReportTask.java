@@ -37,7 +37,7 @@ public class ZonePresenceSummaryReportTask implements ITask {
 
 			String trackerIdsParam = String.join(",", trackerIdsPartition);
 
-			taskParameter.setUri(String.format(URI, trackerIdsParam, taskParameter.getSinceDateAsString(), taskParameter.getNowAsString()));
+			taskParameter.setUri(String.format(URI, trackerIdsParam, taskParameter.getSinceDateAsString(), taskParameter.getTillDateAsString()));
 			taskParameter.setCollectionName(COLLECTION_NAME);
 			new Task().execute(taskParameter);
 		}

@@ -27,7 +27,7 @@ public class TemperatureMeasurementsSummaryReportTask implements ITask {
 			
 			JSONObject temperatureSensorJSONObject = new JSONObject(temperatureSensor);
 			String temperatureSensorId = temperatureSensorJSONObject.getString("_id");
-			taskParameter.setUri(String.format(URI, temperatureSensorId, taskParameter.getSinceDateAsString(), taskParameter.getNowAsString()));
+			taskParameter.setUri(String.format(URI, temperatureSensorId, taskParameter.getSinceDateAsString(), taskParameter.getTillDateAsString()));
 			taskParameter.setCollectionName(COLLECTION_NAME);
 			new Task().execute(taskParameter);
 		}

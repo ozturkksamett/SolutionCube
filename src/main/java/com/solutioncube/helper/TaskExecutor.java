@@ -1,4 +1,4 @@
-package com.solutioncube.common;
+package com.solutioncube.helper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,8 +8,8 @@ import java.util.concurrent.Future;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.solutioncube.helper.AsyncHelper;
-import com.solutioncube.pojo.TaskParameter;
+import com.solutioncube.common.IAsyncExecutableTaskFunc;
+import com.solutioncube.common.ITask;
 
 @Component
 public class TaskExecutor {
@@ -23,13 +23,11 @@ public class TaskExecutor {
 	public Collection<Future<Boolean>> execTasksAsync(List<ITask> tasks, int configIndex) {
 		
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
-		
-		TaskParameter taskParameter = taskParameterGenerator.generateTaskParameter(configIndex);
-		
+
 		tasks.forEach(task -> {
 
-			IAsyncExecutableTaskFunc taskFunc = (taskParam) -> { task.execute(taskParam); };
-			futures.add(asyncHelper.execAsync(taskFunc, taskParameter));
+			IAsyncExecutableTaskFunc taskFunc = (taskParameter) -> { task.execute(taskParameter); };
+			futures.add(asyncHelper.execAsync(taskFunc, taskParameterGenerator.generateTaskParameter(configIndex)));
 		});
 		
 		return futures;
@@ -37,11 +35,9 @@ public class TaskExecutor {
 	
 	public void execTasks(List<ITask> tasks, int configIndex) {
 
-		TaskParameter taskParameter = taskParameterGenerator.generateTaskParameter(configIndex);
-		
 		tasks.forEach(task -> {
 			
-			task.execute(taskParameter); 
+			task.execute(taskParameterGenerator.generateTaskParameter(configIndex)); 
 		});		
 	}	
 }

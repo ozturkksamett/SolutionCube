@@ -1,4 +1,4 @@
-package com.solutioncube.common;
+package com.solutioncube.helper;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;

@@ -27,7 +27,7 @@ public class SensorCountSummaryReportTask implements ITask {
 
 			JSONObject sensorCounterJSONObject = new JSONObject(sensorCounter);
 			String sensorCounterId = sensorCounterJSONObject.getString("_id");
-			taskParameter.setUri(String.format(URI, sensorCounterId, taskParameter.getSinceDateAsString(), taskParameter.getNowAsString()));
+			taskParameter.setUri(String.format(URI, sensorCounterId, taskParameter.getSinceDateAsString(), taskParameter.getTillDateAsString()));
 			taskParameter.setCollectionName(COLLECTION_NAME);
 			new Task().execute(taskParameter);
 		}
