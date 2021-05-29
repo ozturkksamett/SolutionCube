@@ -1,6 +1,5 @@
 package com.solutioncube.service;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.solutioncube.common.IService;
-import com.solutioncube.common.ServiceRunType;
-import com.solutioncube.helper.AsyncHelper;
+import com.solutioncube.common.TaskType;
 import com.solutioncube.helper.ServiceRunner;
-import com.solutioncube.helper.TaskParameterGenerator;
 
 @Service
 public class SolutionCubeJobService {
@@ -23,9 +20,6 @@ public class SolutionCubeJobService {
 	@Autowired
 	private ServiceRunner serviceRunner;
 
-	@Autowired
-	private AsyncHelper asyncHelper;
-	
 	@Autowired
 	private IService erisyemService;
 	
@@ -41,17 +35,9 @@ public class SolutionCubeJobService {
 		});
 	}
 
-	public void runDailySolutionCubeJobAsync() {
+	public void runDailySolutionCubeJob(boolean isAsync) {
 
-		TaskParameterGenerator.tilDate = LocalDateTime.now();	
-		asyncHelper.waitTillEndOfSynchronizedFunc(serviceRunner.runServicesAsync(registerServices(), ServiceRunType.DAILY));	
+		serviceRunner.runServices(registerServices(), TaskType.TASKS_WHICH_DAILY, isAsync);	
 		logger.info("SolutionCubeJobService finished running.");	
-	}
-	
-	public void runDailySolutionCubeJob() {
-
-		TaskParameterGenerator.tilDate = LocalDateTime.now();		
-		serviceRunner.runServices(registerServices(), ServiceRunType.DAILY);	
-		logger.info("SolutionCubeJobService finished running.");
 	}
 }

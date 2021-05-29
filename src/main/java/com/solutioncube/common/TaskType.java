@@ -1,0 +1,12 @@
+package com.solutioncube.common;
+
+public enum TaskType {
+
+	TASKS_WHICH_STATIC,
+	
+	TASKS_WHICH_DAILY,
+	
+	TASKS_WHICH_ONLY_WITH_SINCE_PARAM,
+	
+	TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM;
+}

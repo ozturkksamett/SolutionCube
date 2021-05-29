@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ITask;
-import com.solutioncube.common.ServiceRunType;
+import com.solutioncube.common.TaskType;
 import com.solutioncube.helper.TaskExecutor;
 import com.solutioncube.task.AlarmHistoryReportTask;
 import com.solutioncube.task.AlarmRulesTask;
@@ -24,6 +24,8 @@ import com.solutioncube.task.SensorsTask;
 @Service
 @Qualifier("vanucciService")
 public class VanucciService implements IService {
+
+	private static final String SERVICE_NAME = "Vanucci";
 	
 	private static final int CONFIG_INDEX = 1;
 	
@@ -45,32 +47,29 @@ public class VanucciService implements IService {
 	private TaskExecutor taskExecutor;	
 	
 	@Override
-	public void run(ServiceRunType serviceRunType) {
-
-		switch (serviceRunType) {
-		case STATIC :			
-			taskExecutor.execTasks(STATIC_TASKS, CONFIG_INDEX);
-			break;
-		case DAILY :			
-			taskExecutor.execTasks(DAILY_TASKS, CONFIG_INDEX);
-			break;
-		}
-	}
-	
-	@Override
-	public Collection<Future<Boolean>> runAsync(ServiceRunType serviceRunType) {
+	public Collection<Future<Boolean>> run(TaskType taskType, boolean isAsync) {
 
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
 		
-		switch (serviceRunType) {
-		case STATIC :			
-			futures = taskExecutor.execTasksAsync(STATIC_TASKS, CONFIG_INDEX);
+		switch (taskType) {
+		case TASKS_WHICH_STATIC :			
+			futures = taskExecutor.execTasks(STATIC_TASKS, CONFIG_INDEX, isAsync);
 			break;
-		case DAILY :			
-			futures = taskExecutor.execTasksAsync(DAILY_TASKS, CONFIG_INDEX);
+		case TASKS_WHICH_DAILY :			
+			futures = taskExecutor.execTasks(DAILY_TASKS, CONFIG_INDEX, isAsync);
+			break;
+		case TASKS_WHICH_ONLY_WITH_SINCE_PARAM:
+			break;
+		case TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM:
 			break;
 		}
 		
 		return futures;
+	}
+
+	@Override
+	public String getServiceName() {
+
+		return SERVICE_NAME;
 	}
 }

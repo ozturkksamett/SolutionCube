@@ -20,24 +20,26 @@ public class TaskExecutor {
 	@Autowired
 	private AsyncHelper asyncHelper;
 
-	public Collection<Future<Boolean>> execTasksAsync(List<ITask> tasks, int configIndex) {
+	public Collection<Future<Boolean>> execTasks(List<ITask> tasks, int configIndex, boolean isAsync) {
 		
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
 
-		tasks.forEach(task -> {
+		if(isAsync) {
 
-			IAsyncExecutableTaskFunc taskFunc = (taskParameter) -> { task.execute(taskParameter); };
-			futures.add(asyncHelper.execAsync(taskFunc, taskParameterGenerator.generateTaskParameter(configIndex)));
-		});
+			tasks.forEach(task -> {
+
+				IAsyncExecutableTaskFunc taskFunc = (taskParameter) -> { task.execute(taskParameter); };
+				futures.add(asyncHelper.execAsync(taskFunc, taskParameterGenerator.generateTaskParameter(configIndex)));
+			});
+		}
+		else {
+			
+			tasks.forEach(task -> {
+
+				task.execute(taskParameterGenerator.generateTaskParameter(configIndex));
+			});		
+		}
 		
 		return futures;
-	}	
-	
-	public void execTasks(List<ITask> tasks, int configIndex) {
-
-		tasks.forEach(task -> {
-			
-			task.execute(taskParameterGenerator.generateTaskParameter(configIndex)); 
-		});		
 	}	
 }

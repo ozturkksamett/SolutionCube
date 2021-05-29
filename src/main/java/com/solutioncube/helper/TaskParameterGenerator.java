@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
@@ -15,12 +17,12 @@ import com.solutioncube.pojo.TaskParameter;
 
 @Component
 public class TaskParameterGenerator {
+
+	private static final Logger logger = LoggerFactory.getLogger(TaskParameterGenerator.class);
 	
 	private static final int INTERVAL_DAY = 30;
 	private static LocalDate initialDate = LocalDate.of(2020, 12, 01);
 	public static boolean isBulkData = false;
-	
-	public static LocalDateTime tilDate;
 	
 	@Autowired
 	private Config config;	
@@ -45,8 +47,8 @@ public class TaskParameterGenerator {
 		
 		taskParameter.setFirm(firm);
 		taskParameter.setMongoTemplate(mongoTemplate);
-		taskParameter.setTillDate(tilDate);
-		taskParameter.setSinceDate(taskParameter.getTillDate().minusMinutes(interval));
+		taskParameter.setSinceDate(LocalDateTime.of(LocalDateTime.now().minusMinutes(interval).toLocalDate(), LocalTime.MIDNIGHT));
+		taskParameter.setTillDate(taskParameter.getSinceDate().plusMinutes(interval));
 		taskParameter.generateToken();
 		
 		return taskParameter;
@@ -66,6 +68,7 @@ public class TaskParameterGenerator {
 
 	public static void setInitialDate(LocalDate initialDate) {
 		TaskParameterGenerator.initialDate = initialDate;
+		logger.info("Initial Date: " + TaskParameterGenerator.getInitialDate());  
 	}
 
 	public static int getIntervalDay() {

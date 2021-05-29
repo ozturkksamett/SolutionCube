@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.solutioncube.common.IService;
-import com.solutioncube.common.ServiceRunType;
+import com.solutioncube.common.TaskType;
+import com.solutioncube.helper.ServiceRunner;
 import com.solutioncube.helper.TaskParameterGenerator;
 import com.solutioncube.job.JobScheduler;
-import com.solutioncube.service.ErisyemBulkDataService;
 
 @RestController
 public class JobController {
@@ -19,22 +19,22 @@ public class JobController {
 	private static final Logger logger = LoggerFactory.getLogger(JobController.class);
 	
 	private static final int ERISYEM_CONFIG_INDEX = 0;
-	private static final int VANUCCI_CONFIG_INDEX = 1;
+	private static final int VANUCCI_CONFIG_INDEX = 1;	
 	
 	@Autowired
-	private JobScheduler jobScheduler;
+	IService erisyemService;
 	
 	@Autowired
-	private ErisyemBulkDataService erisyemBulkDataService;
+	IService vanucciService;
 	
 	@Autowired
-	private IService erisyemService;
-	
-	@Autowired
-	private IService vanucciService;
+	JobScheduler jobScheduler;	
 
 	@Autowired
 	TaskParameterGenerator taskParameterGenerator;
+
+	@Autowired
+	ServiceRunner serviceRunner;
 	
 	@RequestMapping("/")
 	public String home() {
@@ -56,26 +56,27 @@ public class JobController {
 
 		logger.info("erisyemRunBulkData");
 		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		erisyemService.run(ServiceRunType.STATIC);
-		erisyemBulkDataService.runBulkData();
-		return "Erisyem Bulk Data Service started running successfully";
+		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_STATIC, true);
+		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_ONLY_WITH_SINCE_PARAM, false);
+		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		return "Erisyem service finished running for bulk data successfully";
 	}
 	
-	@PostMapping("/erisyemRunStaticTasksAsync")
-	public String erisyemRunStaticTasksAsync() {
+	@PostMapping("/erisyemRunStaticTasks")
+	public String erisyemRunStaticTasks() {
 
-		logger.info("erisyemRunStaticTasksAsync");
+		logger.info("erisyemRunStaticTasks");
 		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		erisyemService.runAsync(ServiceRunType.STATIC);
-		return "Erisyem service started running for static tasks asynchronously successfully";
+		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_STATIC, true);
+		return "Erisyem service finished running for static tasks asynchronously successfully";
 	}
 
-	@PostMapping("/vanucciRunStaticTasksAsync")
-	public String vanucciRunStaticTasksAsync() {
+	@PostMapping("/vanucciRunStaticTasks")
+	public String vanucciRunStaticTasks() {
 
-		logger.info("vanucciRunStaticTasksAsync");
+		logger.info("vanucciRunStaticTasks");
 		taskParameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		vanucciService.runAsync(ServiceRunType.STATIC);
-		return "Vanucci service started running for static tasks asynchronously successfully";
+		serviceRunner.runService(vanucciService, TaskType.TASKS_WHICH_STATIC, true);
+		return "Vanucci service finished running for static tasks asynchronously successfully";
 	}
 }

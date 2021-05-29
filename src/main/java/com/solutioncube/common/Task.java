@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.BasicDBObject;
 import com.solutioncube.helper.ApiCaller;
+import com.solutioncube.helper.ApiErrorLogger;
 import com.solutioncube.pojo.ApiResponse;
 import com.solutioncube.pojo.TaskParameter;
 
@@ -23,7 +24,7 @@ public class Task {
 	private static final Logger logger = LoggerFactory.getLogger(Task.class);
 
 	private MongoTemplate mongoTemplate;
-
+	
 	public synchronized void execute(TaskParameter taskParameter) {
 
 		this.mongoTemplate = taskParameter.getMongoTemplate();
@@ -122,7 +123,7 @@ public class Task {
 			new JSONArray(apiResponse.getResponseBody());
 		} catch (Exception e) {
 
-			logger.error("\nError while calling api." + "\nUri: " + taskParameter.getUri() + "\nToken: " + taskParameter.getToken() + "\nApi Response: " + apiResponse.toString() + "\nException: " + e.getMessage());
+			ApiErrorLogger.log(taskParameter, apiResponse, e);
 		}
 
 		checkIfTaskShouldWait(taskParameter, apiResponse);
