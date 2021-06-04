@@ -46,12 +46,12 @@ public class JobScheduler {
 			logger.error("Error while scheduling SolutionCubeJob. Exception: " + e.getMessage());			
 		}
 		
-		logger.info("SolutionCubeJob scheduled successfully");
+		logger.info(String.format("SolutionCubeJob scheduled successfully. Scheduleld time: %t", zonedDateTime));
 	}
 
 	private ZonedDateTime getZonedDateTime() {
 		
-		LocalDateTime localDateTime = LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT).plusDays(1);
+		LocalDateTime localDateTime = LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT).plusHours(21);
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, Calendar.getInstance().getTimeZone().toZoneId());		
 		
 		return zonedDateTime;

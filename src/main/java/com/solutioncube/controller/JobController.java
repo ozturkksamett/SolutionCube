@@ -55,14 +55,14 @@ public class JobController {
 	public String erisyemRunBulkData() {
 
 		logger.info("erisyemRunBulkData");
-		taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_STATIC, true);
+		//taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
+		//serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_STATIC, true);
 		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_ONLY_WITH_SINCE_PARAM, false);
 		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
 		return "Erisyem service finished running for bulk data successfully";
 	}
 	
-	@PostMapping("/erisyemRunStaticTasks")
+	//@PostMapping("/erisyemRunStaticTasks")
 	public String erisyemRunStaticTasks() {
 
 		logger.info("erisyemRunStaticTasks");

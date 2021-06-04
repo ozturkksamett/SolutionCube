@@ -35,9 +35,7 @@ public class ServiceRunner {
 		});
 		asyncHelper.waitTillEndOfSynchronizedFunc(futures);					
 		Instant finish = Instant.now();
-		logger.info(String.format("%s services finished running. Duration: %d minutes."
-				, services.stream().map(IService::getServiceName).collect(Collectors.joining(", "))
-				, Duration.between(start, finish).toMinutes()));  
+		logger.info(String.format("%s services finished running. Duration: %d minutes.", services.stream().map(IService::getServiceName).collect(Collectors.joining(", ")), Duration.between(start, finish).toMinutes()));  
 		ApiErrorLogger.print();		
 	}	
 	
@@ -47,9 +45,7 @@ public class ServiceRunner {
     	Instant start = Instant.now();
 		asyncHelper.waitTillEndOfSynchronizedFunc(service.run(taskType, isAsync));	    	
 		Instant finish = Instant.now();
-		logger.info(String.format("%s service finished running. Duration: %d minutes."
-				, service.getServiceName()
-				, Duration.between(start, finish).toMinutes()));
+		logger.info(String.format("%s service finished running. Duration: %d minutes.", service.getServiceName(), Duration.between(start, finish).toMinutes()));
 		ApiErrorLogger.print(); 
 	}	
 }
