@@ -46,7 +46,7 @@ public class JobScheduler {
 			logger.error("Error while scheduling SolutionCubeJob. Exception: " + e.getMessage());			
 		}
 		
-		logger.info(String.format("SolutionCubeJob scheduled successfully. Scheduleld time: %t", zonedDateTime));
+		logger.info("SolutionCubeJob scheduled successfully. Scheduleld time: " + zonedDateTime);
 	}
 
 	private ZonedDateTime getZonedDateTime() {
