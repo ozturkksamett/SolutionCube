@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.solutioncube.config.Config;
+import com.solutioncube.helper.EmailSender;
 
 @Component
 public class JobScheduler {
@@ -27,10 +28,13 @@ public class JobScheduler {
 	private static final Logger logger = LoggerFactory.getLogger(JobScheduler.class);
 	
 	@Autowired
-	private Config config;
+	Config config;
 
 	@Autowired
-	private Scheduler scheduler;
+	Scheduler scheduler;
+
+	@Autowired
+	EmailSender emailSender;
 	
 	public void scheduleDailyJob() {		
 
@@ -47,6 +51,7 @@ public class JobScheduler {
 		}
 		
 		logger.info("SolutionCubeJob scheduled successfully. Scheduled time: " + zonedDateTime + " Local time: " + LocalDateTime.now());
+		emailSender.sendMail("SolutionCubeJob scheduled successfully");
 	}
 
 	private ZonedDateTime getZonedDateTime() {

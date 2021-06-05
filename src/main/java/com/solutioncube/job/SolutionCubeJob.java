@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
+import com.solutioncube.helper.EmailSender;
 import com.solutioncube.service.SolutionCubeJobService;
 
 @Component
@@ -16,14 +17,17 @@ public class SolutionCubeJob extends QuartzJobBean {
 	private static final Logger logger = LoggerFactory.getLogger(SolutionCubeJob.class);
 
 	@Autowired
-	private SolutionCubeJobService solutionCubeJobService;
+	SolutionCubeJobService solutionCubeJobService;
+
+	@Autowired
+	EmailSender emailSender;
 	
 	@Override
 	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		
-		logger.info("SolutionCubeJob started running.");
-		boolean isAsync = true;
-		solutionCubeJobService.runDailySolutionCubeJob(isAsync);	
+		logger.info("SolutionCubeJob started running.");	
+		solutionCubeJobService.runDailySolutionCubeJob(true);	
+		emailSender.sendDailyJobReportMail();
 		logger.info("SolutionCubeJob finished running.");	
 	}
 }

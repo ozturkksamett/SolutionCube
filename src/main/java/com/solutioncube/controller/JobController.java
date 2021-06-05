@@ -51,7 +51,7 @@ public class JobController {
 		return "SolutionCubeJob scheduled successfully!";
 	}
 	
-	@PostMapping("/erisyemRunBulkData")
+	//@PostMapping("/erisyemRunBulkData")
 	public String erisyemRunBulkData() {
 
 		logger.info("erisyemRunBulkData");

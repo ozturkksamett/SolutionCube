@@ -21,7 +21,7 @@ public class TaskParameterGenerator {
 	private static final Logger logger = LoggerFactory.getLogger(TaskParameterGenerator.class);
 	
 	private static final int INTERVAL_DAY = 30;
-	private static LocalDate initialDate = LocalDate.of(2021, 04, 30);
+	private static LocalDate initialDate = LocalDate.of(2020, 12, 01);
 	public static boolean isBulkData = false;
 	
 	@Autowired

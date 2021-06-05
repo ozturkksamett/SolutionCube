@@ -40,4 +40,9 @@ public class ApiErrorLogger {
 
 		apiErrors = new ArrayList<ApiErrorLog>();
 	}
+
+	public static ArrayList<ApiErrorLog> getApiErrors() {
+		
+		return apiErrors;
+	}
 }
