@@ -6,6 +6,8 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
+
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -35,7 +37,8 @@ public class JobScheduler {
 
 	@Autowired
 	EmailSender emailSender;
-	
+
+	@PostConstruct
 	public void scheduleDailyJob() {		
 
 		ZonedDateTime zonedDateTime = getZonedDateTime();
