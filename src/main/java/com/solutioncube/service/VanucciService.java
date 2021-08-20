@@ -32,7 +32,7 @@ public class VanucciService implements IService {
 	private static final List<ITask> STATIC_TASKS = Arrays.asList(new ITask[] {
 
 			new SensorsTask()
-			,new AlarmRulesTask()
+			//,new AlarmRulesTask()
 			,new EnergyMetersTask()
 	});
 
