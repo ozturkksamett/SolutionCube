@@ -118,6 +118,7 @@ public class Task {
 		ApiResponse apiResponse = null;
 		try {
 			
+			logger.info("callApi: " + taskParameter.getUri());
 			Request request = new Request.Builder().url(taskParameter.getUri()).get().addHeader("authorization", taskParameter.getToken()).build();
 			apiResponse = ApiCaller.call(request);				
 			new JSONArray(apiResponse.getResponseBody());
@@ -171,6 +172,7 @@ public class Task {
 
 	private void saveJsonArray(TaskParameter taskParameter, JSONArray jsonArray) {
 
+		logger.info("savejsonArray: " + jsonArray);
 		List<BasicDBObject> basicDBObjectList = new ArrayList<BasicDBObject>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {

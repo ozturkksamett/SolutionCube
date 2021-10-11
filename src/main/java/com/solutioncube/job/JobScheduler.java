@@ -60,6 +60,7 @@ public class JobScheduler {
 	private ZonedDateTime getZonedDateTime() {
 		
 		LocalDateTime localDateTime = LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT).plusMinutes(config.getInterval());
+		localDateTime = LocalDateTime.now().plusMinutes(1); //uncomment for test
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, Calendar.getInstance().getTimeZone().toZoneId());		
 		
 		return zonedDateTime;

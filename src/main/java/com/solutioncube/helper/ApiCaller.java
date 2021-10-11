@@ -29,8 +29,8 @@ public class ApiCaller {
 				
 			try {
 				
-				URL proxyUrl = new URL(System.getenv("QUOTAGUARDSTATIC_URL")); //uncomment for production
-				//URL proxyUrl = new URL("http://yywaotbo7b6o7t:3sgw107we0o79xgoga9cro4fe15vu@eu-west-static-04.quotaguard.com:9293"); //uncomment for local unit test
+				//URL proxyUrl = new URL(System.getenv("QUOTAGUARDSTATIC_URL")); //uncomment for production
+				URL proxyUrl = new URL("http://yywaotbo7b6o7t:3sgw107we0o79xgoga9cro4fe15vu@eu-west-static-04.quotaguard.com:9293"); //uncomment for local unit test
 				Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort()));
 				
 				String userInfo = proxyUrl.getUserInfo();

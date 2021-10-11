@@ -62,7 +62,7 @@ public class JobController {
 		return "Erisyem service finished running for bulk data successfully";
 	}
 	
-	//@PostMapping("/erisyemRunStaticTasks")
+	@PostMapping("/erisyemRunStaticTasks")
 	public String erisyemRunStaticTasks() {
 
 		logger.info("erisyemRunStaticTasks");

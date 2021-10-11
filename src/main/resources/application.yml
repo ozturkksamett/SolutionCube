@@ -1,4 +1,6 @@
-mongoDbUri: mongodb+srv://ethemduzgun:scfm2021@solutioncube.azjcz.mongodb.net/solutioncube
+#mongoDbUri: mongodb+srv://ethemduzgun:scfm2021@solutioncube.azjcz.mongodb.net/solutioncube
+
+mongoDbUri: mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false
 
 interval: 1440
 
