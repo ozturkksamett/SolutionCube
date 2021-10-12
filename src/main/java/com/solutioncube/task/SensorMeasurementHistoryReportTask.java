@@ -2,15 +2,18 @@ package com.solutioncube.task;
 
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.solutioncube.common.IProcess;
 import com.solutioncube.common.ITask;
 import com.solutioncube.common.Task;
+import com.solutioncube.helper.CacheManager;
 import com.solutioncube.pojo.TaskParameter;
 
-public class SensorMeasurementHistoryReportTask implements ITask {
+public class SensorMeasurementHistoryReportTask implements ITask, IProcess {
 
 	private static final Logger logger = LoggerFactory.getLogger(SensorMeasurementHistoryReportTask.class);
 	private final String BASE_COLLECTION_NAME = "Sensors";
@@ -36,5 +39,20 @@ public class SensorMeasurementHistoryReportTask implements ITask {
 			taskParameter.setIdColumnName(null);
 		}
 		logger.info("Execution Done");
+	}
+
+	@Override
+	public void process() {
+		
+		logger.info("Process Started");
+		
+		JSONArray jsonArray = CacheManager.get(COLLECTION_NAME);
+		
+		// Implement Algorithm
+		for (int i = 0; i < jsonArray.length(); i++) {
+			
+		}		
+		
+		logger.info("Process Done");
 	}
 }

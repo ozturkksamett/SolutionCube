@@ -1,11 +1,9 @@
 package com.solutioncube.task;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mongodb.BasicDBObject;
 import com.solutioncube.common.IProcess;
 import com.solutioncube.common.ITask;
 import com.solutioncube.common.Task;
