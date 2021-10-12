@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mongodb.BasicDBObject;
+import com.solutioncube.dao.SolutionCubeDAO;
 import com.solutioncube.helper.ApiCaller;
 import com.solutioncube.helper.ApiErrorLogger;
 import com.solutioncube.helper.CacheManager;
@@ -168,32 +168,20 @@ public class Task {
 
 	private void saveJsonArray(TaskParameter taskParameter, JSONArray jsonArray) {
 
-		logger.info("savejsonArray: " + jsonArray);
-		List<BasicDBObject> basicDBObjectList = new ArrayList<BasicDBObject>();
 		List<JSONObject> jsonObjects = new ArrayList<JSONObject>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			if (taskParameter.getId() != null) {
-
+			
+			if (taskParameter.getId() != null)
 				jsonObject.put(taskParameter.getIdColumnName(), taskParameter.getId());
-			}
-
-			BasicDBObject basicDBObject = BasicDBObject.parse(jsonObject.toString());
-			basicDBObjectList.add(basicDBObject);
+			
 			jsonObjects.add(jsonObject);
 		}
 
-		try {
-
-			taskParameter.getMongoTemplate().insert(basicDBObjectList, taskParameter.getCollectionName());
-			CacheManager.add(taskParameter.getCollectionName(), jsonObjects);
-			logger.info(taskParameter.getCollectionName() + " - " + jsonArray.length() + " saved successfully.");
-		} catch (Exception e) {
-
-			logger.error("\nError while saving." + "\nTaskParameter: " + taskParameter.toString() + "\nException: " + e.getMessage());
-		}
+		SolutionCubeDAO.saveJsonData(taskParameter.getMongoTemplate(), taskParameter.getCollectionName(), jsonObjects);
+		
+		CacheManager.add(taskParameter.getCollectionName(), jsonObjects);
 	}
 }
