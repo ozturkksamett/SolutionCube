@@ -1,9 +1,10 @@
 package com.solutioncube.helper;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,17 +12,23 @@ public class CacheManager {
 
 	private static final Logger logger = LoggerFactory.getLogger(CacheManager.class);
 
-	private static Map<String, JSONArray> tasks;
+	private static Map<String, List<JSONObject>> tasks;
 
-	public static void add(String key, JSONArray value) {
+	public static void add(String key, List<JSONObject> value) {
 
 		if (tasks == null)
 			clear();
 
-		tasks.merge(key, value, JSONArray::put);
+		if(tasks.containsKey(key)) {
+			List<JSONObject> oldValue = tasks.get(key);
+			value.addAll(oldValue);
+			tasks.put(key, value);
+		}
+		else 
+			tasks.put(key, value);
 	}
 
-	public static JSONArray get(String key) {
+	public static List<JSONObject> get(String key) {
 
 		if (tasks == null)
 			return null;
@@ -31,7 +38,7 @@ public class CacheManager {
 	
 	public static void clear() {
 
-		tasks = new HashMap<String, JSONArray>();
+		tasks = new HashMap<String, List<JSONObject>>();
 		logger.info("Cache cleaned");
 	}
 }

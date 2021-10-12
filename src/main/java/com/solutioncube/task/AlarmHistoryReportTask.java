@@ -1,6 +1,8 @@
 package com.solutioncube.task;
 
-import org.json.JSONArray;
+import java.util.List;
+
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,10 +33,10 @@ public class AlarmHistoryReportTask implements ITask, IProcess {
 		
 		logger.info("Process Started");
 		
-		JSONArray jsonArray = CacheManager.get(COLLECTION_NAME);
+		List<JSONObject> jsonObjects = CacheManager.get(COLLECTION_NAME);
 		
 		// Implement Algorithm
-		for (int i = 0; i < jsonArray.length(); i++) {
+		for (int i = 0; i < jsonObjects.size(); i++) {
 			
 		}		
 		

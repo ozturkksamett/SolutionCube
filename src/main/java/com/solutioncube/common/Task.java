@@ -170,6 +170,7 @@ public class Task {
 
 		logger.info("savejsonArray: " + jsonArray);
 		List<BasicDBObject> basicDBObjectList = new ArrayList<BasicDBObject>();
+		List<JSONObject> jsonObjects = new ArrayList<JSONObject>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -182,12 +183,13 @@ public class Task {
 
 			BasicDBObject basicDBObject = BasicDBObject.parse(jsonObject.toString());
 			basicDBObjectList.add(basicDBObject);
+			jsonObjects.add(jsonObject);
 		}
 
 		try {
 
 			taskParameter.getMongoTemplate().insert(basicDBObjectList, taskParameter.getCollectionName());
-			CacheManager.add(taskParameter.getCollectionName(), jsonArray);
+			CacheManager.add(taskParameter.getCollectionName(), jsonObjects);
 			logger.info(taskParameter.getCollectionName() + " - " + jsonArray.length() + " saved successfully.");
 		} catch (Exception e) {
 
