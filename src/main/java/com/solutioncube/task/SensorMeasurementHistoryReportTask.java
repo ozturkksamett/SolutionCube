@@ -5,6 +5,7 @@ import java.util.List;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.solutioncube.common.IProcess;
 import com.solutioncube.common.ITask;
@@ -37,11 +38,12 @@ public class SensorMeasurementHistoryReportTask implements ITask, IProcess {
 			taskParameter.setId(null);
 			taskParameter.setIdColumnName(null);
 		}
+		process(taskParameter.getMongoTemplate());
 		logger.info("Execution Done");
 	}
 
 	@Override
-	public void process() {
+	public void process(MongoTemplate mongoTemplate) {
 		
 		logger.info("Process Started");
 		
