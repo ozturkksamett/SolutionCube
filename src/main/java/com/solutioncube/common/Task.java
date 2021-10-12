@@ -9,11 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.BasicDBObject;
 import com.solutioncube.helper.ApiCaller;
 import com.solutioncube.helper.ApiErrorLogger;
+import com.solutioncube.helper.CacheManager;
 import com.solutioncube.pojo.ApiResponse;
 import com.solutioncube.pojo.TaskParameter;
 
@@ -23,11 +23,7 @@ public class Task {
 
 	private static final Logger logger = LoggerFactory.getLogger(Task.class);
 
-	private MongoTemplate mongoTemplate;
-	
-	public synchronized void execute(TaskParameter taskParameter) {
-
-		this.mongoTemplate = taskParameter.getMongoTemplate();
+	public void execute(TaskParameter taskParameter) {
 
 		try {
 
@@ -190,7 +186,8 @@ public class Task {
 
 		try {
 
-			mongoTemplate.insert(basicDBObjectList, taskParameter.getCollectionName());
+			taskParameter.getMongoTemplate().insert(basicDBObjectList, taskParameter.getCollectionName());
+			CacheManager.add(taskParameter.getCollectionName(), jsonArray);
 			logger.info(taskParameter.getCollectionName() + " - " + jsonArray.length() + " saved successfully.");
 		} catch (Exception e) {
 

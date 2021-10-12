@@ -15,7 +15,6 @@ import com.solutioncube.common.ITask;
 import com.solutioncube.common.TaskType;
 import com.solutioncube.helper.TaskExecutor;
 import com.solutioncube.task.AlarmHistoryReportTask;
-import com.solutioncube.task.AlarmRulesTask;
 import com.solutioncube.task.EnergyMeasurementsHistoryReportTask;
 import com.solutioncube.task.EnergyMetersTask;
 import com.solutioncube.task.SensorMeasurementHistoryReportTask;
@@ -32,7 +31,6 @@ public class VanucciService implements IService {
 	private static final List<ITask> STATIC_TASKS = Arrays.asList(new ITask[] {
 
 			new SensorsTask()
-			//,new AlarmRulesTask()
 			,new EnergyMetersTask()
 	});
 
@@ -58,9 +56,9 @@ public class VanucciService implements IService {
 		case TASKS_WHICH_DAILY :			
 			futures = taskExecutor.execTasks(DAILY_TASKS, CONFIG_INDEX, isAsync);
 			break;
-		case TASKS_WHICH_ONLY_WITH_SINCE_PARAM:
+		case TASKS_WHICH_ONLY_WITH_SINCE_PARAM_FOR_INSERT_BULK_DATA:
 			break;
-		case TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM:
+		case TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM_FOR_INSERT_BULK_DATA:
 			break;
 		}
 		

@@ -57,8 +57,8 @@ public class JobController {
 		logger.info("erisyemRunBulkData");
 		//taskParameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		//serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_STATIC, true);
-		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_ONLY_WITH_SINCE_PARAM, false);
-		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_ONLY_WITH_SINCE_PARAM_FOR_INSERT_BULK_DATA, false);
+		serviceRunner.runService(erisyemService, TaskType.TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM_FOR_INSERT_BULK_DATA, false);
 		return "Erisyem service finished running for bulk data successfully";
 	}
 	
@@ -71,7 +71,7 @@ public class JobController {
 		return "Erisyem service finished running for static tasks asynchronously successfully";
 	}
 
-	//@PostMapping("/vanucciRunStaticTasks")
+	@PostMapping("/vanucciRunStaticTasks")
 	public String vanucciRunStaticTasks() {
 
 		logger.info("vanucciRunStaticTasks");

@@ -31,7 +31,7 @@ public class SolutionCubeJobService {
 		return Arrays.asList(new IService[] {
 				
 				erisyemService
-				//,vanucciService
+				,vanucciService
 		});
 	}
 

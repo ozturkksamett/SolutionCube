@@ -66,24 +66,24 @@ public class ErisyemService implements IService {
 
 	private static final List<ITask> DAILY_TASKS = Arrays.asList(new ITask[] {
 
-//			new PositionHistoryReportTask()
-//			,new LatestPositionsReportTask()
-//			,new OutageHistoryReportTask()
-//			,new LatestEnergyMeasurementsReportTask()
-//			,new EnergyMeasurementsHistoryReportTask()
-//			,new EnergyConsumptionReportTask()
-//			,new LatestTemperatureMeasurementsReportTask()
-//			,new TemperatureMeasurementsHistoryReportTask()
-//			,new TemperatureMeasurementsSummaryReportTask()
-			new ZonePresenceHistoryReportTask()
-//			,new ZonePresenceSummaryReportTask()
-//			,new AlarmHistoryReportTask()
-//			,new LatestSensorMeasurementReportTask()
-//			,new SensorMeasurementHistoryReportTask()
-//			,new SensorMeasurementSummaryReportTask()
-//			,new SensorCountHistoryReportTask()
-//			,new SensorCountLatestReportTask()
-//			,new SensorCountSummaryReportTask()
+			new PositionHistoryReportTask()
+			,new LatestPositionsReportTask()
+			,new OutageHistoryReportTask()
+			,new LatestEnergyMeasurementsReportTask()
+			,new EnergyMeasurementsHistoryReportTask()
+			,new EnergyConsumptionReportTask()
+			,new LatestTemperatureMeasurementsReportTask()
+			,new TemperatureMeasurementsHistoryReportTask()
+			,new TemperatureMeasurementsSummaryReportTask()
+			,new ZonePresenceHistoryReportTask()
+			,new ZonePresenceSummaryReportTask()
+			,new AlarmHistoryReportTask()
+			,new LatestSensorMeasurementReportTask()
+			,new SensorMeasurementHistoryReportTask()
+			,new SensorMeasurementSummaryReportTask()
+			,new SensorCountHistoryReportTask()
+			,new SensorCountLatestReportTask()
+			,new SensorCountSummaryReportTask()
 	});
 	
 	private static final List<ITask> TASKS_WHICH_ONLY_WITH_SINCE_PARAM = Arrays.asList(new ITask[] {
@@ -125,12 +125,12 @@ public class ErisyemService implements IService {
 		case TASKS_WHICH_DAILY :			
 			futures = taskExecutor.execTasks(DAILY_TASKS, CONFIG_INDEX, isAsync);
 			break;
-		case TASKS_WHICH_ONLY_WITH_SINCE_PARAM:
+		case TASKS_WHICH_ONLY_WITH_SINCE_PARAM_FOR_INSERT_BULK_DATA:
 	    	TaskParameterGenerator.isBulkData = true;
 			futures = taskExecutor.execTasks(TASKS_WHICH_ONLY_WITH_SINCE_PARAM, CONFIG_INDEX, isAsync);
 	    	TaskParameterGenerator.isBulkData = false;
 			break;
-		case TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM:
+		case TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM_FOR_INSERT_BULK_DATA:
 	    	TaskParameterGenerator.isBulkData = true;
 	    	while (TaskParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {
 	    		

@@ -26,11 +26,11 @@ public class ServiceRunner {
 
 	public void runServices(List<IService> services, TaskType taskType, boolean isAsync) {
     	
+		CacheManager.clear();
 		ApiErrorLogger.clear();
     	Instant start = Instant.now();		
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();		
 		services.forEach(service -> {
-
 			futures.addAll(service.run(taskType, isAsync));
 		});
 		asyncHelper.waitTillEndOfSynchronizedFunc(futures);					
@@ -41,6 +41,7 @@ public class ServiceRunner {
 	
 	public void runService(IService service, TaskType taskType, boolean isAsync) {
     	
+		CacheManager.clear();
 		ApiErrorLogger.clear();
     	Instant start = Instant.now();
 		asyncHelper.waitTillEndOfSynchronizedFunc(service.run(taskType, isAsync));	    	
