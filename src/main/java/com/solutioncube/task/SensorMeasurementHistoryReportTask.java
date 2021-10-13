@@ -1,5 +1,6 @@
 package com.solutioncube.task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -46,6 +47,8 @@ public class SensorMeasurementHistoryReportTask implements ITask, IProcess {
 	public void process(MongoTemplate mongoTemplate) {
 		
 		logger.info("Process Started");
+
+		List<JSONObject> processedJsonObjects = new ArrayList<JSONObject>();
 		
 		List<JSONObject> jsonObjects = CacheManager.get(COLLECTION_NAME);
 		
