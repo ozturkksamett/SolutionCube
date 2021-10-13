@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -55,19 +57,21 @@ public class SensorMeasurementHistoryReportTask implements ITask, IProcess {
 		
 		List<JSONObject> jsonObjects = CacheManager.get(COLLECTION_NAME);
 		
+		Map<String, List<JSONObject>> groupBySensorIdMap = jsonObjects.stream().collect(Collectors.groupingBy(j -> j.getString("sensorid")));
 		
-		Comparator<JSONObject> comparator = (c1, c2) -> {
-			return LocalDateTime.parse(c1.getString("ts")).compareTo(LocalDateTime.parse(c2.getString("ts")));
-		};
-		
-		Collections.sort(jsonObjects, comparator);
-		
-		
-		
-		// Implement Algorithm
-		for (int i = 0; i < jsonObjects.size(); i++) {
+		for (List<JSONObject> sensors : groupBySensorIdMap.values()) {
 			
-		}		
+			Comparator<JSONObject> comparator = (c1, c2) -> {
+				return LocalDateTime.parse(c1.getString("ts")).compareTo(LocalDateTime.parse(c2.getString("ts")));
+			};
+			
+			Collections.sort(sensors, comparator);
+
+			
+			for (int i = 0; i < sensors.size(); i++) {
+				
+			}				
+		}
 		
 		logger.info("Process Done");
 	}
