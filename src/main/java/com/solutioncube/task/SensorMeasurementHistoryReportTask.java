@@ -67,7 +67,7 @@ public class SensorMeasurementHistoryReportTask implements ITask, IProcess {
 			
 			Collections.sort(sensors, comparator);
 
-			
+			boolean isStatusChanged = false;
 			for (int i = 0; i < sensors.size(); i++) {
 				
 			}				

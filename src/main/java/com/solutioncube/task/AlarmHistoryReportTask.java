@@ -81,7 +81,7 @@ public class AlarmHistoryReportTask implements ITask, IProcess {
 			jsonObject.getJSONObject("recovery").put("ts", recoveryTs.toString());
 			processedJsonObjects.add(jsonObject);
 			return;
-		}
+		} 
 		
 		LocalDateTime newRecoveryTs = violationTs.toLocalDate().atTime(LocalTime.MAX);
 		jsonObject.getJSONObject("recovery").put("ts", newRecoveryTs.toString());
