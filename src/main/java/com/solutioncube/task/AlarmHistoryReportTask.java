@@ -69,7 +69,7 @@ public class AlarmHistoryReportTask implements ITask, IProcess {
 			}			
 		}
 
-		SolutionCubeDAO.saveJsonData(mongoTemplate, COLLECTION_NAME + "Processed", jsonObjects);
+		SolutionCubeDAO.saveJsonData(mongoTemplate, COLLECTION_NAME + "Processed", processedJsonObjects);
 		
 		logger.info("Process Done");
 	}
