@@ -28,7 +28,7 @@ import com.solutioncube.helper.EmailSender;
 public class JobScheduler {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JobScheduler.class);
-	
+
 	@Autowired
 	Config config;
 
@@ -37,7 +37,7 @@ public class JobScheduler {
 
 	@Autowired
 	EmailSender emailSender;
-
+	
 	@PostConstruct
 	public void scheduleDailyJob() {		
 
@@ -60,7 +60,7 @@ public class JobScheduler {
 	private ZonedDateTime getZonedDateTime() {
 		
 		LocalDateTime localDateTime = LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.MIDNIGHT).plusMinutes(config.getInterval());
-		localDateTime = LocalDateTime.now().plusMinutes(1); //uncomment for test
+		//localDateTime = LocalDateTime.now().plusMinutes(1);
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, Calendar.getInstance().getTimeZone().toZoneId());		
 		
 		return zonedDateTime;

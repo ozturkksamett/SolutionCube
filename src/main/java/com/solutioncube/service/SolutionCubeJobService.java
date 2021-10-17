@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.solutioncube.common.IService;
-import com.solutioncube.common.TaskType;
+import com.solutioncube.common.ExecutionType;
 import com.solutioncube.helper.ServiceRunner;
 
 @Service
@@ -37,7 +37,8 @@ public class SolutionCubeJobService {
 
 	public void runDailySolutionCubeJob(boolean isAsync) {
 
-		serviceRunner.runServices(registerServices(), TaskType.TASKS_WHICH_DAILY, isAsync);	
+		serviceRunner.runServices(registerServices(), ExecutionType.DAILY_COLLECTIONS, isAsync);	
+		serviceRunner.runServices(registerServices(), ExecutionType.DAILY_COLLECTIONS, isAsync);	
 		logger.info("SolutionCubeJobService finished running.");	
 	}
 }

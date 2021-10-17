@@ -1,9 +1,9 @@
 package com.solutioncube.common;
 
-import com.solutioncube.pojo.TaskParameter;
+import com.solutioncube.pojo.Parameter;
 
 @FunctionalInterface
 public interface IAsyncExecutableTaskFunc {
 
-	void execAsync(TaskParameter taskParameter);
+	void execAsync(Parameter parameter);
 }

@@ -1,8 +1,8 @@
 package com.solutioncube.common;
 
-import org.springframework.data.mongodb.core.MongoTemplate;
+import com.solutioncube.pojo.Parameter;
 
 public interface IProcess {
 
-	void process(MongoTemplate mongoTemplate);
+	void process(Parameter parameter);
 }

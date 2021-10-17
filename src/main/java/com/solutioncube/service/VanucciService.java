@@ -10,15 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.solutioncube.collection.AlarmHistoryReport;
+import com.solutioncube.collection.EnergyMeasurementsHistoryReport;
+import com.solutioncube.collection.EnergyMeters;
+import com.solutioncube.collection.SensorMeasurementHistoryReport;
+import com.solutioncube.collection.Sensors;
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ITask;
-import com.solutioncube.common.TaskType;
-import com.solutioncube.helper.TaskExecutor;
-import com.solutioncube.task.AlarmHistoryReportTask;
-import com.solutioncube.task.EnergyMeasurementsHistoryReportTask;
-import com.solutioncube.task.EnergyMetersTask;
-import com.solutioncube.task.SensorMeasurementHistoryReportTask;
-import com.solutioncube.task.SensorsTask;
+import com.solutioncube.common.ExecutionType;
+import com.solutioncube.common.IProcess;
+import com.solutioncube.helper.Executor;
 
 @Service
 @Qualifier("vanucciService")
@@ -28,37 +29,50 @@ public class VanucciService implements IService {
 	
 	private static final int CONFIG_INDEX = 1;
 	
-	private static final List<ITask> STATIC_TASKS = Arrays.asList(new ITask[] {
+	private static final List<ITask> STATIC_COLLECTIONS = Arrays.asList(new ITask[] {
 
-			new SensorsTask()
-			,new EnergyMetersTask()
+			new Sensors()
+			,new EnergyMeters()
 	});
 
-	private static final List<ITask> DAILY_TASKS = Arrays.asList(new ITask[] {
+	private static final List<ITask> DAILY_COLLECTIONS = Arrays.asList(new ITask[] {
 
-			new EnergyMeasurementsHistoryReportTask()
-			,new AlarmHistoryReportTask()
-			,new SensorMeasurementHistoryReportTask()
+			new EnergyMeasurementsHistoryReport()
+			,new AlarmHistoryReport()
+			,new SensorMeasurementHistoryReport()
+	});
+
+	private static final List<IProcess> COLLECTIONS_TO_BE_PROCESSED = Arrays.asList(new IProcess[] {
+
+			new AlarmHistoryReport()			
+			,new SensorMeasurementHistoryReport()
 	});
 	
 	@Autowired
-	private TaskExecutor taskExecutor;	
+	private Executor executor;	
 	
 	@Override
-	public Collection<Future<Boolean>> run(TaskType taskType, boolean isAsync) {
+	public Collection<Future<Boolean>> run(ExecutionType executionType, boolean isAsync) {
 
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
 		
-		switch (taskType) {
-		case TASKS_WHICH_STATIC :			
-			futures = taskExecutor.execTasks(STATIC_TASKS, CONFIG_INDEX, isAsync);
+		switch (executionType) {
+		case STATIC_COLLECTIONS :			
+			futures = executor.execTasks(STATIC_COLLECTIONS, CONFIG_INDEX, isAsync);
 			break;
-		case TASKS_WHICH_DAILY :			
-			futures = taskExecutor.execTasks(DAILY_TASKS, CONFIG_INDEX, isAsync);
+		case DAILY_COLLECTIONS :			
+			futures = executor.execTasks(DAILY_COLLECTIONS, CONFIG_INDEX, isAsync);
 			break;
-		case TASKS_WHICH_ONLY_WITH_SINCE_PARAM_FOR_INSERT_BULK_DATA:
+		case BULK_DATA_ONLY_WITH_SINCE_PARAM:
 			break;
-		case TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM_FOR_INSERT_BULK_DATA:
+		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM:
+			break;
+		case PROCESS_DAILY_COLLECTIONS:
+			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
+			break;
+		case PROCESS_CONVERSION:
+			break;
+		default:
 			break;
 		}
 		

@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.solutioncube.common.IService;
-import com.solutioncube.common.TaskType;
+import com.solutioncube.common.ExecutionType;
 
 @Component
 public class ServiceRunner {
@@ -24,14 +24,14 @@ public class ServiceRunner {
 	@Autowired
 	private AsyncHelper asyncHelper;
 
-	public void runServices(List<IService> services, TaskType taskType, boolean isAsync) {
+	public void runServices(List<IService> services, ExecutionType executionType, boolean isAsync) {
     	
 		CacheManager.clear();
 		ApiErrorLogger.clear();
     	Instant start = Instant.now();		
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();		
 		services.forEach(service -> {
-			futures.addAll(service.run(taskType, isAsync));
+			futures.addAll(service.run(executionType, isAsync));
 		});
 		asyncHelper.waitTillEndOfSynchronizedFunc(futures);					
 		Instant finish = Instant.now();
@@ -39,12 +39,12 @@ public class ServiceRunner {
 		ApiErrorLogger.print();		
 	}	
 	
-	public void runService(IService service, TaskType taskType, boolean isAsync) {
+	public void runService(IService service, ExecutionType executionType, boolean isAsync) {
     	
 		CacheManager.clear();
 		ApiErrorLogger.clear();
     	Instant start = Instant.now();
-		asyncHelper.waitTillEndOfSynchronizedFunc(service.run(taskType, isAsync));	    	
+		asyncHelper.waitTillEndOfSynchronizedFunc(service.run(executionType, isAsync));	    	
 		Instant finish = Instant.now();
 		logger.info(String.format("%s service finished running. Duration: %d minutes.", service.getServiceName(), Duration.between(start, finish).toMinutes()));
 		ApiErrorLogger.print(); 

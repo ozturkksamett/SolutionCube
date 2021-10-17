@@ -24,7 +24,7 @@ public class SolutionCubeDAO {
 		try {
 
 			mongoTemplate.insert(basicDBObjectList, collectionName);
-			logger.info(collectionName + " - " + jsonObjects.size() + " saved successfully.");
+			//logger.info(collectionName + " - " + jsonObjects.size() + " saved successfully.");
 		} catch (Exception e) {
 
 			logger.error("\nError while saving." + "\nCollection: " + collectionName + "\nException: " + e.getMessage());

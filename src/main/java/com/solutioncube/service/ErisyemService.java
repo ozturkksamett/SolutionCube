@@ -11,38 +11,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.solutioncube.collection.AlarmHistoryReport;
+import com.solutioncube.collection.AlarmRules;
+import com.solutioncube.collection.EnergyConsumptionReport;
+import com.solutioncube.collection.EnergyMeasurementsHistoryReport;
+import com.solutioncube.collection.EnergyMeters;
+import com.solutioncube.collection.FloorPlans;
+import com.solutioncube.collection.LatestEnergyMeasurementsReport;
+import com.solutioncube.collection.LatestPositionsReport;
+import com.solutioncube.collection.LatestSensorMeasurementReport;
+import com.solutioncube.collection.LatestTemperatureMeasurementsReport;
+import com.solutioncube.collection.OutageHistoryReport;
+import com.solutioncube.collection.PositionHistoryReport;
+import com.solutioncube.collection.SensorCountHistoryReport;
+import com.solutioncube.collection.SensorCountLatestReport;
+import com.solutioncube.collection.SensorCountSummaryReport;
+import com.solutioncube.collection.SensorCounters;
+import com.solutioncube.collection.SensorMeasurementHistoryReport;
+import com.solutioncube.collection.SensorMeasurementSummaryReport;
+import com.solutioncube.collection.Sensors;
+import com.solutioncube.collection.TemperatureMeasurementsHistoryReport;
+import com.solutioncube.collection.TemperatureMeasurementsSummaryReport;
+import com.solutioncube.collection.TemperatureSensors;
+import com.solutioncube.collection.Trackers;
+import com.solutioncube.collection.ZonePresenceHistoryReport;
+import com.solutioncube.collection.ZonePresenceSummaryReport;
+import com.solutioncube.collection.Zones;
+import com.solutioncube.common.ExecutionType;
+import com.solutioncube.common.IProcess;
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ITask;
-import com.solutioncube.common.TaskType;
 import com.solutioncube.helper.AsyncHelper;
-import com.solutioncube.helper.TaskExecutor;
-import com.solutioncube.helper.TaskParameterGenerator;
-import com.solutioncube.task.AlarmHistoryReportTask;
-import com.solutioncube.task.AlarmRulesTask;
-import com.solutioncube.task.EnergyConsumptionReportTask;
-import com.solutioncube.task.EnergyMeasurementsHistoryReportTask;
-import com.solutioncube.task.EnergyMetersTask;
-import com.solutioncube.task.FloorPlansTask;
-import com.solutioncube.task.LatestEnergyMeasurementsReportTask;
-import com.solutioncube.task.LatestPositionsReportTask;
-import com.solutioncube.task.LatestSensorMeasurementReportTask;
-import com.solutioncube.task.LatestTemperatureMeasurementsReportTask;
-import com.solutioncube.task.OutageHistoryReportTask;
-import com.solutioncube.task.PositionHistoryReportTask;
-import com.solutioncube.task.SensorCountHistoryReportTask;
-import com.solutioncube.task.SensorCountLatestReportTask;
-import com.solutioncube.task.SensorCountSummaryReportTask;
-import com.solutioncube.task.SensorCountersTask;
-import com.solutioncube.task.SensorMeasurementHistoryReportTask;
-import com.solutioncube.task.SensorMeasurementSummaryReportTask;
-import com.solutioncube.task.SensorsTask;
-import com.solutioncube.task.TemperatureMeasurementsHistoryReportTask;
-import com.solutioncube.task.TemperatureMeasurementsSummaryReportTask;
-import com.solutioncube.task.TemperatureSensorsTask;
-import com.solutioncube.task.TrackersTask;
-import com.solutioncube.task.ZonePresenceHistoryReportTask;
-import com.solutioncube.task.ZonePresenceSummaryReportTask;
-import com.solutioncube.task.ZonesTask;
+import com.solutioncube.helper.Executor;
+import com.solutioncube.helper.ParameterGenerator;
 
 @Service
 @Qualifier("erisyemService")
@@ -52,92 +53,105 @@ public class ErisyemService implements IService {
 	
 	private static final int CONFIG_INDEX = 0;
 
-	private static final List<ITask> STATIC_TASKS = Arrays.asList(new ITask[] {
+	private static final List<ITask> STATIC_COLLECTIONS = Arrays.asList(new ITask[] {
 
-			new SensorsTask()
-			,new AlarmRulesTask()
-			,new SensorCountersTask()
-			,new TrackersTask()
-			,new FloorPlansTask()
-			,new ZonesTask()
-			,new EnergyMetersTask()
-			,new TemperatureSensorsTask()
+			new Sensors()
+			,new AlarmRules()
+			,new SensorCounters()
+			,new Trackers()
+			,new FloorPlans()
+			,new Zones()
+			,new EnergyMeters()
+			,new TemperatureSensors()
 	});
 
-	private static final List<ITask> DAILY_TASKS = Arrays.asList(new ITask[] {
+	private static final List<ITask> DAILY_COLLECTIONS = Arrays.asList(new ITask[] {
 
-			new PositionHistoryReportTask()
-			,new LatestPositionsReportTask()
-			,new OutageHistoryReportTask()
-			,new LatestEnergyMeasurementsReportTask()
-			,new EnergyMeasurementsHistoryReportTask()
-			,new EnergyConsumptionReportTask()
-			,new LatestTemperatureMeasurementsReportTask()
-			,new TemperatureMeasurementsHistoryReportTask()
-			,new TemperatureMeasurementsSummaryReportTask()
-			,new ZonePresenceHistoryReportTask()
-			,new ZonePresenceSummaryReportTask()
-			,new AlarmHistoryReportTask()
-			,new LatestSensorMeasurementReportTask()
-			,new SensorMeasurementHistoryReportTask()
-			,new SensorMeasurementSummaryReportTask()
-			,new SensorCountHistoryReportTask()
-			,new SensorCountLatestReportTask()
-			,new SensorCountSummaryReportTask()
+			new PositionHistoryReport()
+			,new LatestPositionsReport()
+			,new OutageHistoryReport()
+			,new LatestEnergyMeasurementsReport()
+			,new EnergyMeasurementsHistoryReport()
+			,new EnergyConsumptionReport()
+			,new LatestTemperatureMeasurementsReport()
+			,new TemperatureMeasurementsHistoryReport()
+			,new TemperatureMeasurementsSummaryReport()
+			,new ZonePresenceHistoryReport()
+			,new ZonePresenceSummaryReport()
+			,new AlarmHistoryReport()
+			,new LatestSensorMeasurementReport()
+			,new SensorMeasurementHistoryReport()
+			,new SensorMeasurementSummaryReport()
+			,new SensorCountHistoryReport()
+			,new SensorCountLatestReport()
+			,new SensorCountSummaryReport()
 	});
 	
-	private static final List<ITask> TASKS_WHICH_ONLY_WITH_SINCE_PARAM = Arrays.asList(new ITask[] {
+	private static final List<ITask> COLLECTIONS_WHICH_ONLY_WITH_SINCE_PARAM = Arrays.asList(new ITask[] {
 
-			new PositionHistoryReportTask()					
-			,new EnergyMeasurementsHistoryReportTask()			
-			,new TemperatureMeasurementsHistoryReportTask()			
-			,new SensorCountHistoryReportTask()
+			new PositionHistoryReport()					
+			,new EnergyMeasurementsHistoryReport()			
+			,new TemperatureMeasurementsHistoryReport()			
+			,new SensorCountHistoryReport()
 	});
 
-	private static final List<ITask> TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {
+	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {
 
-			new OutageHistoryReportTask()
-			,new EnergyConsumptionReportTask()
-			,new TemperatureMeasurementsSummaryReportTask()
-			,new ZonePresenceHistoryReportTask()
-			,new ZonePresenceSummaryReportTask()
-			,new AlarmHistoryReportTask()
-			,new SensorMeasurementHistoryReportTask()
-			,new SensorMeasurementSummaryReportTask()
-			,new SensorCountSummaryReportTask()
+			new OutageHistoryReport()
+			,new EnergyConsumptionReport()
+			,new TemperatureMeasurementsSummaryReport()
+			,new ZonePresenceHistoryReport()
+			,new ZonePresenceSummaryReport()
+			,new AlarmHistoryReport()
+			,new SensorMeasurementHistoryReport()
+			,new SensorMeasurementSummaryReport()
+			,new SensorCountSummaryReport()
+	});
+	
+	private static final List<IProcess> COLLECTIONS_TO_BE_PROCESSED = Arrays.asList(new IProcess[] {
+
+			new AlarmHistoryReport()			
+			,new SensorMeasurementHistoryReport()
 	});
 	
 	@Autowired
-	private TaskExecutor taskExecutor;
+	private Executor executor;
 
 	@Autowired
 	private AsyncHelper asyncHelper;
 
 	@Override
-	public Collection<Future<Boolean>> run(TaskType taskType, boolean isAsync) {
+	public Collection<Future<Boolean>> run(ExecutionType executionType, boolean isAsync) {
 
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
 		
-		switch (taskType) {
-		case TASKS_WHICH_STATIC :			
-			futures = taskExecutor.execTasks(STATIC_TASKS, CONFIG_INDEX, isAsync);
+		switch (executionType) {
+		case STATIC_COLLECTIONS :			
+			futures = executor.execTasks(STATIC_COLLECTIONS, CONFIG_INDEX, isAsync);
 			break;
-		case TASKS_WHICH_DAILY :			
-			futures = taskExecutor.execTasks(DAILY_TASKS, CONFIG_INDEX, isAsync);
+		case DAILY_COLLECTIONS :			
+			futures = executor.execTasks(DAILY_COLLECTIONS, CONFIG_INDEX, isAsync);
 			break;
-		case TASKS_WHICH_ONLY_WITH_SINCE_PARAM_FOR_INSERT_BULK_DATA:
-	    	TaskParameterGenerator.isBulkData = true;
-			futures = taskExecutor.execTasks(TASKS_WHICH_ONLY_WITH_SINCE_PARAM, CONFIG_INDEX, isAsync);
-	    	TaskParameterGenerator.isBulkData = false;
+		case BULK_DATA_ONLY_WITH_SINCE_PARAM:
+	    	ParameterGenerator.isBulkData = true;
+			futures = executor.execTasks(COLLECTIONS_WHICH_ONLY_WITH_SINCE_PARAM, CONFIG_INDEX, isAsync);
+	    	ParameterGenerator.isBulkData = false;
 			break;
-		case TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM_FOR_INSERT_BULK_DATA:
-	    	TaskParameterGenerator.isBulkData = true;
-	    	while (TaskParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {
+		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM:
+	    	ParameterGenerator.isBulkData = true;
+	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {
 	    		
-	    		asyncHelper.waitTillEndOfSynchronizedFunc(taskExecutor.execTasks(TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX, isAsync)); 		
-	    		TaskParameterGenerator.setInitialDate(TaskParameterGenerator.getInitialDate().plusDays(TaskParameterGenerator.getIntervalDay()));    		
+	    		asyncHelper.waitTillEndOfSynchronizedFunc(executor.execTasks(COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX, isAsync)); 		
+	    		ParameterGenerator.setInitialDate(ParameterGenerator.getInitialDate().plusDays(ParameterGenerator.getIntervalDay()));    		
 	    	}
-	    	TaskParameterGenerator.isBulkData = false;
+	    	ParameterGenerator.isBulkData = false;
+			break;
+		case PROCESS_DAILY_COLLECTIONS:
+			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
+			break;
+		case PROCESS_CONVERSION:
+			break;
+		default:
 			break;
 		}
 		

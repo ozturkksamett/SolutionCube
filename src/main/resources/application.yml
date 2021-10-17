@@ -5,9 +5,11 @@ mongoDbUri: mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20
 interval: 1440
 
 firms: 
-- name: erisyem
+- configIndex: 0
+  name: erisyem
   username: solutioncube
   password: ng254146
-- name: vanucci
+- configIndex: 1
+  name: vanucci
   username: mikronsmikronize
   password: xt355238
