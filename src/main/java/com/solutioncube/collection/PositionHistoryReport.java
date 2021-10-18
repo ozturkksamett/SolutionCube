@@ -37,4 +37,9 @@ public class PositionHistoryReport implements ITask {
 		}
 		logger.info("Execution Done");
 	}
+
+	@Override
+	public String getCollectionName() {
+		return COLLECTION_NAME;
+	}
 }

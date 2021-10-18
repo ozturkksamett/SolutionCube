@@ -7,12 +7,9 @@ import java.time.LocalTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
-import com.mongodb.client.MongoClient;
 import com.solutioncube.config.Config;
-import com.solutioncube.pojo.Firm;
 import com.solutioncube.pojo.Parameter;
 
 @Component
@@ -28,27 +25,21 @@ public class ParameterGenerator {
 	private Config config;	
 
 	@Autowired
-	private MongoClient mongoClient;
+	private MongoTemplateGenerator mongoTemplateGenerator;
 	
 	public Parameter generateTaskParameter(int configIndex) {
 		
-		return isBulkData 
-				? generateTaskParameterForBulkDataOfErisyem(generateTaskParameterForDailyTasks(configIndex))
-				: generateTaskParameterForDailyTasks(configIndex); 
+		return !isBulkData ? generateTaskParameterForDailyTasks(configIndex) : generateTaskParameterForBulkDataOfErisyem(generateTaskParameterForDailyTasks(configIndex));
 	}
 
 	private Parameter generateTaskParameterForDailyTasks(int configIndex) {
 		
-		Firm firm = config.getFirms()[configIndex];
-		MongoTemplate mongoTemplate = new MongoTemplate(mongoClient, firm.getName());
-		int interval = config.getInterval(); 
-
 		Parameter parameter = new Parameter();
 		
-		parameter.setFirm(firm);
-		parameter.setMongoTemplate(mongoTemplate);
-		parameter.setSinceDate(LocalDateTime.of(LocalDateTime.now().minusMinutes(interval).toLocalDate(), LocalTime.MIDNIGHT));
-		parameter.setTillDate(parameter.getSinceDate().plusMinutes(interval));
+		parameter.setFirm(config.getFirms()[configIndex]);
+		parameter.setMongoTemplate(mongoTemplateGenerator.generateMongoTemplate(configIndex));
+		parameter.setSinceDate(LocalDateTime.of(LocalDateTime.now().minusMinutes(config.getInterval()).toLocalDate(), LocalTime.MIDNIGHT));
+		parameter.setTillDate(parameter.getSinceDate().plusMinutes(config.getInterval()));
 		parameter.generateToken();
 		
 		return parameter;

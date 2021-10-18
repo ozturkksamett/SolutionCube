@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -42,14 +43,16 @@ import com.solutioncube.common.IProcess;
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ITask;
 import com.solutioncube.helper.AsyncHelper;
+import com.solutioncube.helper.CacheManager;
 import com.solutioncube.helper.Executor;
+import com.solutioncube.helper.MongoTemplateGenerator;
 import com.solutioncube.helper.ParameterGenerator;
 
 @Service
 @Qualifier("erisyemService")
 public class ErisyemService implements IService {
 	
-	private static final String SERVICE_NAME = "Erişyem";
+	private static final String SERVICE_NAME = "erisyem";
 	
 	private static final int CONFIG_INDEX = 0;
 
@@ -120,6 +123,9 @@ public class ErisyemService implements IService {
 	@Autowired
 	private AsyncHelper asyncHelper;
 
+	@Autowired
+	private MongoTemplateGenerator mongoTemplateGenerator;
+	
 	@Override
 	public Collection<Future<Boolean>> run(ExecutionType executionType, boolean isAsync) {
 
@@ -139,8 +145,7 @@ public class ErisyemService implements IService {
 			break;
 		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM:
 	    	ParameterGenerator.isBulkData = true;
-	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {
-	    		
+	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {	    		
 	    		asyncHelper.waitTillEndOfSynchronizedFunc(executor.execTasks(COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX, isAsync)); 		
 	    		ParameterGenerator.setInitialDate(ParameterGenerator.getInitialDate().plusDays(ParameterGenerator.getIntervalDay()));    		
 	    	}
@@ -150,6 +155,10 @@ public class ErisyemService implements IService {
 			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
 			break;
 		case PROCESS_CONVERSION:
+			CacheManager.clear();
+			for (IProcess process : COLLECTIONS_TO_BE_PROCESSED) 
+				CacheManager.add(process.getCollectionName()+CONFIG_INDEX, mongoTemplateGenerator.generateMongoTemplate(CONFIG_INDEX).findAll(JSONObject.class, process.getCollectionName()));
+			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
 			break;
 		default:
 			break;

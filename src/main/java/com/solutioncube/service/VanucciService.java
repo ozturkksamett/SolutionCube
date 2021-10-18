@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,13 +20,15 @@ import com.solutioncube.common.IService;
 import com.solutioncube.common.ITask;
 import com.solutioncube.common.ExecutionType;
 import com.solutioncube.common.IProcess;
+import com.solutioncube.helper.CacheManager;
 import com.solutioncube.helper.Executor;
+import com.solutioncube.helper.MongoTemplateGenerator;
 
 @Service
 @Qualifier("vanucciService")
 public class VanucciService implements IService {
 
-	private static final String SERVICE_NAME = "Vanucci";
+	private static final String SERVICE_NAME = "vanucci";
 	
 	private static final int CONFIG_INDEX = 1;
 	
@@ -50,6 +53,9 @@ public class VanucciService implements IService {
 	
 	@Autowired
 	private Executor executor;	
+
+	@Autowired
+	private MongoTemplateGenerator mongoTemplateGenerator;
 	
 	@Override
 	public Collection<Future<Boolean>> run(ExecutionType executionType, boolean isAsync) {
@@ -71,6 +77,10 @@ public class VanucciService implements IService {
 			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
 			break;
 		case PROCESS_CONVERSION:
+			CacheManager.clear();
+			for (IProcess process : COLLECTIONS_TO_BE_PROCESSED) 
+				CacheManager.add(process.getCollectionName()+CONFIG_INDEX, mongoTemplateGenerator.generateMongoTemplate(CONFIG_INDEX).findAll(JSONObject.class, process.getCollectionName()));
+			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
 			break;
 		default:
 			break;

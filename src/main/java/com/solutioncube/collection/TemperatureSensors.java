@@ -23,4 +23,8 @@ public class TemperatureSensors implements ITask {
 		logger.info("Execution Done");
 	}
 
+	@Override
+	public String getCollectionName() {
+		return COLLECTION_NAME;
+	}
 }

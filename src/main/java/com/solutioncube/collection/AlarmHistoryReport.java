@@ -70,7 +70,7 @@ public class AlarmHistoryReport implements ITask, IProcess {
 			}			
 		}
 
-		SolutionCubeDAO.saveJsonData(parameter.getMongoTemplate(), COLLECTION_NAME + "Processed", processedJsonObjects);
+		SolutionCubeDAO.saveBulkJsonData(parameter.getMongoTemplate(), COLLECTION_NAME + "Processed", processedJsonObjects);
 		
 		logger.info("Process Done");
 	}
@@ -103,5 +103,10 @@ public class AlarmHistoryReport implements ITask, IProcess {
 	private boolean isSameDay(LocalDateTime t1, LocalDateTime t2) {
 		
 		return t1.getDayOfYear() == t2.getDayOfYear() && t1.getYear() == t2.getYear();
+	}
+
+	@Override
+	public String getCollectionName() {
+		return COLLECTION_NAME;
 	}
 }

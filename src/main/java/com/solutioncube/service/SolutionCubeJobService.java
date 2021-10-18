@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ExecutionType;
+import com.solutioncube.helper.ApiErrorLogger;
+import com.solutioncube.helper.CacheManager;
 import com.solutioncube.helper.ServiceRunner;
 
 @Service
@@ -37,8 +39,11 @@ public class SolutionCubeJobService {
 
 	public void runDailySolutionCubeJob(boolean isAsync) {
 
+		logger.info("runDailySolutionCubeJob started");	
+		CacheManager.clear();
+		ApiErrorLogger.clear();
 		serviceRunner.runServices(registerServices(), ExecutionType.DAILY_COLLECTIONS, isAsync);	
-		serviceRunner.runServices(registerServices(), ExecutionType.DAILY_COLLECTIONS, isAsync);	
-		logger.info("SolutionCubeJobService finished running.");	
+		serviceRunner.runServices(registerServices(), ExecutionType.PROCESS_DAILY_COLLECTIONS, isAsync);	
+		ApiErrorLogger.print();	
 	}
 }

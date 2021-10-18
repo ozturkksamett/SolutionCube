@@ -22,4 +22,9 @@ public class LatestSensorMeasurementReport implements ITask {
 		new Task().execute(parameter);
 		logger.info("Execution Done");
 	}
+
+	@Override
+	public String getCollectionName() {
+		return COLLECTION_NAME;
+	}
 }

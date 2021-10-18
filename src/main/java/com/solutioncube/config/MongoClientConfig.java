@@ -10,10 +10,18 @@ import com.mongodb.client.MongoClients;
 @Configuration
 public class MongoClientConfig {
 
-	@Value("${mongoDbUri}")
-	private String connString;
-    public @Bean MongoClient mongoClient() {
-    	//connString = System.getenv("MONGODB_URI"); // Comment for local unit test, uncomment for production
-    	return MongoClients.create(connString); 
+	@Value("${PROD_MONGODB_URI}")
+	private String prodConnString;
+	
+	@Bean
+	public MongoClient prodMongoClient() {
+		
+    	return MongoClients.create(prodConnString); 
+    }
+	
+	@Bean
+	public MongoClient mongoClient() {
+
+    	return MongoClients.create(System.getenv("MONGODB_URI")); 
     }
 }

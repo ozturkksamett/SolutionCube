@@ -93,7 +93,7 @@ public class SensorMeasurementHistoryReport implements ITask, IProcess {
 			}				
 		}
 
-		SolutionCubeDAO.saveJsonData(parameter.getMongoTemplate(), COLLECTION_NAME + "Processed", processedJsonObjects);
+		SolutionCubeDAO.saveBulkJsonData(parameter.getMongoTemplate(), COLLECTION_NAME + "Processed", processedJsonObjects);
 		
 		logger.info("Process Done");
 	}
@@ -115,5 +115,10 @@ public class SensorMeasurementHistoryReport implements ITask, IProcess {
 		if(!jsonObject.getJSONObject("measurement").has(key))
 			logger.info("key:"+key+" not found, jsonObject:"+jsonObject);
 		return jsonObject.getJSONObject("measurement").getInt(key);
+	}
+	
+	@Override
+	public String getCollectionName() {
+		return COLLECTION_NAME;
 	}
 }

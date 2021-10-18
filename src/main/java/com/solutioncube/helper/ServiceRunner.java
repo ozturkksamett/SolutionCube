@@ -25,9 +25,8 @@ public class ServiceRunner {
 	private AsyncHelper asyncHelper;
 
 	public void runServices(List<IService> services, ExecutionType executionType, boolean isAsync) {
-    	
-		CacheManager.clear();
-		ApiErrorLogger.clear();
+		
+		logger.info(String.format("%s services started running", services.stream().map(IService::getServiceName).collect(Collectors.joining(", "))));  			
     	Instant start = Instant.now();		
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();		
 		services.forEach(service -> {
@@ -35,18 +34,15 @@ public class ServiceRunner {
 		});
 		asyncHelper.waitTillEndOfSynchronizedFunc(futures);					
 		Instant finish = Instant.now();
-		logger.info(String.format("%s services finished running. Duration: %d minutes.", services.stream().map(IService::getServiceName).collect(Collectors.joining(", ")), Duration.between(start, finish).toMinutes()));  
-		ApiErrorLogger.print();		
+		logger.info(String.format("Duration: %d minutes", Duration.between(start, finish).toMinutes()));  
 	}	
 	
 	public void runService(IService service, ExecutionType executionType, boolean isAsync) {
-    	
-		CacheManager.clear();
-		ApiErrorLogger.clear();
+
+		logger.info(String.format("%s solutionCubeLocalhostService started running", service.getServiceName()));
     	Instant start = Instant.now();
 		asyncHelper.waitTillEndOfSynchronizedFunc(service.run(executionType, isAsync));	    	
 		Instant finish = Instant.now();
-		logger.info(String.format("%s service finished running. Duration: %d minutes.", service.getServiceName(), Duration.between(start, finish).toMinutes()));
-		ApiErrorLogger.print(); 
+		logger.info(String.format("Duration: %d minutes", Duration.between(start, finish).toMinutes()));
 	}	
 }
