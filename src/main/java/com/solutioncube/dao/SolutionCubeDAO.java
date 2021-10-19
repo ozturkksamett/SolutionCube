@@ -23,19 +23,22 @@ public class SolutionCubeDAO {
 			basicDBObjectList.add(BasicDBObject.parse(jsonObjects.get(i).toString()));
 
 		try {
-			logger.info(collectionName + " - " + jsonObjects.size() + " saving..");
 			mongoTemplate.insert(basicDBObjectList, collectionName);
-			//logger.info(collectionName + " - " + jsonObjects.size() + " saved successfully.");
 		} catch (Exception e) {
-
 			logger.error("\nError while saving." + "\nCollection: " + collectionName + "\nException: " + e.getMessage());
 		}
 	}
 	
 	public static void saveBulkJsonData(MongoTemplate mongoTemplate, String collectionName, List<JSONObject> jsonObjects) {
-
+		
+		logger.info(collectionName+" - "+jsonObjects.size()+" saving..");
 		List<List<JSONObject>> partitions = Lists.partition(jsonObjects, 1000);
 		for (List<JSONObject> p : partitions) 
 			saveJsonData(mongoTemplate, collectionName, p);
+	}
+	
+	public static void saveSingleJsonData(MongoTemplate mongoTemplate, String collectionName, JSONObject jsonObject) {
+
+		mongoTemplate.insert(BasicDBObject.parse(jsonObject.toString()), collectionName);
 	}
 }

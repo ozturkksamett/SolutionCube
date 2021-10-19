@@ -43,7 +43,7 @@ public class JobController {
 		return "SolutionCube Running!";
 	}
 	
-	@RequestMapping("/schedule")
+	@PostMapping("/schedule")
 	public String schedule() {
 
 		logger.info("schedule");
@@ -62,7 +62,7 @@ public class JobController {
 		return "Erisyem solutionCubeLocalhostService finished running for bulk data successfully";
 	}
 	
-	@PostMapping("/erisyemRunStaticTasks")
+	//@PostMapping("/erisyemRunStaticTasks")
 	public String erisyemRunStaticTasks() {
 
 		logger.info("erisyemRunStaticTasks");
@@ -71,7 +71,7 @@ public class JobController {
 		return "Erisyem solutionCubeLocalhostService finished running for static tasks asynchronously successfully";
 	}
 
-	@PostMapping("/vanucciRunStaticTasks")
+	//@PostMapping("/vanucciRunStaticTasks")
 	public String vanucciRunStaticTasks() {
 
 		logger.info("vanucciRunStaticTasks");

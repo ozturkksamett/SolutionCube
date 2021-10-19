@@ -39,7 +39,7 @@ public class ServiceRunner {
 	
 	public void runService(IService service, ExecutionType executionType, boolean isAsync) {
 
-		logger.info(String.format("%s solutionCubeLocalhostService started running", service.getServiceName()));
+		logger.info(String.format("%s service started running", service.getServiceName()));
     	Instant start = Instant.now();
 		asyncHelper.waitTillEndOfSynchronizedFunc(service.run(executionType, isAsync));	    	
 		Instant finish = Instant.now();
