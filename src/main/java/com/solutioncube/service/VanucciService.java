@@ -3,64 +3,113 @@ package com.solutioncube.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.bson.Document;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.solutioncube.collection.AlarmHistoryReport;
+import com.solutioncube.collection.EnergyMeasurementsHistoryReport;
+import com.solutioncube.collection.EnergyMeters;
+import com.solutioncube.collection.SensorMeasurementHistoryReport;
+import com.solutioncube.collection.Sensors;
+import com.solutioncube.common.ExecutionType;
+import com.solutioncube.common.IProcess;
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ITask;
-import com.solutioncube.common.TaskType;
-import com.solutioncube.helper.TaskExecutor;
-import com.solutioncube.task.AlarmHistoryReportTask;
-import com.solutioncube.task.AlarmRulesTask;
-import com.solutioncube.task.EnergyMeasurementsHistoryReportTask;
-import com.solutioncube.task.EnergyMetersTask;
-import com.solutioncube.task.SensorMeasurementHistoryReportTask;
-import com.solutioncube.task.SensorsTask;
+import com.solutioncube.helper.CacheManager;
+import com.solutioncube.helper.Executor;
+import com.solutioncube.helper.MongoTemplateGenerator;
+import com.solutioncube.helper.ParameterGenerator;
+import com.solutioncube.pojo.Parameter;
 
 @Service
 @Qualifier("vanucciService")
 public class VanucciService implements IService {
 
-	private static final String SERVICE_NAME = "Vanucci";
+	private static final String SERVICE_NAME = "vanucci";
 	
 	private static final int CONFIG_INDEX = 1;
 	
-	private static final List<ITask> STATIC_TASKS = Arrays.asList(new ITask[] {
+	private static final List<ITask> STATIC_COLLECTIONS = Arrays.asList(new ITask[] {
 
-			new SensorsTask()
-			//,new AlarmRulesTask()
-			,new EnergyMetersTask()
+			new Sensors()
+			,new EnergyMeters()
 	});
 
-	private static final List<ITask> DAILY_TASKS = Arrays.asList(new ITask[] {
+	private static final List<ITask> DAILY_COLLECTIONS = Arrays.asList(new ITask[] {
 
-			new EnergyMeasurementsHistoryReportTask()
-			,new AlarmHistoryReportTask()
-			,new SensorMeasurementHistoryReportTask()
+			new EnergyMeasurementsHistoryReport()
+			,new AlarmHistoryReport()
+			,new SensorMeasurementHistoryReport()
+	});
+
+	private static final List<IProcess> COLLECTIONS_TO_BE_PROCESSED = Arrays.asList(new IProcess[] {
+
+			new AlarmHistoryReport()			
+			,new SensorMeasurementHistoryReport()
 	});
 	
 	@Autowired
-	private TaskExecutor taskExecutor;	
+	private Executor executor;	
+	
+	@Autowired
+	private MongoTemplateGenerator mongoTemplateGenerator;
+
+	@Autowired
+	private ParameterGenerator parameterGenerator;
 	
 	@Override
-	public Collection<Future<Boolean>> run(TaskType taskType, boolean isAsync) {
+	public Collection<Future<Boolean>> run(ExecutionType executionType, boolean isAsync) {
 
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
 		
-		switch (taskType) {
-		case TASKS_WHICH_STATIC :			
-			futures = taskExecutor.execTasks(STATIC_TASKS, CONFIG_INDEX, isAsync);
+		switch (executionType) {
+		case STATIC_COLLECTIONS :			
+			futures = executor.execTasks(STATIC_COLLECTIONS, CONFIG_INDEX, isAsync);
 			break;
-		case TASKS_WHICH_DAILY :			
-			futures = taskExecutor.execTasks(DAILY_TASKS, CONFIG_INDEX, isAsync);
+		case DAILY_COLLECTIONS :			
+			futures = executor.execTasks(DAILY_COLLECTIONS, CONFIG_INDEX, isAsync);
 			break;
-		case TASKS_WHICH_ONLY_WITH_SINCE_PARAM:
+		case BULK_DATA_ONLY_WITH_SINCE_PARAM:
 			break;
-		case TASKS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM:
+		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM:
+			break;
+		case PROCESS_DAILY_COLLECTIONS:
+			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
+			break;
+		case PROCESS_CONVERSION:
+			for (IProcess process : COLLECTIONS_TO_BE_PROCESSED) {
+				
+				Parameter parameter = parameterGenerator.generateTaskParameter(CONFIG_INDEX);
+				List<JSONObject> jsonObjects = new ArrayList<JSONObject>();
+				MongoCollection<Document> mongoCollection = mongoTemplateGenerator.generateMongoTemplate(CONFIG_INDEX).getCollection(process.getCollectionName());
+				FindIterable<Document> iterable = mongoCollection.find();
+				iterable.noCursorTimeout(false);
+				for (Iterator<Document> iterator = iterable.iterator(); iterator.hasNext();) {
+					Document document = (Document) iterator.next();
+					if(document.containsKey("_id"))
+						document.remove("_id");
+					jsonObjects.add(new JSONObject(document.toJson()));
+					if(jsonObjects.size() == 10000) {
+
+						CacheManager.add(process.getCollectionName()+CONFIG_INDEX, jsonObjects);
+						process.process(parameter);
+						jsonObjects = new ArrayList<JSONObject>();
+					}
+				}
+				CacheManager.add(process.getCollectionName()+CONFIG_INDEX, jsonObjects);
+				process.process(parameter);				
+			}
+			break;
+		default:
 			break;
 		}
 		

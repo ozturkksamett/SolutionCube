@@ -5,6 +5,6 @@ import java.util.concurrent.Future;
 
 public interface IService {
 
-	Collection<Future<Boolean>> run(TaskType taskType, boolean isAsync);
+	Collection<Future<Boolean>> run(ExecutionType executionType, boolean isAsync);
 	String getServiceName();
 }

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.solutioncube.pojo.ApiErrorLog;
 import com.solutioncube.pojo.ApiResponse;
-import com.solutioncube.pojo.TaskParameter;
+import com.solutioncube.pojo.Parameter;
 
 public class ApiErrorLogger {
 
@@ -15,15 +15,15 @@ public class ApiErrorLogger {
 
 	private static ArrayList<ApiErrorLog> apiErrors;
 
-	public static void log(TaskParameter taskParameter, ApiResponse apiResponse, Exception e) {
+	public static void log(Parameter parameter, ApiResponse apiResponse, Exception e) {
 
 		if(apiErrors == null)
 			clear();
 		
-		apiErrors.add(new ApiErrorLog(taskParameter.getCollectionName(), 
+		apiErrors.add(new ApiErrorLog(parameter.getCollectionName(), 
 				"\nError while calling api." 
-						+ "\nUri: " + taskParameter.getUri() 
-						+ "\nToken: " + taskParameter.getToken() 
+						+ "\nUri: " + parameter.getUri() 
+						+ "\nToken: " + parameter.getToken() 
 						+ "\nApi Response: " + apiResponse.toString() 
 						+ "\nException: " + e.getMessage()));
 	}

@@ -14,7 +14,7 @@ public class EmailConfig {
 		
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 		simpleMailMessage.setTo("fatihburakkoca@gmail.com", "ozturkksamett@gmail.com");
-		//simpleMailMessage.setCc("");
+		//simpleMailMessage.setCc("ergunkargun@gmail.com");
 		simpleMailMessage.setFrom("solutioncubedev@gmail.com");
 		simpleMailMessage.setSubject("About SolutitonCubeJob");
 		

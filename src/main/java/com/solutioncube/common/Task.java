@@ -9,13 +9,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
-import com.mongodb.BasicDBObject;
+import com.solutioncube.dao.SolutionCubeDAO;
 import com.solutioncube.helper.ApiCaller;
 import com.solutioncube.helper.ApiErrorLogger;
+import com.solutioncube.helper.CacheManager;
 import com.solutioncube.pojo.ApiResponse;
-import com.solutioncube.pojo.TaskParameter;
+import com.solutioncube.pojo.Parameter;
 
 import okhttp3.Request;
 
@@ -23,28 +23,24 @@ public class Task {
 
 	private static final Logger logger = LoggerFactory.getLogger(Task.class);
 
-	private MongoTemplate mongoTemplate;
-	
-	public synchronized void execute(TaskParameter taskParameter) {
-
-		this.mongoTemplate = taskParameter.getMongoTemplate();
+	public void execute(Parameter parameter) {
 
 		try {
 
-			executeTask(taskParameter);
+			executeTask(parameter);
 		} catch (Exception e) {
 
-			logger.error("\nError while executing task." + "\nTask Parameter: " + taskParameter.toString() + "\nException: " + e.getMessage());
+			logger.error("\nError while executing task." + "\nTask Parameter: " + parameter.toString() + "\nException: " + e.getMessage());
 		}
 	}
 
-	private void executeTask(TaskParameter taskParameter) {
+	private void executeTask(Parameter parameter) {
 
-		ApiResponse apiResponse = callApi(taskParameter);
+		ApiResponse apiResponse = callApi(parameter);
 		JSONArray jsonArray = new JSONArray(apiResponse.getResponseBody());
-		saveJsonArray(taskParameter, jsonArray);
+		saveJsonArray(parameter, jsonArray);
 
-		String uri = taskParameter.getUri();
+		String uri = parameter.getUri();
 		Map<String, String> params = getParams(uri);
 		if (params.containsKey("_perPage")) {
 
@@ -54,17 +50,17 @@ public class Task {
 
 				params.put("_page", Integer.toString(++page));
 				uri = setParams(uri, params);
-				taskParameter.setUri(uri);
+				parameter.setUri(uri);
 				try {
 
-					apiResponse = callApi(taskParameter);
+					apiResponse = callApi(parameter);
 					jsonArray = new JSONArray(apiResponse.getResponseBody());
-					saveJsonArray(taskParameter, jsonArray);
+					saveJsonArray(parameter, jsonArray);
 					isResultHasNextPage = determineIfIsResultHasNextPage(params, apiResponse);
 				} catch (Exception e) {
 
 					isResultHasNextPage = false;
-					logger.error("\nError while reexecuting task(pagination)." + "\nTask Parameter: " + taskParameter.toString() + "\nException: " + e.getMessage());
+					logger.error("\nError while reexecuting task(pagination)." + "\nTask Parameter: " + parameter.toString() + "\nException: " + e.getMessage());
 				}
 			}
 		} else if (params.containsKey("_limit")) {
@@ -78,22 +74,22 @@ public class Task {
 					String lastTimestamp = jsonArray.getJSONObject(jsonArray.length() - 1).getString("ts");
 					params.put("ts.since", lastTimestamp);
 					uri = setParams(uri, params);
-					taskParameter.setUri(uri);
-					apiResponse = callApi(taskParameter);
+					parameter.setUri(uri);
+					apiResponse = callApi(parameter);
 					jsonArray = new JSONArray(apiResponse.getResponseBody());
 					jsonArray.remove(0);
-					saveJsonArray(taskParameter, jsonArray);
+					saveJsonArray(parameter, jsonArray);
 					isResultTooLarge = Boolean.parseBoolean(apiResponse.getHeaders().get("x-trio-result-set-too-large"));
 				} catch (Exception e) {
 
 					isResultTooLarge = false;
-					logger.error("\nError while reexecuting task(limit)." + "\nTask Parameter: " + taskParameter.toString() + "\nException: " + e.getMessage());
+					logger.error("\nError while reexecuting task(limit)." + "\nTask Parameter: " + parameter.toString() + "\nException: " + e.getMessage());
 				}
 			}
 		}
 	}
 
-	private void checkIfTaskShouldWait(TaskParameter taskParameter, ApiResponse apiResponse) {
+	private void checkIfTaskShouldWait(Parameter parameter, ApiResponse apiResponse) {
 
 		try {
 
@@ -101,8 +97,8 @@ public class Task {
 			String remainingTimeToResetRequestCount = apiResponse.getHeaders().get("X-RateLimit-Reset");
 			if (remainingRequestCount != null && Integer.parseInt(remainingRequestCount) < 10) {
 
-				logger.info(taskParameter.getCollectionName() + " Remaining Request Count: " + remainingRequestCount);
-				logger.info(taskParameter.getCollectionName() + " Remaining Time To Reset Request Count: " + remainingTimeToResetRequestCount);
+				logger.info(parameter.getCollectionName() + " Remaining Request Count: " + remainingRequestCount);
+				logger.info(parameter.getCollectionName() + " Remaining Time To Reset Request Count: " + remainingTimeToResetRequestCount);
 				int sleepTime = (Integer.parseInt(remainingTimeToResetRequestCount)) + 100;
 				logger.info("Sleeping " + sleepTime + " seconds..");
 				wait(sleepTime * 1000);
@@ -113,20 +109,21 @@ public class Task {
 		}
 	}
 
-	private ApiResponse callApi(TaskParameter taskParameter) {
+	private ApiResponse callApi(Parameter parameter) {
 		
 		ApiResponse apiResponse = null;
 		try {
 			
-			Request request = new Request.Builder().url(taskParameter.getUri()).get().addHeader("authorization", taskParameter.getToken()).build();
+			//logger.info("callApi: " + taskParameter.getUri());
+			Request request = new Request.Builder().url(parameter.getUri()).get().addHeader("authorization", parameter.getToken()).build();
 			apiResponse = ApiCaller.call(request);				
 			new JSONArray(apiResponse.getResponseBody());
 		} catch (Exception e) {
 
-			ApiErrorLogger.log(taskParameter, apiResponse, e);
+			ApiErrorLogger.log(parameter, apiResponse, e);
 		}
 
-		checkIfTaskShouldWait(taskParameter, apiResponse);
+		checkIfTaskShouldWait(parameter, apiResponse);
 
 		return apiResponse;
 	}
@@ -169,30 +166,22 @@ public class Task {
 		return params;
 	}
 
-	private void saveJsonArray(TaskParameter taskParameter, JSONArray jsonArray) {
+	private void saveJsonArray(Parameter parameter, JSONArray jsonArray) {
 
-		List<BasicDBObject> basicDBObjectList = new ArrayList<BasicDBObject>();
+		List<JSONObject> jsonObjects = new ArrayList<JSONObject>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			if (taskParameter.getId() != null) {
-
-				jsonObject.put(taskParameter.getIdColumnName(), taskParameter.getId());
-			}
-
-			BasicDBObject basicDBObject = BasicDBObject.parse(jsonObject.toString());
-			basicDBObjectList.add(basicDBObject);
+			
+			if (parameter.getId() != null)
+				jsonObject.put(parameter.getIdColumnName(), parameter.getId());
+			
+			jsonObjects.add(jsonObject);
 		}
 
-		try {
-
-			mongoTemplate.insert(basicDBObjectList, taskParameter.getCollectionName());
-			logger.info(taskParameter.getCollectionName() + " - " + jsonArray.length() + " saved successfully.");
-		} catch (Exception e) {
-
-			logger.error("\nError while saving." + "\nTaskParameter: " + taskParameter.toString() + "\nException: " + e.getMessage());
-		}
+		SolutionCubeDAO.saveJsonData(parameter.getMongoTemplate(), parameter.getCollectionName(), jsonObjects);
+		
+		CacheManager.add(parameter.getCollectionName()+parameter.getFirm().getConfigIndex(), jsonObjects);
 	}
 }

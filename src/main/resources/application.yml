@@ -1,11 +1,11 @@
-mongoDbUri: mongodb+srv://ethemduzgun:scfm2021@solutioncube.azjcz.mongodb.net/solutioncube
-
 interval: 1440
 
 firms: 
-- name: erisyem
+- configIndex: 0
+  name: erisyem
   username: solutioncube
   password: ng254146
-- name: vanucci
+- configIndex: 1
+  name: vanucci
   username: mikronsmikronize
   password: xt355238

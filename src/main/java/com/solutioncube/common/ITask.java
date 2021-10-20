@@ -1,8 +1,8 @@
 package com.solutioncube.common;
 
-import com.solutioncube.pojo.TaskParameter;
+import com.solutioncube.pojo.Parameter;
 
-public interface ITask {
+public interface ITask extends ICollection {
 
-	void execute(TaskParameter taskParameter);
+	void execute(Parameter parameter);
 }

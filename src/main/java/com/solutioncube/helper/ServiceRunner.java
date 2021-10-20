@@ -3,6 +3,7 @@ package com.solutioncube.helper;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -14,38 +15,72 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.solutioncube.common.IService;
-import com.solutioncube.common.TaskType;
+import com.solutioncube.common.ExecutionType;
 
 @Component
 public class ServiceRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceRunner.class);
-	
+
 	@Autowired
 	private AsyncHelper asyncHelper;
+	
+	@Autowired
+	private IService erisyemService;
+	
+	@Autowired
+	private IService vanucciService;
+	
+	/*
+	 * IMPORTANT!
+	 * Add Services which implemented for registered firms here
+	 * 
+	 */
+	private List<IService> registeredServices() {
 
-	public void runServices(List<IService> services, TaskType taskType, boolean isAsync) {
-    	
-		ApiErrorLogger.clear();
+		return Arrays.asList(new IService[] {
+				
+				erisyemService
+				,vanucciService
+		});
+	}
+
+	public List<IService> getRegisteredServices() {
+		
+		return registeredServices();
+	}
+	
+	public void runAllRegisteredServices(ExecutionType executionType, boolean isAsync) {
+		runServices(registeredServices(), executionType, isAsync);
+	}	
+	
+	public void runGivenIndexedServices(List<Integer> configIndexes, ExecutionType executionType, boolean isAsync) {
+		List<IService> givenRegisteredServices = new ArrayList<IService>();
+		configIndexes.forEach(i -> {
+			givenRegisteredServices.add(registeredServices().get(i));
+		});
+		runServices(givenRegisteredServices, executionType, isAsync);
+	}	
+	
+	public void runServices(List<IService> services, ExecutionType executionType, boolean isAsync) {
+		
+		logger.info(String.format("%s services started running", services.stream().map(IService::getServiceName).collect(Collectors.joining(", "))));  			
     	Instant start = Instant.now();		
 		Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();		
 		services.forEach(service -> {
-
-			futures.addAll(service.run(taskType, isAsync));
+			futures.addAll(service.run(executionType, isAsync));
 		});
 		asyncHelper.waitTillEndOfSynchronizedFunc(futures);					
 		Instant finish = Instant.now();
-		logger.info(String.format("%s services finished running. Duration: %d minutes.", services.stream().map(IService::getServiceName).collect(Collectors.joining(", ")), Duration.between(start, finish).toMinutes()));  
-		ApiErrorLogger.print();		
+		logger.info(String.format("Duration: %d minutes", Duration.between(start, finish).toMinutes()));  
 	}	
 	
-	public void runService(IService service, TaskType taskType, boolean isAsync) {
-    	
-		ApiErrorLogger.clear();
+	public void runService(IService service, ExecutionType executionType, boolean isAsync) {
+
+		logger.info(String.format("%s service started running", service.getServiceName()));
     	Instant start = Instant.now();
-		asyncHelper.waitTillEndOfSynchronizedFunc(service.run(taskType, isAsync));	    	
+		asyncHelper.waitTillEndOfSynchronizedFunc(service.run(executionType, isAsync));	    	
 		Instant finish = Instant.now();
-		logger.info(String.format("%s service finished running. Duration: %d minutes.", service.getServiceName(), Duration.between(start, finish).toMinutes()));
-		ApiErrorLogger.print(); 
+		logger.info(String.format("Duration: %d minutes", Duration.between(start, finish).toMinutes()));
 	}	
 }

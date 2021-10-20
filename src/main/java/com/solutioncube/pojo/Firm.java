@@ -2,12 +2,22 @@ package com.solutioncube.pojo;
 
 public class Firm {
 
+	private int configIndex;
+	
 	private String name;
 	
 	private String username;
 	
 	private String password;
 	
+	public int getConfigIndex() {
+		return configIndex;
+	}
+
+	public void setConfigIndex(int configIndex) {
+		this.configIndex = configIndex;
+	}
+
 	public String getName() {
 		return name;
 	}
