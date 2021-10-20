@@ -53,7 +53,9 @@ public class SensorMeasurementHistoryReport implements ITask, IProcess {
 		
 		logger.info("Process Started");
 		
-		List<JSONObject> jsonObjects = CacheManager.get(COLLECTION_NAME+parameter.getFirm().getConfigIndex());
+		String cacheKey = COLLECTION_NAME+parameter.getFirm().getConfigIndex();
+		
+		List<JSONObject> jsonObjects = CacheManager.get(cacheKey);
 		
 		if(jsonObjects == null)
 			return;
@@ -94,6 +96,8 @@ public class SensorMeasurementHistoryReport implements ITask, IProcess {
 		}
 
 		SolutionCubeDAO.saveBulkJsonData(parameter.getMongoTemplate(), COLLECTION_NAME + "Processed", processedJsonObjects);
+
+		CacheManager.remove(cacheKey);
 		
 		logger.info("Process Done");
 	}

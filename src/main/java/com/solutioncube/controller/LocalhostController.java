@@ -18,12 +18,12 @@ public class LocalhostController {
 	@Autowired
 	SolutionCubeLocalhostService solutionCubeLocalhostService;
 
-	// @PostMapping("/copy-db-into-local")
-	public String copyDbIntoLocal() {
+	// @PostMapping("/runMigration")
+	public String runMigration() {
 
-		logger.info("copyDbIntoLocal");
+		logger.info("runMigration");
 		Instant start = Instant.now();
-		solutionCubeLocalhostService.copyDbIntoLocal();
+		solutionCubeLocalhostService.runMigration();
 		Instant finish = Instant.now();
 		logger.info(String.format("Duration: %d minutes", Duration.between(start, finish).toMinutes()));
 		return "SolutionCubeLocalhostService finished running successfully";

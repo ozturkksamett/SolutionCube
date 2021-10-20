@@ -43,7 +43,9 @@ public class AlarmHistoryReport implements ITask, IProcess {
 
 		logger.info("Process Started");
 
-		List<JSONObject> jsonObjects = CacheManager.get(COLLECTION_NAME+parameter.getFirm().getConfigIndex());
+		String cacheKey = COLLECTION_NAME+parameter.getFirm().getConfigIndex();
+		
+		List<JSONObject> jsonObjects = CacheManager.get(cacheKey);
 		
 		if(jsonObjects == null)
 			return;
@@ -71,6 +73,8 @@ public class AlarmHistoryReport implements ITask, IProcess {
 		}
 
 		SolutionCubeDAO.saveBulkJsonData(parameter.getMongoTemplate(), COLLECTION_NAME + "Processed", processedJsonObjects);
+
+		CacheManager.remove(cacheKey);
 		
 		logger.info("Process Done");
 	}
@@ -81,18 +85,12 @@ public class AlarmHistoryReport implements ITask, IProcess {
 			
 			jsonObject.getJSONObject("violation").put("ts", violationTs.toString());
 			jsonObject.getJSONObject("recovery").put("ts", recoveryTs.toString());
-
-			logger.info("violation:"+jsonObject.getJSONObject("violation").getString("ts"));
-			logger.info("recovery:"+jsonObject.getJSONObject("recovery").getString("ts"));
 			processedJsonObjects.add(jsonObject);
 			return;
 		} 
 		
 		LocalDateTime newRecoveryTs = violationTs.toLocalDate().atTime(LocalTime.MAX);
 		jsonObject.getJSONObject("recovery").put("ts", newRecoveryTs.toString());
-
-		logger.info("violation:"+jsonObject.getJSONObject("violation").getString("ts"));
-		logger.info("recovery:"+jsonObject.getJSONObject("recovery").getString("ts"));
 		processedJsonObjects.add(jsonObject);
 		
 		violationTs = LocalDateTime.of(violationTs.plusDays(1).toLocalDate(), LocalTime.MIDNIGHT);	

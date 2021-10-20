@@ -51,6 +51,7 @@ import com.solutioncube.helper.CacheManager;
 import com.solutioncube.helper.Executor;
 import com.solutioncube.helper.MongoTemplateGenerator;
 import com.solutioncube.helper.ParameterGenerator;
+import com.solutioncube.pojo.Parameter;
 
 @Service
 @Qualifier("erisyemService")
@@ -129,6 +130,9 @@ public class ErisyemService implements IService {
 
 	@Autowired
 	private MongoTemplateGenerator mongoTemplateGenerator;
+
+	@Autowired
+	private ParameterGenerator parameterGenerator;
 	
 	@Override
 	public Collection<Future<Boolean>> run(ExecutionType executionType, boolean isAsync) {
@@ -160,6 +164,8 @@ public class ErisyemService implements IService {
 			break;
 		case PROCESS_CONVERSION:
 			for (IProcess process : COLLECTIONS_TO_BE_PROCESSED) {
+				
+				Parameter parameter = parameterGenerator.generateTaskParameter(CONFIG_INDEX);
 				List<JSONObject> jsonObjects = new ArrayList<JSONObject>();
 				MongoCollection<Document> mongoCollection = mongoTemplateGenerator.generateMongoTemplate(CONFIG_INDEX).getCollection(process.getCollectionName());
 				FindIterable<Document> iterable = mongoCollection.find();
@@ -172,16 +178,13 @@ public class ErisyemService implements IService {
 					if(jsonObjects.size() == 10000) {
 
 						CacheManager.add(process.getCollectionName()+CONFIG_INDEX, jsonObjects);
-						asyncHelper.waitTillEndOfSynchronizedFunc(executor.execProcess(process, CONFIG_INDEX, isAsync));
-						CacheManager.remove(process.getCollectionName()+CONFIG_INDEX);
+						process.process(parameter);
 						jsonObjects = new ArrayList<JSONObject>();
 					}
 				}
 				CacheManager.add(process.getCollectionName()+CONFIG_INDEX, jsonObjects);
-				asyncHelper.waitTillEndOfSynchronizedFunc(executor.execProcess(process, CONFIG_INDEX, isAsync));
-				CacheManager.remove(process.getCollectionName()+CONFIG_INDEX);					
+				process.process(parameter);		
 			}
-			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
 			break;
 		default:
 			break;

@@ -3,6 +3,7 @@ package com.solutioncube.helper;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -20,10 +21,47 @@ import com.solutioncube.common.ExecutionType;
 public class ServiceRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceRunner.class);
-	
+
 	@Autowired
 	private AsyncHelper asyncHelper;
+	
+	@Autowired
+	private IService erisyemService;
+	
+	@Autowired
+	private IService vanucciService;
+	
+	/*
+	 * IMPORTANT!
+	 * Add Services which implemented for registered firms here
+	 * 
+	 */
+	private List<IService> registeredServices() {
 
+		return Arrays.asList(new IService[] {
+				
+				erisyemService
+				,vanucciService
+		});
+	}
+
+	public List<IService> getRegisteredServices() {
+		
+		return registeredServices();
+	}
+	
+	public void runAllRegisteredServices(ExecutionType executionType, boolean isAsync) {
+		runServices(registeredServices(), executionType, isAsync);
+	}	
+	
+	public void runGivenIndexedServices(List<Integer> configIndexes, ExecutionType executionType, boolean isAsync) {
+		List<IService> givenRegisteredServices = new ArrayList<IService>();
+		configIndexes.forEach(i -> {
+			givenRegisteredServices.add(registeredServices().get(i));
+		});
+		runServices(givenRegisteredServices, executionType, isAsync);
+	}	
+	
 	public void runServices(List<IService> services, ExecutionType executionType, boolean isAsync) {
 		
 		logger.info(String.format("%s services started running", services.stream().map(IService::getServiceName).collect(Collectors.joining(", "))));  			

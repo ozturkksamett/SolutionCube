@@ -20,14 +20,15 @@ import com.solutioncube.collection.EnergyMeasurementsHistoryReport;
 import com.solutioncube.collection.EnergyMeters;
 import com.solutioncube.collection.SensorMeasurementHistoryReport;
 import com.solutioncube.collection.Sensors;
-import com.solutioncube.common.IService;
-import com.solutioncube.common.ITask;
 import com.solutioncube.common.ExecutionType;
 import com.solutioncube.common.IProcess;
-import com.solutioncube.helper.AsyncHelper;
+import com.solutioncube.common.IService;
+import com.solutioncube.common.ITask;
 import com.solutioncube.helper.CacheManager;
 import com.solutioncube.helper.Executor;
 import com.solutioncube.helper.MongoTemplateGenerator;
+import com.solutioncube.helper.ParameterGenerator;
+import com.solutioncube.pojo.Parameter;
 
 @Service
 @Qualifier("vanucciService")
@@ -58,12 +59,12 @@ public class VanucciService implements IService {
 	
 	@Autowired
 	private Executor executor;	
-
-	@Autowired
-	private AsyncHelper asyncHelper;
 	
 	@Autowired
 	private MongoTemplateGenerator mongoTemplateGenerator;
+
+	@Autowired
+	private ParameterGenerator parameterGenerator;
 	
 	@Override
 	public Collection<Future<Boolean>> run(ExecutionType executionType, boolean isAsync) {
@@ -86,6 +87,8 @@ public class VanucciService implements IService {
 			break;
 		case PROCESS_CONVERSION:
 			for (IProcess process : COLLECTIONS_TO_BE_PROCESSED) {
+				
+				Parameter parameter = parameterGenerator.generateTaskParameter(CONFIG_INDEX);
 				List<JSONObject> jsonObjects = new ArrayList<JSONObject>();
 				MongoCollection<Document> mongoCollection = mongoTemplateGenerator.generateMongoTemplate(CONFIG_INDEX).getCollection(process.getCollectionName());
 				FindIterable<Document> iterable = mongoCollection.find();
@@ -98,16 +101,13 @@ public class VanucciService implements IService {
 					if(jsonObjects.size() == 10000) {
 
 						CacheManager.add(process.getCollectionName()+CONFIG_INDEX, jsonObjects);
-						asyncHelper.waitTillEndOfSynchronizedFunc(executor.execProcess(process, CONFIG_INDEX, isAsync));
-						CacheManager.remove(process.getCollectionName()+CONFIG_INDEX);
+						process.process(parameter);
 						jsonObjects = new ArrayList<JSONObject>();
 					}
 				}
 				CacheManager.add(process.getCollectionName()+CONFIG_INDEX, jsonObjects);
-				asyncHelper.waitTillEndOfSynchronizedFunc(executor.execProcess(process, CONFIG_INDEX, isAsync));
-				CacheManager.remove(process.getCollectionName()+CONFIG_INDEX);					
+				process.process(parameter);				
 			}
-			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
 			break;
 		default:
 			break;
