@@ -25,8 +25,8 @@ jobs:
         distribution: 'adopt'
     - name: Build with Maven
       run: mvn -B package --file pom.xml      
-    - name: Fetch
-      run: git fetch --unshallow origin
+    - name: Pull
+      run: git pull 
     - name: Add remote
       run: git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
     - name: Push heroku
