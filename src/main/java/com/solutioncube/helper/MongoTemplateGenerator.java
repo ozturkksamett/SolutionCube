@@ -24,7 +24,7 @@ public class MongoTemplateGenerator {
 	
 	public MongoTemplate generateProdMongoTemplate(int configIndex) {
 
-		return new MongoTemplate(prodMongoClient, config.getFirms()[configIndex].getName());
+		return null; //new MongoTemplate(prodMongoClient, config.getFirms()[configIndex].getName());
 	}
 	
 	public MongoTemplate generateMongoTemplate(int configIndex) {

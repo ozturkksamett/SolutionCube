@@ -11,12 +11,12 @@ import com.solutioncube.common.IService;
 import com.solutioncube.common.ExecutionType;
 import com.solutioncube.helper.ServiceRunner;
 import com.solutioncube.helper.ParameterGenerator;
-import com.solutioncube.job.JobScheduler;
+import com.solutioncube.job.SolutionCubeJobScheduler;
 
 @RestController
-public class JobController {
+public class SolutionCubeJobController {
 
-	private static final Logger logger = LoggerFactory.getLogger(JobController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SolutionCubeJobController.class);
 	
 	private static final int ERISYEM_CONFIG_INDEX = 0;
 	private static final int VANUCCI_CONFIG_INDEX = 1;	
@@ -28,7 +28,7 @@ public class JobController {
 	IService vanucciService;
 	
 	@Autowired
-	JobScheduler jobScheduler;	
+	SolutionCubeJobScheduler solutionCubeJobScheduler;	
 
 	@Autowired
 	ParameterGenerator parameterGenerator;
@@ -47,7 +47,7 @@ public class JobController {
 	public String schedule() {
 
 		logger.info("schedule");
-		jobScheduler.scheduleDailyJob();
+		solutionCubeJobScheduler.scheduleDailyJob();
 		return "SolutionCubeJob scheduled successfully!";
 	}
 	

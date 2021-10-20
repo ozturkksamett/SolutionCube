@@ -26,8 +26,21 @@ public class CacheManager {
 		}
 		else 
 			tasks.put(key, value);
+		
+		logger.info(key+ " cached");
 	}
+	
+	public static void remove(String key) {
 
+		if (tasks == null)
+			clear();
+
+		if(tasks.containsKey(key)) 
+			tasks.remove(key);		
+		
+		logger.info(key+ " removed");
+	}
+	
 	public static List<JSONObject> get(String key) {
 
 		if (tasks == null)

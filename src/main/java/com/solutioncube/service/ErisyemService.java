@@ -4,14 +4,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.bson.Document;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import com.solutioncube.collection.AlarmHistoryReport;
 import com.solutioncube.collection.AlarmRules;
 import com.solutioncube.collection.EnergyConsumptionReport;
@@ -155,9 +159,28 @@ public class ErisyemService implements IService {
 			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
 			break;
 		case PROCESS_CONVERSION:
-			CacheManager.clear();
-			for (IProcess process : COLLECTIONS_TO_BE_PROCESSED) 
-				CacheManager.add(process.getCollectionName()+CONFIG_INDEX, mongoTemplateGenerator.generateMongoTemplate(CONFIG_INDEX).findAll(JSONObject.class, process.getCollectionName()));
+			for (IProcess process : COLLECTIONS_TO_BE_PROCESSED) {
+				List<JSONObject> jsonObjects = new ArrayList<JSONObject>();
+				MongoCollection<Document> mongoCollection = mongoTemplateGenerator.generateMongoTemplate(CONFIG_INDEX).getCollection(process.getCollectionName());
+				FindIterable<Document> iterable = mongoCollection.find();
+				iterable.noCursorTimeout(false);
+				for (Iterator<Document> iterator = iterable.iterator(); iterator.hasNext();) {
+					Document document = (Document) iterator.next();
+					if(document.containsKey("_id"))
+						document.remove("_id");
+					jsonObjects.add(new JSONObject(document.toJson()));
+					if(jsonObjects.size() == 10000) {
+
+						CacheManager.add(process.getCollectionName()+CONFIG_INDEX, jsonObjects);
+						asyncHelper.waitTillEndOfSynchronizedFunc(executor.execProcess(process, CONFIG_INDEX, isAsync));
+						CacheManager.remove(process.getCollectionName()+CONFIG_INDEX);
+						jsonObjects = new ArrayList<JSONObject>();
+					}
+				}
+				CacheManager.add(process.getCollectionName()+CONFIG_INDEX, jsonObjects);
+				asyncHelper.waitTillEndOfSynchronizedFunc(executor.execProcess(process, CONFIG_INDEX, isAsync));
+				CacheManager.remove(process.getCollectionName()+CONFIG_INDEX);					
+			}
 			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
 			break;
 		default:

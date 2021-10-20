@@ -6,7 +6,6 @@ import java.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.solutioncube.service.SolutionCubeLocalhostService;
@@ -28,11 +27,5 @@ public class LocalhostController {
 		Instant finish = Instant.now();
 		logger.info(String.format("Duration: %d minutes", Duration.between(start, finish).toMinutes()));
 		return "SolutionCubeLocalhostService finished running successfully";
-	}
-
-	@PostMapping("/process")
-	public String process() {
-
-		return "";
 	}
 }
