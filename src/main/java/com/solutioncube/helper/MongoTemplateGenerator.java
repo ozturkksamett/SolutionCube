@@ -14,9 +14,9 @@ public class MongoTemplateGenerator {
 	@Autowired
 	private Config config;	
 
-	@Autowired
-	@Qualifier("prodMongoClient")
-	private MongoClient prodMongoClient;
+//	@Autowired
+//	@Qualifier("prodMongoClient")
+//	private MongoClient prodMongoClient;
 
 	@Autowired
 	@Qualifier("mongoClient")

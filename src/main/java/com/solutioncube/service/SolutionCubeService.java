@@ -17,10 +17,10 @@ public class SolutionCubeService {
 	@Autowired
 	private ServiceRunner serviceRunner;
 
-	public void runCollectionsProcess(boolean isAsync) {
+	public void runCollectionsProcessForConversion() {
 
-		logger.info("runCollectionsProcess started");	
+		logger.info("runCollectionsProcessForConversion started");	
 		CacheManager.clear();
-		serviceRunner.runAllRegisteredServices(ExecutionType.PROCESS_CONVERSION, isAsync);	
+		serviceRunner.runAllRegisteredServices(ExecutionType.PROCESS_CONVERSION, false);	
 	}
 }

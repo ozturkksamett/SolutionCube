@@ -175,7 +175,7 @@ public class ErisyemService implements IService {
 					if(document.containsKey("_id"))
 						document.remove("_id");
 					jsonObjects.add(new JSONObject(document.toJson()));
-					if(jsonObjects.size() == 10000) {
+					if(jsonObjects.size() == 10000) { // java.lang.OutOfMemoryError: Java heap space exception handled by process data 10k by 10k
 
 						CacheManager.add(process.getCollectionName()+CONFIG_INDEX, jsonObjects);
 						process.process(parameter);

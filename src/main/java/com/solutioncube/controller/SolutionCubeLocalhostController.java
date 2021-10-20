@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.solutioncube.service.SolutionCubeLocalhostService;
 
 @RestController
-public class LocalhostController {
+public class SolutionCubeLocalhostController {
 
-	private static final Logger logger = LoggerFactory.getLogger(LocalhostController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SolutionCubeLocalhostController.class);
 
 	@Autowired
 	SolutionCubeLocalhostService solutionCubeLocalhostService;
 
-	// @PostMapping("/runMigration")
+	//@PostMapping("/runMigration")
 	public String runMigration() {
 
 		logger.info("runMigration");

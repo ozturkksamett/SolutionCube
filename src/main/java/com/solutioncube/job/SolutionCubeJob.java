@@ -26,7 +26,7 @@ public class SolutionCubeJob extends QuartzJobBean {
 	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		
 		logger.info("SolutionCubeJob started running");	
-		solutionCubeJobService.runDailySolutionCubeJob(false);	
+		solutionCubeJobService.runDailySolutionCubeJob(true);	
 		emailSender.sendDailyJobReportMail();
 		logger.info("SolutionCubeJob finished running");	
 	}

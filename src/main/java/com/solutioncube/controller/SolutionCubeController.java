@@ -16,11 +16,11 @@ public class SolutionCubeController {
 	@Autowired
 	private SolutionCubeService solutionCubeService;
 	
-	@PostMapping("/process")
-	public String process() {
+	@PostMapping("/process-conversion")
+	public String runCollectionsProcessForConversion() {
 		
-		logger.info("Process started");		
-		solutionCubeService.runCollectionsProcess(false);		
-		return "Process finished successfully";
+		logger.info("runCollectionsProcessForConversion started");		
+		solutionCubeService.runCollectionsProcessForConversion();		
+		return "Process for conversion finished successfully";
 	}
 }
