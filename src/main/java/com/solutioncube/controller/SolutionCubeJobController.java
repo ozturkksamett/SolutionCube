@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.solutioncube.common.ExecutionType;
 import com.solutioncube.config.Config;
-import com.solutioncube.helper.ParameterGenerator;
+import com.solutioncube.helper.MongoTemplateGenerator;
 import com.solutioncube.helper.ServiceRunner;
 import com.solutioncube.job.SolutionCubeJobScheduler;
 
@@ -28,7 +28,7 @@ public class SolutionCubeJobController {
 	SolutionCubeJobScheduler solutionCubeJobScheduler;	
 
 	@Autowired
-	ParameterGenerator parameterGenerator;
+	MongoTemplateGenerator mongoTemplateGenerator;
 
 	@Autowired
 	ServiceRunner serviceRunner;
@@ -53,10 +53,21 @@ public class SolutionCubeJobController {
 	
 		logger.info("registerFirm");
 		int registedServiceCount = serviceRunner.getRegisteredServices().size();
-		if(configIndex != registedServiceCount)
+		if(configIndex != registedServiceCount-1)
 			return "Invalid Config Index!";
 		serviceRunner.runGivenIndexedServices(Arrays.asList(configIndex), ExecutionType.STATIC_COLLECTIONS, true);
 		return "Service registered successfully";
+	}
+	
+	@PostMapping("/update-firm-static-collections")
+	public String updateFirmStaticCollections(@RequestBody Integer configIndex) {
+	
+		logger.info("updateFirmStaticCollections");
+		int registedServiceCount = serviceRunner.getRegisteredServices().size();
+		if(configIndex >= registedServiceCount)
+			return "Invalid Config Index!";
+		serviceRunner.runGivenIndexedServices(Arrays.asList(configIndex), ExecutionType.STATIC_COLLECTIONS, true);
+		return "Static collections updated successfully";
 	}
 	
 //	@PostMapping("/erisyemRunBulkData")
