@@ -37,7 +37,7 @@ public class SolutionCubeJobController {
 	public String home() {
 
 		logger.info("home");
-		return "SolutionCube Running!";
+		return "SolutionCube is Running!";
 	}
 	
 	@PostMapping("/schedule")
