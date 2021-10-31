@@ -1,5 +1,6 @@
 package com.solutioncube.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,6 +25,7 @@ import com.solutioncube.common.ExecutionType;
 import com.solutioncube.common.IProcess;
 import com.solutioncube.common.IService;
 import com.solutioncube.common.ITask;
+import com.solutioncube.helper.AsyncHelper;
 import com.solutioncube.helper.CacheManager;
 import com.solutioncube.helper.Executor;
 import com.solutioncube.helper.MongoTemplateGenerator;
@@ -57,6 +59,10 @@ public class VanucciService implements IService {
 			,new SensorMeasurementHistoryReport()
 	});
 	
+	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {
+			new EnergyMeasurementsHistoryReport()
+	});
+	
 	@Autowired
 	private Executor executor;	
 	
@@ -65,6 +71,9 @@ public class VanucciService implements IService {
 
 	@Autowired
 	private ParameterGenerator parameterGenerator;
+	
+	@Autowired
+	private AsyncHelper asyncHelper;
 	
 	@Override
 	public Collection<Future<Boolean>> run(ExecutionType executionType, boolean isAsync) {
@@ -81,6 +90,12 @@ public class VanucciService implements IService {
 		case BULK_DATA_ONLY_WITH_SINCE_PARAM:
 			break;
 		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM:
+			ParameterGenerator.isBulkData = true;
+	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {	    		
+	    		asyncHelper.waitTillEndOfSynchronizedFunc(executor.execTasks(COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX, isAsync)); 		
+	    		ParameterGenerator.setInitialDate(ParameterGenerator.getInitialDate().plusDays(ParameterGenerator.getIntervalDay()));    		
+	    	}
+	    	ParameterGenerator.isBulkData = false;
 			break;
 		case PROCESS_DAILY_COLLECTIONS:
 			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
