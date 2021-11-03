@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.solutioncube.common.ExecutionType;
+import com.solutioncube.common.IService;
 import com.solutioncube.config.Config;
 import com.solutioncube.helper.MongoTemplateGenerator;
+import com.solutioncube.helper.ParameterGenerator;
 import com.solutioncube.helper.ServiceRunner;
 import com.solutioncube.job.SolutionCubeJobScheduler;
 
@@ -29,6 +31,14 @@ public class SolutionCubeJobController {
 
 	@Autowired
 	MongoTemplateGenerator mongoTemplateGenerator;
+	
+	private static final int VANUCCI_CONFIG_INDEX = 1;
+	
+	@Autowired
+	ParameterGenerator parameterGenerator;
+	
+	@Autowired
+	private IService vanucciService;
 
 	@Autowired
 	ServiceRunner serviceRunner;
@@ -90,13 +100,13 @@ public class SolutionCubeJobController {
 //		return "Erisyem solutionCubeLocalhostService finished running for static tasks asynchronously successfully";
 //	}
 //
-//	@PostMapping("/vanucciRunStaticTasks")
-//	public String vanucciRunStaticTasks() {
-//
-//		logger.info("vanucciRunStaticTasks");
-//		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-//		serviceRunner.runService(vanucciService, ExecutionType.STATIC_COLLECTIONS, true);
-//		return "Vanucci solutionCubeLocalhostService finished running for static tasks asynchronously successfully";
-//	}
+	@PostMapping("/vanucciRunStaticTasks")
+	public String vanucciRunStaticTasks() {
+
+		logger.info("vanucciRunStaticTasks");
+		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
+		serviceRunner.runService(vanucciService, ExecutionType.STATIC_COLLECTIONS, true);
+		return "Vanucci solutionCubeLocalhostService finished running for static tasks asynchronously successfully";
+	}
 	
 }
