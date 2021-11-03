@@ -147,9 +147,9 @@ public class ErisyemService implements IService {
 			futures = executor.execTasks(DAILY_COLLECTIONS, CONFIG_INDEX, isAsync);
 			break;
 		case BULK_DATA_ONLY_WITH_SINCE_PARAM:
-	    	ParameterGenerator.isBulkData = true;
-			futures = executor.execTasks(COLLECTIONS_WHICH_ONLY_WITH_SINCE_PARAM, CONFIG_INDEX, isAsync);
-	    	ParameterGenerator.isBulkData = false;
+//	    	ParameterGenerator.isBulkData = true;
+//			futures = executor.execTasks(COLLECTIONS_WHICH_ONLY_WITH_SINCE_PARAM, CONFIG_INDEX, isAsync);
+//	    	ParameterGenerator.isBulkData = false;
 			break;
 		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM:
 //	    	ParameterGenerator.isBulkData = true;
