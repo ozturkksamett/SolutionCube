@@ -98,7 +98,7 @@ public class VanucciService implements IService {
 			futures = executor.execTasks(COLLECTIONS_WHICH_ONLY_WITH_SINCE_PARAM, CONFIG_INDEX, isAsync);
 	    	ParameterGenerator.isBulkData = false;
 			break;
-		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM:
+		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM: 
 			ParameterGenerator.isBulkData = true;
 	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {	    		
 	    		asyncHelper.waitTillEndOfSynchronizedFunc(executor.execTasks(COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX, isAsync)); 		
