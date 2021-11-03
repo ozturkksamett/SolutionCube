@@ -18,6 +18,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.solutioncube.collection.AlarmHistoryReport;
 import com.solutioncube.collection.EnergyMeasurementsHistoryReport;
+import com.solutioncube.collection.EnergyMeasurementsHistoryReportBulk;
 import com.solutioncube.collection.EnergyMeters;
 import com.solutioncube.collection.SensorMeasurementHistoryReport;
 import com.solutioncube.collection.Sensors;
@@ -60,7 +61,7 @@ public class VanucciService implements IService {
 	});
 	
 	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {
-			new EnergyMeasurementsHistoryReport()
+			new EnergyMeasurementsHistoryReportBulk()
 	});
 	
 	@Autowired

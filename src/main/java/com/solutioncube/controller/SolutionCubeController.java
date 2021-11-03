@@ -28,8 +28,9 @@ public class SolutionCubeController {
 	@Autowired
 	ServiceRunner serviceRunner;
 	
+
 	@Autowired
-    IService vanucciService;
+	private IService vanucciService;
 	
 	@PostMapping("/process-conversion")
 	public String runCollectionsProcessForConversion() {
@@ -44,8 +45,8 @@ public class SolutionCubeController {
 	public String vanucciRunBulkData() {
 
 		logger.info("vanucciRunBulkData");
-//		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-//		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
+		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
 		return "Vanucci solutionCubeLocalhostService finished running for bulk data successfully";
 	}
 	
