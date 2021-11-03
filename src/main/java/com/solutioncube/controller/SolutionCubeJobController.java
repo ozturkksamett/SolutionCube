@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.solutioncube.common.ExecutionType;
 import com.solutioncube.common.IService;
 import com.solutioncube.config.Config;
+import com.solutioncube.helper.CacheManager;
 import com.solutioncube.helper.MongoTemplateGenerator;
 import com.solutioncube.helper.ParameterGenerator;
 import com.solutioncube.helper.ServiceRunner;
@@ -105,6 +106,7 @@ public class SolutionCubeJobController {
 	public String vanucciRunBulkData() {
 
 		logger.info("vanucciRunBulkData");
+		CacheManager.clear();
 		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		serviceRunner.runService(vanucciService, ExecutionType.STATIC_COLLECTIONS, true);
 		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
