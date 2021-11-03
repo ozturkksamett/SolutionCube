@@ -105,9 +105,9 @@ public class SolutionCubeJobController {
 	public String vanucciRunBulkData() {
 
 		logger.info("vanucciRunBulkData");
-//		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-//		serviceRunner.runService(vanucciService, ExecutionType.STATIC_COLLECTIONS, true);
-		//serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
+		serviceRunner.runService(vanucciService, ExecutionType.STATIC_COLLECTIONS, true);
+		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
 		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
 		return "Vanucci finished running for bulk data successfully";
 	}
