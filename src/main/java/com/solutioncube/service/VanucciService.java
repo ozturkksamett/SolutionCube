@@ -54,9 +54,7 @@ public class VanucciService implements IService {
 	});
 
 	private static final List<IProcess> COLLECTIONS_TO_BE_PROCESSED = Arrays.asList(new IProcess[] {
-
-			new AlarmHistoryReport()			
-			,new SensorMeasurementHistoryReport()
+				new SensorMeasurementHistoryReport()
 	});
 	
 	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {

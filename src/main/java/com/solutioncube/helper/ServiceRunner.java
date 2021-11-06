@@ -39,9 +39,7 @@ public class ServiceRunner {
 	private List<IService> registeredServices() {
 
 		return Arrays.asList(new IService[] {
-				
-				erisyemService
-				,vanucciService
+				vanucciService
 		});
 	}
 
