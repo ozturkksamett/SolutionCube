@@ -60,8 +60,7 @@ public class VanucciService implements IService {
 	});
 	
 	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {
-			new AlarmHistoryReport()
-			,new SensorMeasurementHistoryReport()
+			new SensorMeasurementHistoryReport()
 	});
 	
 	private static final List<ITask> COLLECTIONS_WHICH_ONLY_WITH_SINCE_PARAM = Arrays.asList(new ITask[] {
