@@ -118,8 +118,8 @@ public class SolutionCubeJobController {
 	@PostMapping("/vanucciRunStaticTasks")
 	public String vanucciRunStaticTasks() {
 
-		logger.info("vanucciRunStaticTasks");
-		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
+//		logger.info("vanucciRunStaticTasks");
+//		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		serviceRunner.runService(vanucciService, ExecutionType.STATIC_COLLECTIONS, true);
 		return "Vanucci solutionCubeLocalhostService finished running for static tasks asynchronously successfully";
 	}
