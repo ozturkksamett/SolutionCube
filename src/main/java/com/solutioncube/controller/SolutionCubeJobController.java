@@ -39,7 +39,7 @@ public class SolutionCubeJobController {
 	ParameterGenerator parameterGenerator;
 	
 	@Autowired
-	private IService vanucciService;
+	private IService erisyemService;
 
 	@Autowired
 	ServiceRunner serviceRunner;
@@ -109,19 +109,19 @@ public class SolutionCubeJobController {
 		CacheManager.clear();
 //		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 //		serviceRunner.runService(vanucciService, ExecutionType.STATIC_COLLECTIONS, true);
-		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
 //		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
 		return "Vanucci finished running for bulk data successfully";
 	}
 	
 	
-	@PostMapping("/vanucciRunStaticTasks")
+	@PostMapping("/erisyemRunStaticTasks")
 	public String vanucciRunStaticTasks() {
 
 //		logger.info("vanucciRunStaticTasks");
 //		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		serviceRunner.runService(vanucciService, ExecutionType.STATIC_COLLECTIONS, true);
-		return "Vanucci solutionCubeLocalhostService finished running for static tasks asynchronously successfully";
+		serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
+		return "ErisyemService finished running for static tasks asynchronously successfully";
 	}
 	
 }
