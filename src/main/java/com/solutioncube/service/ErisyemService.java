@@ -64,13 +64,13 @@ public class ErisyemService implements IService {
 	private static final List<ITask> STATIC_COLLECTIONS = Arrays.asList(new ITask[] {
 
 			new Sensors()
-			/*,new AlarmRules()
+			,new AlarmRules()
 			,new SensorCounters()
 			,new Trackers()
 			,new FloorPlans()
 			,new Zones()
 			,new EnergyMeters()
-			,new TemperatureSensors()*/
+			,new TemperatureSensors()
 	});
 
 	private static final List<ITask> DAILY_COLLECTIONS = Arrays.asList(new ITask[] {
