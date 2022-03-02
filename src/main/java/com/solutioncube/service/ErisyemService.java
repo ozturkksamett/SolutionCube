@@ -103,18 +103,18 @@ public class ErisyemService implements IService {
 			,new SensorCountHistoryReport()
 	});
 
-//	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {
-//
-//			new OutageHistoryReport()
-//			,new EnergyConsumptionReport()
-//			,new TemperatureMeasurementsSummaryReport()
-//			,new ZonePresenceHistoryReport()
-//			,new ZonePresenceSummaryReport()
-//			,new AlarmHistoryReport()
-//			,new SensorMeasurementHistoryReport()
-//			,new SensorMeasurementSummaryReport()
-//			,new SensorCountSummaryReport()
-//	});
+	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {
+
+			new OutageHistoryReport()
+			,new EnergyConsumptionReport()
+			,new TemperatureMeasurementsSummaryReport()
+			,new ZonePresenceHistoryReport()
+			,new ZonePresenceSummaryReport()
+			,new AlarmHistoryReport()
+			,new SensorMeasurementHistoryReport()
+			,new SensorMeasurementSummaryReport()
+			,new SensorCountSummaryReport()
+	});
 	
 	private static final List<IProcess> COLLECTIONS_TO_BE_PROCESSED = Arrays.asList(new IProcess[] {
 
@@ -124,9 +124,9 @@ public class ErisyemService implements IService {
 	
 	@Autowired
 	private Executor executor;
-//
-//	@Autowired
-//	private AsyncHelper asyncHelper;
+
+	@Autowired
+	private AsyncHelper asyncHelper;
 
 	@Autowired
 	private MongoTemplateGenerator mongoTemplateGenerator;
@@ -147,17 +147,17 @@ public class ErisyemService implements IService {
 			futures = executor.execTasks(DAILY_COLLECTIONS, CONFIG_INDEX, isAsync);
 			break;
 		case BULK_DATA_ONLY_WITH_SINCE_PARAM:
-//	    	ParameterGenerator.isBulkData = true;
-//			futures = executor.execTasks(COLLECTIONS_WHICH_ONLY_WITH_SINCE_PARAM, CONFIG_INDEX, isAsync);
-//	    	ParameterGenerator.isBulkData = false;
+	    	ParameterGenerator.isBulkData = true;
+			futures = executor.execTasks(COLLECTIONS_WHICH_ONLY_WITH_SINCE_PARAM, CONFIG_INDEX, isAsync);
+			ParameterGenerator.isBulkData = false;
 			break;
 		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM:
-//	    	ParameterGenerator.isBulkData = true;
-//	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {	    		
-//	    		asyncHelper.waitTillEndOfSynchronizedFunc(executor.execTasks(COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX, isAsync)); 		
-//	    		ParameterGenerator.setInitialDate(ParameterGenerator.getInitialDate().plusDays(ParameterGenerator.getIntervalDay()));    		
-//	    	}
-//	    	ParameterGenerator.isBulkData = false;
+	    	ParameterGenerator.isBulkData = true;
+	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {	    		
+	    		asyncHelper.waitTillEndOfSynchronizedFunc(executor.execTasks(COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX, isAsync)); 		
+	    		ParameterGenerator.setInitialDate(ParameterGenerator.getInitialDate().plusDays(ParameterGenerator.getIntervalDay()));    		
+	    	}
+	    	ParameterGenerator.isBulkData = false;
 			break;
 		case PROCESS_DAILY_COLLECTIONS:
 			futures = executor.execProcesses(COLLECTIONS_TO_BE_PROCESSED, CONFIG_INDEX, isAsync);
