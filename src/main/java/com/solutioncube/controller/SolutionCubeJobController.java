@@ -88,7 +88,7 @@ public class SolutionCubeJobController {
 		//parameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		//serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
 		serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
-		serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		//serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
 		return "Erisyem solutionCubeLocalhostService finished running for bulk data successfully";
 	}
 //	
