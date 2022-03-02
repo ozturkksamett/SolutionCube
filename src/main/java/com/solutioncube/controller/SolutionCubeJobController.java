@@ -39,7 +39,7 @@ public class SolutionCubeJobController {
 	ParameterGenerator parameterGenerator;
 	
 	@Autowired
-	private IService erisyemService;
+	private IService vanucciService;
 
 	@Autowired
 	ServiceRunner serviceRunner;
@@ -88,7 +88,7 @@ public class SolutionCubeJobController {
 		//parameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		//serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
 		//serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
-		serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		//serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
 		return "Erisyem solutionCubeLocalhostService finished running for bulk data successfully";
 	}
 //	
@@ -109,8 +109,8 @@ public class SolutionCubeJobController {
 		CacheManager.clear();
 //		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 //		serviceRunner.runService(vanucciService, ExecutionType.STATIC_COLLECTIONS, true);
-		serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
-//		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
+		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
 		return "Vanucci finished running for bulk data successfully";
 	}
 	
@@ -120,7 +120,7 @@ public class SolutionCubeJobController {
 
 //		logger.info("vanucciRunStaticTasks");
 //		parameterGenerator.generateTaskParameter(VANUCCI_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-		serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
+		//serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
 		return "ErisyemService finished running for static tasks asynchronously successfully";
 	}
 	
