@@ -118,7 +118,7 @@ public class SolutionCubeJobController {
 	}*/
 	
 	
-	@PostMapping("/erisyemRunStaticTasks")
+	/*@PostMapping("/erisyemRunStaticTasks")
 	public String vanucciRunStaticTasks() {
 
 //		logger.info("vanucciRunStaticTasks");
@@ -126,5 +126,5 @@ public class SolutionCubeJobController {
 		//serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
 		return "ErisyemService finished running for static tasks asynchronously successfully";
 	}
-	
+	*/
 }
