@@ -91,19 +91,19 @@ public class SolutionCubeJobController {
 		//parameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		//serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
 		serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
-		serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
-		return "Erisyem solutionCubeLocalhostService finished running for bulk data successfully";
+		//serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		return "Erisyem solutionCubeService finished running for bulk data successfully";
 	}
-//	
-//	@PostMapping("/erisyemRunStaticTasks")
-//	public String erisyemRunStaticTasks() {
-//
-//		logger.info("erisyemRunStaticTasks");
-//		parameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
-//		serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
-//		return "Erisyem solutionCubeLocalhostService finished running for static tasks asynchronously successfully";
-//	}
-//
+	
+	@PostMapping("/erisyemRunStaticTasks")
+	public String erisyemRunStaticTasks() {
+
+		logger.info("erisyemRunStaticTasks");
+		//parameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
+		serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
+		return "Erisyem solutionCubeService finished running for static tasks asynchronously successfully";
+	}
+
 	
 	/*@PostMapping("/VanucciRunBulkData")
 	public String vanucciRunBulkData() {
