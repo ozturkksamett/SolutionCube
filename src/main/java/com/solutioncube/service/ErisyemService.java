@@ -99,8 +99,8 @@ public class ErisyemService implements IService {
 
 			//new PositionHistoryReport()
 			//,new EnergyMeasurementsHistoryReport()			
-			new TemperatureMeasurementsHistoryReport()			
-			//,new SensorCountHistoryReport()
+			//new TemperatureMeasurementsHistoryReport()			
+			new SensorCountHistoryReport()
 	});
 
 	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {
