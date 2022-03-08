@@ -118,8 +118,9 @@ public class ErisyemService implements IService {
 	
 	private static final List<IProcess> COLLECTIONS_TO_BE_PROCESSED = Arrays.asList(new IProcess[] {
 
-			new AlarmHistoryReport()			
-			,new SensorMeasurementHistoryReport()
+			//new AlarmHistoryReport()			
+			//,
+			new SensorMeasurementHistoryReport()
 	});
 	
 	@Autowired
