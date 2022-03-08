@@ -13,7 +13,7 @@ public class EmailConfig {
 	public SimpleMailMessage simpleMailMessage() {
 		
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-		simpleMailMessage.setTo(/*"fatihburakkoca@gmail.com",*/ "ozturkksamett@gmail.com"/*,"salih.ozdemir@scfm.com.tr"*/);
+		simpleMailMessage.setTo("fatihburakkoca@gmail.com","salih.ozdemir@scfm.com.tr", "ozturkksamett@gmail.com");
 		//simpleMailMessage.setCc("ergunkargun@gmail.com");
 		simpleMailMessage.setFrom("solutioncubedev@gmail.com");
 		simpleMailMessage.setSubject("About SolutitonCubeJob");
