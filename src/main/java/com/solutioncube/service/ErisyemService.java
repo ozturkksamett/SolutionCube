@@ -63,14 +63,15 @@ public class ErisyemService implements IService {
 
 	private static final List<ITask> STATIC_COLLECTIONS = Arrays.asList(new ITask[] {
 
-			new Sensors()
-			,new AlarmRules()
-			,new SensorCounters()
-			,new Trackers()
-			,new FloorPlans()
-			,new Zones()
-			,new EnergyMeters()
-			,new TemperatureSensors()
+			//new Sensors()
+			//,new AlarmRules()
+			//,new SensorCounters()
+			//,new Trackers()
+			//,new FloorPlans()
+			//,new Zones()
+			//,
+			new EnergyMeters()
+			//,new TemperatureSensors()
 	});
 
 	private static final List<ITask> DAILY_COLLECTIONS = Arrays.asList(new ITask[] {
@@ -98,9 +99,9 @@ public class ErisyemService implements IService {
 	private static final List<ITask> COLLECTIONS_WHICH_ONLY_WITH_SINCE_PARAM = Arrays.asList(new ITask[] {
 
 			//new PositionHistoryReport()
-			//,new EnergyMeasurementsHistoryReport()			
+			new EnergyMeasurementsHistoryReport()			
 			//new TemperatureMeasurementsHistoryReport()			
-			new SensorCountHistoryReport()
+			//new SensorCountHistoryReport()
 	});
 
 	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {
