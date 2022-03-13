@@ -99,7 +99,6 @@ public class SolutionCubeJobController {
 	public String erisyemRunStaticTasks() {
 
 		logger.info("erisyemRunStaticTasks");
-		//parameterGenerator.generateTaskParameter(ERISYEM_CONFIG_INDEX).getMongoTemplate().getDb().drop();
 		serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
 		return "Erisyem solutionCubeService finished running for static tasks asynchronously successfully";
 	}
