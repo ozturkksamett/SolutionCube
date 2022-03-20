@@ -70,6 +70,7 @@ public class ErisyemService implements IService {
 			//,new FloorPlans()
 			//,new Zones()
 			//,
+			
 			new EnergyMeters()
 			//,new TemperatureSensors()
 	});
