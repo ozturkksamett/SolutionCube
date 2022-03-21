@@ -19,6 +19,7 @@ public class ParameterGenerator {
 	
 	private static final int INTERVAL_DAY = 30;
 	private static LocalDate initialDate = LocalDate.of(2022, 01, 02);
+	private static LocalDate endDate = LocalDate.of(2022, 01, 30);
 	public static boolean isBulkData = false;
 	
 	@Autowired
@@ -57,6 +58,9 @@ public class ParameterGenerator {
 		return initialDate;
 	}
 
+	public static LocalDate getEndDate() {
+		return endDate;
+	}
 	public static void setInitialDate(LocalDate initialDate) {
 		ParameterGenerator.initialDate = initialDate;
 		logger.info("Initial Date: " + ParameterGenerator.getInitialDate());  

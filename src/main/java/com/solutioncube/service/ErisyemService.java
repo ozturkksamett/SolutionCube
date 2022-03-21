@@ -156,7 +156,7 @@ public class ErisyemService implements IService {
 			break;
 		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM:
 	    	ParameterGenerator.isBulkData = true;
-	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {	    		
+	    	while (ParameterGenerator.getInitialDate().isBefore(ParameterGenerator.getEndDate())) {	    		
 	    		asyncHelper.waitTillEndOfSynchronizedFunc(executor.execTasks(COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX, isAsync)); 		
 	    		ParameterGenerator.setInitialDate(ParameterGenerator.getInitialDate().plusDays(ParameterGenerator.getIntervalDay()));    		
 	    	}
