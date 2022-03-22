@@ -19,7 +19,6 @@ public class ParameterGenerator {
 	
 	private static final int INTERVAL_DAY = 30;
 	private static LocalDate initialDate = LocalDate.of(2022, 01, 2);
-	private static LocalDate endDate = LocalDate.of(2022, 01, 30);
 	public static boolean isBulkData = false;
 	
 	@Autowired
