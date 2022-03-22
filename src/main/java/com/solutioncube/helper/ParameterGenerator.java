@@ -57,9 +57,7 @@ public class ParameterGenerator {
 		return initialDate;
 	}
 
-	public static LocalDate getEndDate() {
-		return endDate;
-	}
+	
 	public static void setInitialDate(LocalDate initialDate) {
 		ParameterGenerator.initialDate = initialDate;
 		logger.info("Initial Date: " + ParameterGenerator.getInitialDate());  
