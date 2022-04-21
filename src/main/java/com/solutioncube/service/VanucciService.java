@@ -97,7 +97,7 @@ public class VanucciService implements IService {
 			break;
 		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM: 
 			ParameterGenerator.isBulkData = true;
-	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now())) {	    		
+	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now().plusDays(1))) {	    		
 	    		asyncHelper.waitTillEndOfSynchronizedFunc(executor.execTasks(COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX, isAsync)); 		
 	    		ParameterGenerator.setInitialDate(ParameterGenerator.getInitialDate().plusDays(ParameterGenerator.getIntervalDay()));    		
 	    	}
