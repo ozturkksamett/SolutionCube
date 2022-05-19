@@ -21,6 +21,7 @@ public class ParameterGenerator {
 	private static LocalDate initialDate = LocalDate.of(2022, 04, 22);
 	public static boolean isBulkData = false;
 	
+	
 	@Autowired
 	private Config config;	
 
