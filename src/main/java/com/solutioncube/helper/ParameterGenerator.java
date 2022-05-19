@@ -33,6 +33,7 @@ public class ParameterGenerator {
 		return !isBulkData ? generateTaskParameterForDailyTasks(configIndex) : generateTaskParameterForBulkDataOfErisyem(generateTaskParameterForDailyTasks(configIndex));
 	}
 
+	
 	private Parameter generateTaskParameterForDailyTasks(int configIndex) {
 		
 		Parameter parameter = new Parameter();
