@@ -115,6 +115,7 @@ public class SolutionCubeJobController {
 		return "Vanucci finished running for bulk data successfully";
 	}
 	
+	
 	@PostMapping("/EveryThingUpdate")
 	public String EveryThingUpdate() {
 
