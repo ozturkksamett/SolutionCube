@@ -116,6 +116,8 @@ public class SolutionCubeJobController {
 	}
 	
 	
+	
+	
 	@PostMapping("/EveryThingUpdate")
 	public String EveryThingUpdate() {
 
