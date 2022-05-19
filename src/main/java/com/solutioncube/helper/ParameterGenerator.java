@@ -22,6 +22,9 @@ public class ParameterGenerator {
 	public static boolean isBulkData = false;
 	  
 	 
+	
+	
+	
 	@Autowired
 	private Config config;	
 
