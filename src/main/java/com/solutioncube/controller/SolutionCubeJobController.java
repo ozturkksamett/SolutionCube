@@ -116,6 +116,9 @@ public class SolutionCubeJobController {
 	}
 	
 	
+	
+	
+	
 	/*@PostMapping("/erisyemRunStaticTasks")
 	public String vanucciRunStaticTasks() {
 
