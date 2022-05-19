@@ -97,6 +97,7 @@ public class SolutionCubeJobController {
 	@PostMapping("/erisyemRunStaticTasks")
 	public String erisyemRunStaticTasks() {
 
+		
 		logger.info("erisyemRunStaticTasks");
 		serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
 		return "Erisyem solutionCubeService finished running for static tasks asynchronously successfully";
