@@ -18,7 +18,8 @@ public class ParameterGenerator {
 	private static final Logger logger = LoggerFactory.getLogger(ParameterGenerator.class);
 	
 	private static final int INTERVAL_DAY = 30;
-	private static LocalDate initialDate = LocalDate.of(2022, 5, 20);
+	private static LocalDate initialDate = LocalDate.of(2022, 2, 02);
+	private static LocalDate endDate = LocalDate.of(2022, 3, 03);
 	public static boolean isBulkData = false;
 	  
 	
@@ -59,6 +60,9 @@ public class ParameterGenerator {
 		return initialDate;
 	}
 
+	public static LocalDate getEndDate() {
+		return endDate;
+	}
 	
 	public static void setInitialDate(LocalDate initialDate) {
 		ParameterGenerator.initialDate = initialDate;
