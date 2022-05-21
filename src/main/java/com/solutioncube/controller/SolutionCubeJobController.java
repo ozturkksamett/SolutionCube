@@ -86,6 +86,8 @@ public class SolutionCubeJobController {
 	
 	
 	
+	
+	
 	@PostMapping("/erisyemRunBulkData")
 	public String erisyemRunBulkData() {
 
