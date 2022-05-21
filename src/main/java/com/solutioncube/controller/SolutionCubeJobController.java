@@ -84,6 +84,8 @@ public class SolutionCubeJobController {
 		return "Static collections updated successfully";
 	}
 	
+	
+	
 	@PostMapping("/erisyemRunBulkData")
 	public String erisyemRunBulkData() {
 
