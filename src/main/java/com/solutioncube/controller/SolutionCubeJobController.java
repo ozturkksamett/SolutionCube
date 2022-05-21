@@ -87,7 +87,6 @@ public class SolutionCubeJobController {
 	@PostMapping("/erisyemRunBulkData")
 	public String erisyemRunBulkData() {
 
-		
 		logger.info("erisyemRunBulkData");
 		//serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
 		//serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
