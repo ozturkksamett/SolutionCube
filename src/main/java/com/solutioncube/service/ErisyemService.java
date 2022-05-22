@@ -107,16 +107,16 @@ public class ErisyemService implements IService {
 
 	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {
 
-			//new OutageHistoryReport()
-			//,new EnergyConsumptionReport()
-			//,new TemperatureMeasurementsSummaryReport()
-			//,new ZonePresenceHistoryReport()
-			//,new ZonePresenceSummaryReport()
-			//,new AlarmHistoryReport()
-			//,
+			new OutageHistoryReport()
+			,new EnergyConsumptionReport()
+			,new TemperatureMeasurementsSummaryReport()
+			,new ZonePresenceHistoryReport()
+			,new ZonePresenceSummaryReport()
+			,new AlarmHistoryReport()
+			,
 			new SensorMeasurementHistoryReport()
-			//,new SensorMeasurementSummaryReport()
-			//,new SensorCountSummaryReport()
+			,new SensorMeasurementSummaryReport()
+			,new SensorCountSummaryReport()
 	});
 	
 	private static final List<IProcess> COLLECTIONS_TO_BE_PROCESSED = Arrays.asList(new IProcess[] {
@@ -157,7 +157,7 @@ public class ErisyemService implements IService {
 			break;
 		case BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM:
 	    	ParameterGenerator.isBulkData = true;
-	    	while (ParameterGenerator.getInitialDate().isBefore(ParameterGenerator.getEndDate())) {	    		
+	    	while (ParameterGenerator.getInitialDate().isBefore(LocalDate.now().plusDays(1))) {		    		
 	    		asyncHelper.waitTillEndOfSynchronizedFunc(executor.execTasks(COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM, CONFIG_INDEX, isAsync)); 		
 	    		ParameterGenerator.setInitialDate(ParameterGenerator.getInitialDate().plusDays(ParameterGenerator.getIntervalDay()));    		
 	    	}

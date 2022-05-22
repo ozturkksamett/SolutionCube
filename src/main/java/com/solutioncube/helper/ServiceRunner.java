@@ -40,7 +40,7 @@ public class ServiceRunner {
 
 		return Arrays.asList(new IService[] {
 				erisyemService
-				//,vanucciService
+				,vanucciService
 		});
 	}
 
