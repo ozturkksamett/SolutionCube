@@ -54,7 +54,7 @@ public class SolutionCubeJobScheduler {
 		}
 		
 		logger.info("SolutionCubeJob scheduled successfully. Scheduled time: " + zonedDateTime + " Local time: " + LocalDateTime.now());
-		emailSender.sendMail("SolutionCubeJob scheduled successfully");
+		//emailSender.sendMail("SolutionCubeJob scheduled successfully");
 	}
 
 	private ZonedDateTime getZonedDateTime() {

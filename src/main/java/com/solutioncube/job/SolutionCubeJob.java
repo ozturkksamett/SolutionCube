@@ -27,7 +27,7 @@ public class SolutionCubeJob extends QuartzJobBean {
 		
 		logger.info("SolutionCubeJob started running");	
 		solutionCubeJobService.runDailySolutionCubeJob(true);	
-		emailSender.sendDailyJobReportMail();
+		//emailSender.sendDailyJobReportMail();
 		logger.info("SolutionCubeJob finished running");	
 	}
 }
