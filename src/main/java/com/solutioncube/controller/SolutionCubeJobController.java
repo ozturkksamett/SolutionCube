@@ -108,11 +108,12 @@ public class SolutionCubeJobController {
 	@PostMapping("/VanucciRunBulkData")
 	public String vanucciRunBulkData() {
 
+		
 		logger.info("vanucciRunBulkData");
 		CacheManager.clear(); 
 		//serviceRunner.runService(vanucciService, ExecutionType.STATIC_COLLECTIONS, true);
-		//serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
-		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
+		serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		//serviceRunner.runService(vanucciService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
 		return "Vanucci finished running for bulk data successfully";
 	}
 	
