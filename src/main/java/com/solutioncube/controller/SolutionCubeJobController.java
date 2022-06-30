@@ -1,5 +1,6 @@
 package com.solutioncube.controller;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 import org.slf4j.Logger;
@@ -121,7 +122,9 @@ public class SolutionCubeJobController {
 	@PostMapping("/EveryThingUpdate")
 	public String EveryThingUpdate() {
 
-		logger.info("EveryThingUpdate");
+		LocalDate date=  ParameterGenerator.getInitialDate();
+		
+		logger.info("datetime is: "+date);
 		return "EveryThingUpdate";
 	}
 	
