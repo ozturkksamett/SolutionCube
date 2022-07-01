@@ -99,11 +99,11 @@ public class ErisyemService implements IService {
 	
 	private static final List<ITask> COLLECTIONS_WHICH_ONLY_WITH_SINCE_PARAM = Arrays.asList(new ITask[] {
 
-			/*new PositionHistoryReport(),
+			//new PositionHistoryReport(),
 			new EnergyMeasurementsHistoryReport()
-			,		*/	
-			new TemperatureMeasurementsHistoryReport(),			
-			new SensorCountHistoryReport()
+			//,	
+			//new TemperatureMeasurementsHistoryReport(),			
+			//new SensorCountHistoryReport()
 	});
 
 	private static final List<ITask> COLLECTIONS_WHICH_WITH_BOTH_SINCE_AND_TILL_PARAM = Arrays.asList(new ITask[] {

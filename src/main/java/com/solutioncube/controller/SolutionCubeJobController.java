@@ -1,6 +1,8 @@
 package com.solutioncube.controller;
 
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 
 import org.slf4j.Logger;
@@ -92,8 +94,8 @@ public class SolutionCubeJobController {
 
 		logger.info("erisyemRunBulkData");
 		//serviceRunner.runService(erisyemService, ExecutionType.STATIC_COLLECTIONS, true);
-		//serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
-		serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
+		serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_ONLY_WITH_SINCE_PARAM, false);
+		//serviceRunner.runService(erisyemService, ExecutionType.BULK_DATA_WITH_BOTH_SINCE_AND_TILL_PARAM, false);
 		return "Erisyem solutionCubeService finished running for bulk data successfully";
 	}
 	
@@ -122,9 +124,13 @@ public class SolutionCubeJobController {
 	@PostMapping("/EveryThingUpdate")
 	public String EveryThingUpdate() {
 
-		LocalDate date=  ParameterGenerator.getInitialDate();
+		LocalDateTime date=  ParameterGenerator.getInitialLocalDateDate();
+		LocalTime date1=  ParameterGenerator.getEndLocalTime();
+		LocalTime date2=  ParameterGenerator.getInitialLocalTime();
 		
 		logger.info("datetime is: "+date);
+		logger.info("EndLocalTime is: "+date1);
+		logger.info("datetime is: "+date2);
 		return "EveryThingUpdate";
 	}
 	

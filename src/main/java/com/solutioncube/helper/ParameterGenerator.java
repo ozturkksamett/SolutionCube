@@ -17,8 +17,11 @@ public class ParameterGenerator {
 
 	private static final Logger logger = LoggerFactory.getLogger(ParameterGenerator.class);
 	
-	private static final int INTERVAL_DAY = 30;
+	private static final int INTERVAL_DAY = 1;
 	private static LocalDate initialDate = LocalDate.of(2022, 6, 28);
+	public static LocalTime intialLocalTime = LocalTime.of(05,00 );
+	public static LocalTime endLocalTime = LocalTime.of(21,00 );
+	public static LocalDateTime initialLocalDateTime = LocalDateTime.of(initialDate, intialLocalTime);
 	private static LocalDate endDate = LocalDate.of(2022, 3, 03);
 	public static boolean isBulkData = false;
 	  
@@ -49,8 +52,8 @@ public class ParameterGenerator {
 
 	private Parameter generateTaskParameterForBulkDataOfErisyem(Parameter parameter) {
 		
-		parameter.setSinceDate(LocalDateTime.of(initialDate, LocalTime.MIDNIGHT));
-		parameter.setTillDate(LocalDateTime.of(initialDate.plusDays(INTERVAL_DAY), LocalTime.MIDNIGHT));
+		parameter.setSinceDate(LocalDateTime.of(initialDate, intialLocalTime));
+		parameter.setTillDate(LocalDateTime.of(initialDate.plusDays(INTERVAL_DAY), endLocalTime));
 		
 		return parameter;
 	}
@@ -59,6 +62,15 @@ public class ParameterGenerator {
 		return initialDate;
 	}
 
+	public static LocalTime getInitialLocalTime() {
+		return intialLocalTime;
+	}
+	public static LocalTime getEndLocalTime() {
+		return endLocalTime;
+	}
+	public static LocalDateTime getInitialLocalDateDate() {
+		return initialLocalDateTime;
+	}
 	public static LocalDate getEndDate() {
 		return endDate;
 	}
